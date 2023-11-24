@@ -8,8 +8,15 @@
 */
 
 export function useSplitText() {
-	// 해당 useSplitText 훅은, 호출 시 아래의 함수를 return함.
-	return (txt) => {
-		console.log(txt);
+	return (ref, txt) => {
+		let tags = '';
+
+		for (let letter of txt) {
+			tags += `
+        <span>${letter}</span>
+      `;
+		}
+		console.log(tags);
+		ref.innerHTML = tags;
 	};
 }
