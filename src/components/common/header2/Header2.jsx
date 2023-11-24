@@ -1,5 +1,45 @@
 import './Header2.scss';
+import { NavLink, Link } from 'react-router-dom';
 
 export default function Header2() {
-	return <div className='Header2'>Header2</div>;
+	return (
+		<header className='Header2'>
+			<h1>
+				<Link to='/'>SEOHYON</Link>
+			</h1>
+
+			<ul>
+				<li>
+					<NavLink to='/department' activeClassName={'on'}>
+						department
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to='/youtube' activeClassName={'on'}>
+						youtube
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to='/gallery' activeClassName={'on'}>
+						gallery
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to='/community' activeClassName={'on'}>
+						community
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to='/members' activeClassName={'on'}>
+						members
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to='/contact' activeClassName={'on'}>
+						contact
+					</NavLink>
+				</li>
+			</ul>
+		</header>
+	);
 }
