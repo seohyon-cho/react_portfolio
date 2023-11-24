@@ -1,10 +1,10 @@
+import Layout2 from '../../common/layout2/Layout2';
 import './Department.scss';
 
 export default function Department() {
 	return (
-		<main className='Department layout'>
-			<h1>Department</h1>
-			<div className='bar'></div>
-		</main>
+		<Layout2>
+			<p>Department전용 컨텐츠</p>
+		</Layout2>
 	);
 }
