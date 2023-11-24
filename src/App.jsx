@@ -1,3 +1,5 @@
+import './globalStyles/Variables.scss';
+import './globalStyles/Reset.scss';
 import Footer2 from './components/common/footer2/Footer2';
 import Header2 from './components/common/header2/Header2';
 import MainWrap from './components/main/mainWrap/MainWrap';
@@ -7,8 +9,6 @@ import Department from './components/sub/department/Department';
 import Gallery from './components/sub/gallery/Gallery';
 import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
-import './globalStyles/Variables.scss';
-import './globalStyles/Reset.scss';
 
 import { Route } from 'react-router-dom';
 
