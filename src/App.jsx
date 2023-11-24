@@ -7,6 +7,8 @@ import Department from './components/sub/department/Department';
 import Gallery from './components/sub/gallery/Gallery';
 import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
+import './globalStyles/Variables.scss';
+import './globalStyles/Reset.scss';
 
 import { Route } from 'react-router-dom';
 

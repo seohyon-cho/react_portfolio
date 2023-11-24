@@ -1,0 +1,22 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+ul,
+ol,
+li {
+	list-style: none;
+}
+a {
+	outline: 0;
+	color: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	text-decoration: none;
+}
+body {
+	color: var(--baseColor);
+	font-family: var(--baseFont);
+	background-color: var(--bgColor);
+}
