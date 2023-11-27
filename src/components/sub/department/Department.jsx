@@ -24,9 +24,13 @@ export default function Department() {
 		<Layout2 title={'Department'}>
 			{MemberData.map((member, idx) => {
 				return (
-					<div key={member + idx}>
+					<article key={member + idx}>
+						<div className='pic'>
+							<img src={`${path}/img/${member.pic}`} alt={member.name} />
+						</div>
 						<h2>{member.name}</h2>
-					</div>
+						<p>{member.position}</p>
+					</article>
 				);
 			})}
 		</Layout2>
