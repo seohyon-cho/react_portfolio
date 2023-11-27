@@ -61,4 +61,13 @@ export default function Department() {
 	// key 반복 돌면서 배열 반환
 	Object.keys(student); --> ['name', 'age'];
 	Object.values(student); --> ['David', 20];
+
+	
+	// 문자열 관련 내장 메서드
+	전체문자열.charAt(순서값) : 전체 문자열에서, 해당 순서의 문자값만 반환
+	전체문자열.slice(순서값1, 순서값2) : 전체 문자열에서, 해당 순서1부터 순서2의 위치까지 문자를 잘라서 반환 
+	전체문자열.upperCase() : 문자열 전체를 대문자로 반환
+	전체문자열.lowerCase() : 문자열 전체를 소문자로 반환 
+	전체문자열.split(구분자) : 전체 문자열을, 구분자를 기준으로 나누어 배열로 반환 
+	배열.join('구분자') : 각 배열값을 구분자로 이어붙이면서, 하나의 문자열로 반환 
 */
