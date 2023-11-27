@@ -1,7 +1,7 @@
 import './Header2.scss';
 import { NavLink, Link } from 'react-router-dom';
 
-export default function Header2() {
+export default function Header2({ Dark, setDark }) {
 	return (
 		<header className='Header2'>
 			<h1>
@@ -40,6 +40,13 @@ export default function Header2() {
 					</NavLink>
 				</li>
 			</ul>
+			<button
+				onClick={() => {
+					setDark(!Dark);
+				}}
+			>
+				Theme
+			</button>
 		</header>
 	);
 }

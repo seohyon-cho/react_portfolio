@@ -20,4 +20,5 @@ a {
 	font-family: var(--baseFont);
 	background-color: var(--bgColor);
 	font-size: var(--bodySize);
+	transition: color 1s, background 1s;
 }

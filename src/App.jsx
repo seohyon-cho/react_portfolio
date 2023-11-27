@@ -18,7 +18,7 @@ export default function App() {
 
 	return (
 		<div className={Dark ? 'wrap dark' : 'wrap'}>
-			<Header2 />
+			<Header2 Dark={Dark} setDark={setDark} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/youtube' component={Youtube} />
