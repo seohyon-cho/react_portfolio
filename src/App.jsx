@@ -11,10 +11,13 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 
 import { Route } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function App() {
+	const [Dark, setDark] = useState(false);
+
 	return (
-		<>
+		<div className={Dark ? 'wrap dark' : 'wrap'}>
 			<Header2 />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
@@ -24,6 +27,6 @@ export default function App() {
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
 			<Footer2 />
-		</>
+		</div>
 	);
 }
