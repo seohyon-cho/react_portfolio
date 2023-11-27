@@ -13,9 +13,10 @@ export default function Layout2({ children, title }) {
 	*/
 
 	useEffect(() => {
-		splitText(refTitle.current, title);
-		// 아래처럼, 커스텀 훅이 return한 함수는, 또 다른 훅이나 핸들러함수 내부에서 호출해 사용할 수 있음.
-		refFrame.current.classList.add('on');
+		splitText(refTitle.current, title, 0.7, 0.1);
+		setTimeout(() => {
+			refFrame.current.classList.add('on');
+		}, 300);
 	}, []);
 
 	return (
