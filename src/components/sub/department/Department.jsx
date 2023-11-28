@@ -10,8 +10,8 @@ export default function Department() {
 	const [MemberData, setMemberData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL);
 
-	const test1 = 'our-members-score-abc';
-	console.log(combinedTitle(test1, '-'));
+	const test1 = 'our+members-score_abc';
+	console.log(combinedTitle(test1));
 
 	const fetchDepartment = () => {
 		fetch(`${path.current}/DB/department.json`)
