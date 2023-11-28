@@ -4,13 +4,12 @@ import './Department.scss';
 import { useCustomText, useSplitText } from '../../../hooks/useText';
 
 export default function Department() {
-	const changeTitle = useCustomText('title');
+	const combinedTitle = useCustomText('combined');
 	const shortTitle = useCustomText('short');
 	const [MemberTit, setMemberTit] = useState('');
 	const [MemberData, setMemberData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL);
 
-	const combinedTitle = useCustomText('combined');
 	const test1 = 'our-members-score-abc';
 	console.log(combinedTitle(test1, '-'));
 
@@ -30,7 +29,7 @@ export default function Department() {
 	return (
 		<Layout2 title={'Department'}>
 			<section className='memberBox'>
-				<h2>{changeTitle(MemberTit)}</h2>
+				<h2>{combinedTitle(MemberTit)}</h2>
 				{MemberData.map((member, idx) => {
 					return (
 						<article key={member + idx}>
