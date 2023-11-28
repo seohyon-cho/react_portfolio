@@ -30,17 +30,19 @@ export default function Department() {
 		<Layout2 title={'Department'}>
 			<section className='memberBox'>
 				<h2>{combinedTitle(MemberTit)}</h2>
-				{MemberData.map((member, idx) => {
-					return (
-						<article key={member + idx}>
-							<div className='pic'>
-								<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
-							</div>
-							<h2>{member.name}</h2>
-							<p>{member.position}</p>
-						</article>
-					);
-				})}
+				<div className='con'>
+					{MemberData.map((member, idx) => {
+						return (
+							<article key={member + idx}>
+								<div className='pic'>
+									<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
+								</div>
+								<h3>{member.name}</h3>
+								<p>{member.position}</p>
+							</article>
+						);
+					})}
+				</div>
 			</section>
 		</Layout2>
 	);
