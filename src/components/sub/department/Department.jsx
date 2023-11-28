@@ -1,29 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Department.scss';
+import { useCustomText } from '../../../hooks/useText';
 
 export default function Department() {
-	const test = 'abcdef';
-	// console.log(test.charAt(0)); // a
-	// console.log(test.slice(1, 3)); // bc
-	// console.log(test.slice(1)); // bcdef
-	console.log(test.toLowerCase());
-
+	const changeTitle = useCustomText('title');
 	const [MemberTit, setMemberTit] = useState('');
-
 	const [MemberData, setMemberData] = useState([]);
-
 	const path = useRef(process.env.PUBLIC_URL);
-
-	// public 폴더까지의 경로를 구하는 구문 (작업하다보면 public이나 src 폴더의 경로가 바뀌는 경우가 있으므로, 이 구문을 사용하면 경로가 바뀌어도 절대적으로 찾아낼 수 있음. )
 
 	const fetchDepartment = () => {
 		fetch(`${path.current}/DB/department.json`)
 			.then((data) => data.json())
 			.then((json) => {
-				// console.log(json);
-				// console.log('key', Object.keys(json)[0]); // 객체를 반복 돌며 key값만 배열로 반환
-				// console.log('value', Object.values(json)[0]); // 객체를 반복 돌며 value값만 배열로 반환
 				setMemberTit(Object.keys(json)[0]);
 				setMemberData(Object.values(json)[0]);
 			});
@@ -36,7 +25,7 @@ export default function Department() {
 	return (
 		<Layout2 title={'Department'}>
 			<section className='memberBox'>
-				<h2>{`${MemberTit.charAt(0).toUpperCase() + MemberTit.slice(1).toLowerCase()}`}</h2>
+				<h2>{changeTitle(MemberTit)}</h2>
 				{MemberData.map((member, idx) => {
 					return (
 						<article key={member + idx}>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import './Layout2.scss';
-import { useSplitText } from '../../../hooks/useSplitText';
+import { useSplitText } from '../../../hooks/useText';
 
 export default function Layout2({ children, title }) {
 	const refFrame = useRef(null);
