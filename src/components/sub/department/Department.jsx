@@ -5,6 +5,7 @@ import { useCustomText } from '../../../hooks/useText';
 
 export default function Department() {
 	const changeTitle = useCustomText('title');
+	const shortTitle = useCustomText('short');
 	const [MemberTit, setMemberTit] = useState('');
 	const [MemberData, setMemberData] = useState([]);
 	const path = useRef(process.env.PUBLIC_URL);

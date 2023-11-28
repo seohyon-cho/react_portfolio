@@ -19,4 +19,14 @@ export function useCustomText(type) {
 			return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
 		};
 	}
+
+	if (type === 'short') {
+		return (txt, last = 100) => {
+			if (txt.length > last) {
+				return txt.slice(0, last) + '...';
+			} else {
+				return txt;
+			}
+		};
+	}
 }
