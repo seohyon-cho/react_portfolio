@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Department.scss';
 
@@ -12,11 +12,13 @@ export default function Department() {
 	const [MemberTit, setMemberTit] = useState('');
 
 	const [MemberData, setMemberData] = useState([]);
+
+	const path = useRef(process.env.PUBLIC_URL);
+
 	// public 폴더까지의 경로를 구하는 구문 (작업하다보면 public이나 src 폴더의 경로가 바뀌는 경우가 있으므로, 이 구문을 사용하면 경로가 바뀌어도 절대적으로 찾아낼 수 있음. )
-	const path = process.env.PUBLIC_URL;
 
 	const fetchDepartment = () => {
-		fetch(`${path}/DB/department.json`)
+		fetch(`${path.current}/DB/department.json`)
 			.then((data) => data.json())
 			.then((json) => {
 				// console.log(json);
@@ -39,7 +41,7 @@ export default function Department() {
 					return (
 						<article key={member + idx}>
 							<div className='pic'>
-								<img src={`${path}/img/${member.pic}`} alt={member.name} />
+								<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
 							</div>
 							<h2>{member.name}</h2>
 							<p>{member.position}</p>
