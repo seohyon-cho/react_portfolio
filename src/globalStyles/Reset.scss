@@ -22,3 +22,13 @@ a {
 	font-size: var(--bodySize);
 	transition: color 1s, background 1s;
 }
+html {
+	&::-webkit-scrollbar {
+		width: 6px;
+		background: var(--bgColor);
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 4px;
+		background: var(--pointColor);
+	}
+}
