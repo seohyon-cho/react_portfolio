@@ -13,13 +13,15 @@ import Youtube from './components/sub/youtube/Youtube';
 import { Route } from 'react-router-dom';
 import { useState } from 'react';
 import { useMedia } from './hooks/useMedia';
+import Menu from './components/common/menu/Menu';
 
 export default function App() {
 	const [Dark, setDark] = useState(false);
+	const [Toggle, setToggle] = useState(false);
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header2 Dark={Dark} setDark={setDark} />
+			<Header2 Dark={Dark} setDark={setDark} Toggle={Toggle} setToggle={setToggle} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/youtube' component={Youtube} />
@@ -28,6 +30,7 @@ export default function App() {
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
 			<Footer2 />
+			{Toggle && <Menu />}
 		</div>
 	);
 }
