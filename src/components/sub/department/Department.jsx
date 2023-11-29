@@ -43,14 +43,11 @@ export default function Department() {
 			<section className='historyBox'>
 				<h2>{combinedTitle(HistoryTit)}</h2>
 				<div className='con'>
-					{/* HistoryData가 반복도는 각각의 데이터 {년도: 배열} */}
 					{HistoryData.map((history, idx) => {
 						return (
 							<article key={history + idx}>
-								{/* 현재 반복돌고 있는 개체의 key값을 뽑아서 h3로 출력 :2016, 2018, 2020 */}
 								<h3>{Object.keys(history)[0]}</h3>
 								<ul>
-									{/* 현재 반복돌고 있는 개체의 value값을 뽑아서, li로 반복 출력 [문자열, 문자열] */}
 									{Object.values(history)[0].map((list, idx) => {
 										return <li key={list + idx}>{list}</li>;
 									})}
