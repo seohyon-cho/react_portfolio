@@ -3,6 +3,7 @@
 	.historyBox {
 		width: 100%;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		margin-bottom: 200px;
 
@@ -41,6 +42,7 @@
 	.memberBox {
 		width: 100%;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 
 		h2 {
@@ -86,21 +88,29 @@
 }
 
 //tablet
-@media screen and (max-width: $tablet) {
+.tablet {
 	.Department {
 		.historyBox {
-			display: none;
+			h2 {
+				width: 100%;
+				margin-bottom: 60px;
+			}
+			.con {
+				width: 100%;
+				padding-left: 0;
+				border-left: none;
+			}
+		}
+		.memberBox {
+			h2 {
+				width: 100%;
+				margin-bottom: 60px;
+			}
+			.con {
+				width: 100%;
+				padding-left: 0;
+				border-left: none;
+			}
 		}
 	}
 }
-
-/*
-	[[ react에서 style 관련 이슈 ]]
-	- 리액트에서는 작업파일이 많아지므로 컴포넌트 단위로 파일을 쪼개기 때문에, 그에 따라 각 컴포넌트별 style.scss 파일도 많아짐.
-	- 따라서 효율적인 유지보수를 위해서, 공통으로 관리될 값들을 Variable.scss에 일반 css 변수 (:root, var(--@@))로 관리함.
-	- 이때, scss변수가 아닌 css 변수를 사용하는 이유는, scss 변수는 webpack에 내장된 sass loader에 의해서 초기 컴파일될 때의 값이 static하게 고정되어버림. 그래서 리액트에서 이벤트가 발생하는 경우, scss변수는 변수의 값을 실시간으로 변경하는 것이 불가능함. 
-	- 스타일의 속성이 아닌, 브라우저가 인지해야 하는 @media 쿼리 구문 내의 디바이스 폭 같은 경우, css 변수로 처리할 수 없음. (스타일로 제어하는 게 아니기 때문에)
-	- 따라서 @media 쿼리 내의 디바이스 폭 구문만 컴파일 시 브라우저가 해석할 수 있는 변수로 적용해야 함. 
-	- 이때 문제가 발생함. scss변수를 읽기 위해서는 각 scss파일마다 일일히 Variable.scss를 import 처리 해야되는 불편함이 생김. 
-	
-*/
