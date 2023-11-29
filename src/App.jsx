@@ -12,12 +12,13 @@ import Youtube from './components/sub/youtube/Youtube';
 
 import { Route } from 'react-router-dom';
 import { useState } from 'react';
+import { useMedia } from './hooks/useMedia';
 
 export default function App() {
 	const [Dark, setDark] = useState(false);
 
 	return (
-		<div className={Dark ? 'wrap dark' : 'wrap'}>
+		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
 			<Header2 Dark={Dark} setDark={setDark} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
