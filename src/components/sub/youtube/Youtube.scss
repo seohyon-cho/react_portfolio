@@ -4,7 +4,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(var(--baseColor-code), 0.2);
 		padding: 50px 0px;
 
 		&:nth-of-type(odd) {
@@ -35,6 +35,10 @@
 			p {
 				font: 0.8rem/1.5 'arial';
 				opacity: 0.5;
+				// word-break : 줄바꿈 시, 글자를 자르는 기준.
+				// normal (기본값, 한글은 단어 단위로 잘리고, 영어는 글자 단위로 잘림.) / break-all (개별 글자기준) / keep-all (영어, 한글 모두 단어 기준으로 잘림)
+				word-break: break-all;
+				text-align: justify; // 단어 간 간격을 조절해 양옆으로 정렬.
 			}
 
 			.infoBox {
@@ -42,7 +46,7 @@
 				display: flex;
 				justify-content: space-between;
 				font: 0.8rem/1 'arial';
-				color: orangered;
+				color: var(--pointColor);
 				margin-bottom: 20px;
 
 				span,
@@ -59,6 +63,50 @@
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
+			}
+		}
+	}
+}
+
+//tablet
+.tablet,
+.mobile {
+	.Youtube {
+		article {
+			padding: 40px 0px;
+
+			h2 {
+				width: 50%;
+				font-size: 1.7rem;
+			}
+			.txt {
+				width: 46%;
+				.info {
+					margin-top: 10px;
+				}
+			}
+			.pic {
+				width: 100%;
+				height: 20vmax;
+				margin-top: 20px;
+			}
+		}
+	}
+}
+
+//mobile
+.mobile {
+	.Youtube {
+		article {
+			padding: 30px 0px;
+
+			h2 {
+				width: 100%;
+				font-size: 1.2rem;
+				margin-bottom: 30px;
+			}
+			.txt {
+				width: 100%;
 			}
 		}
 	}
