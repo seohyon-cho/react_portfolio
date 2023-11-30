@@ -30,7 +30,7 @@ export default function App() {
 			<Route path='/members' component={Members} />
 			<Route path='/contact' component={Contact} />
 			<Footer2 />
-			{Toggle && <Menu />}
+			{Toggle && <Menu setToggle={setToggle} />}
 		</div>
 	);
 }
