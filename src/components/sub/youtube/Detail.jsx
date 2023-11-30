@@ -31,12 +31,15 @@ export default function Detail() {
         해당 객체에 값이 없을 땐 해당 구문을 무시하고, 값이 있을 때에만 property에 접근하게끔 만들어줌. 
         (객체만 가능. 배열은 적용 불가능.)
       */}
-
-			<div className='videoBox'>
-				<iframe src={`https://www.youtube.com/embed/${YoutubeData?.resourceId.videoId}`} title={YoutubeData?.title}></iframe>
-			</div>
-			<h3>{YoutubeData?.title}</h3>
-			<p>{YoutubeData?.description}</p>
+			{YoutubeData && (
+				<article>
+					<div className='videoBox'>
+						<iframe src={`https://www.youtube.com/embed/${YoutubeData.resourceId.videoId}`} title={YoutubeData.title}></iframe>
+					</div>
+					<h3>{YoutubeData.title}</h3>
+					<p>{YoutubeData.description}</p>
+				</article>
+			)}
 		</Layout2>
 	);
 }
