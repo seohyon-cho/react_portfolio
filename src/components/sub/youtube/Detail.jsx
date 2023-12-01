@@ -11,7 +11,7 @@ export default function Detail() {
 
 	console.log(YoutubeData);
 	const fetchSingleData = async () => {
-		const api_key = 'AIzaSyDC60bIIkAJFzy7ji4a0Eo3AX6tYudhe1w';
+		const api_key = process.env.REACT_APP_YOUTUBE_API;
 		const baseURL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&part=snippet&id=${id}`;
 
 		const data = await fetch(baseURL);
@@ -33,6 +33,7 @@ export default function Detail() {
       */}
 			{YoutubeData && (
 				<article>
+					<h3>{YoutubeData.title}</h3>
 					<div className='videoBox'>
 						<iframe src={`https://www.youtube.com/embed/${YoutubeData.resourceId.videoId}`} title={YoutubeData.title}></iframe>
 					</div>
