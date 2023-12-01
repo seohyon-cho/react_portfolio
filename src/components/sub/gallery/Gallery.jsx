@@ -7,8 +7,8 @@ export default function Gallery() {
 
 	const fetchFlickr = async () => {
 		console.log('flickr');
-		const num = 500;
-		const flickr_api = '9714d0fe77bde97690ff70f0d88f4d40';
+		const num = 20;
+		const flickr_api = process.env.REACT_APP_FLICKR_API;
 		const method_interest = 'flickr.interestingness.getList';
 		const baseURL = 'https://www.flickr.com/services/rest/?method=';
 		const resultURL = `${baseURL}${method_interest}&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1`;
@@ -18,11 +18,6 @@ export default function Gallery() {
 
 		setPics(json.photos.photo);
 		console.log(json);
-
-		// const server_id = 65535;
-		// const photo_id = json.photos.photo;
-		// const secret = ;
-		// const size =
 	};
 
 	useEffect(() => {
@@ -31,14 +26,21 @@ export default function Gallery() {
 
 	return (
 		<Layout2 title={'Gallery'}>
-			{Pics.map((pic, idx) => {
-				return (
-					<article key={pic.id}>
-						<h2>{pic.title}</h2>
-						<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`} alt={pic.title} />
-					</article>
-				);
-			})}
+			<section className='frame'>
+				{Pics.map((pic, idx) => {
+					return (
+						<article key={pic.id}>
+							<div className='pic'>
+								<img
+									src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
+									alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
+								/>
+							</div>
+							<h2>{pic.title}</h2>
+						</article>
+					);
+				})}
+			</section>
 		</Layout2>
 	);
 }

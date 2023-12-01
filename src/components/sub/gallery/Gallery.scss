@@ -1,0 +1,56 @@
+.Gallery {
+	.frame {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+
+		article {
+			width: 23%;
+			margin-bottom: 70px;
+			border-bottom: 1px solid rgba(var(--baseColor-code), 0.5);
+
+			.pic {
+				width: 100%;
+				margin-bottom: 10px;
+
+				img {
+					width: 100%;
+				}
+			}
+			h2 {
+				font-weight: normal;
+				font-size: 1rem;
+				line-height: 1.2;
+				margin-bottom: 10px;
+			}
+		}
+	}
+}
+
+//laptop ver.
+.laptop {
+	.Gallery {
+		article {
+			width: 32%;
+		}
+	}
+}
+
+// tablet ver.
+.tablet {
+	.Gallery {
+		article {
+			width: 48%;
+		}
+	}
+}
+
+// mobile ver.
+.mobile {
+	.Gallery {
+		article {
+			width: 100%;
+		}
+	}
+}
