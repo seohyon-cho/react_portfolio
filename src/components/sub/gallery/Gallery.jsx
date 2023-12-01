@@ -17,6 +17,12 @@ export default function Gallery() {
 		const json = await data.json();
 
 		setPics(json.photos.photo);
+		console.log(json);
+
+		// const server_id = 65535;
+		// const photo_id = json.photos.photo;
+		// const secret = ;
+		// const size =
 	};
 
 	useEffect(() => {
@@ -29,6 +35,7 @@ export default function Gallery() {
 				return (
 					<article key={pic.id}>
 						<h2>{pic.title}</h2>
+						<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`} alt={pic.title} />
 					</article>
 				);
 			})}
