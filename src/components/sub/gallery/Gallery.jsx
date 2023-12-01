@@ -7,7 +7,7 @@ export default function Gallery() {
 
 	const fetchFlickr = async () => {
 		console.log('flickr');
-		const num = 20;
+		const num = 500;
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
 		const method_interest = 'flickr.interestingness.getList';
 		const baseURL = 'https://www.flickr.com/services/rest/?method=';
@@ -37,6 +37,15 @@ export default function Gallery() {
 								/>
 							</div>
 							<h2>{pic.title}</h2>
+
+							<div className='profile'>
+								<img
+									src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
+									alt='사용자 프로필 이미지'
+									onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+								/>
+								<span>${pic.owner}</span>
+							</div>
 						</article>
 					);
 				})}
