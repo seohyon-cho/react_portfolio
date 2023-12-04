@@ -4,11 +4,8 @@ import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 
 export default function Gallery() {
-	console.log('re-render');
 	const myID = useRef('199633413@N04');
-	// 1. isUser의 초기값을, 내 아이디의 문자값으로 등록.
 	const isUser = useRef(myID.current);
-
 	const [Pics, setPics] = useState([]);
 	const refNav = useRef(null);
 
@@ -20,16 +17,12 @@ export default function Gallery() {
 
 	const handleInterest = (e) => {
 		if (e.target.classList.contains('on')) return;
-		// 2. interest 함수 호출 시, isUser 값을 빈 문자열(false로 인식됨)로 초기화.
 		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
 	const handleMine = (e) => {
-		// 3. 콕 찍어서, 현재 isUser 값과 myID 의 값이 동일할 때만 return으로 함수 중지
-		// 마이갤러리 함수 호출 시에는, isUser에 문자값이 담겨있다고 하더라도, 내 아이디의 문자값과 똑같지 않으면 return하지 않고 핸들러 함수를 실행하도록 처리.
-		// 다른 사용자의 갤러리를 갔다가 다시 myGallery 호출 시, 이미 그 다른 사용자의 userID값이 문자값으로 담겨있기 때문에 내 갤러리가 호출되지 않는 문제를 해결하기 위함임.
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
@@ -37,10 +30,8 @@ export default function Gallery() {
 	};
 
 	const handleUser = (e) => {
-		// 4. isUser값이 비어있기만 하면 중지
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
-		// activateBtn에 e를 넣지 않음으로써, 전체 class 초기화만 이루어지게 하고, 현재 인수로 전달되는 e에 클래스 붙이는 작업은 안 하게끔 처리.
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
@@ -52,11 +43,14 @@ export default function Gallery() {
 		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
+		const method_search = 'flickr.photos.search';
+		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
 		const interestURL = `${baseURL}${method_interest}`;
 		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
 		let url = '';
 		opt.type === 'user' && (url = userURL);
 		opt.type === 'interest' && (url = interestURL);
+		opt.type === 'search' && (url = searchURL);
 
 		const data = await fetch(url);
 		const json = await data.json();
@@ -66,7 +60,8 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
-		fetchFlickr({ type: 'user', id: myID.current });
+		// fetchFlickr({ type: 'user', id: myID.current });
+		fetchFlickr({ type: 'search', keyword: 'landscape' });
 	}, []);
 
 	return (
@@ -79,9 +74,10 @@ export default function Gallery() {
 					</button>
 				</nav>
 			</article>
+
 			<section>
 				<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: 20 }}>
-					{Pics.map((pic, idx) => {
+					{Pics.map((pic) => {
 						return (
 							<article key={pic.id}>
 								<div className='pic'>
