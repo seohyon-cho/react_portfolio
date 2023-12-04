@@ -3,16 +3,8 @@ import Masonry from 'react-masonry-component';
 import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 
-/*
-	Query String : URL로 데이터를 호출하는 방법 = URL에 문자열로 요청옵션을 전달하는 형태 
-	기본 요청URL ? & 옵션명1=옵션값1
-	옵션의 순서는 상관없음. 
-	https://www.abc.com/?name=홍길동&age=20&hobby=game
-*/
-
 export default function Gallery() {
 	console.log('re-render');
-	// 1. 참조객체(useRef)에 내 아이디 값을 등록한다.
 	const myID = useRef('199633413@N04');
 	const [Pics, setPics] = useState([]);
 
@@ -24,10 +16,8 @@ export default function Gallery() {
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const interestURL = `${baseURL}${method_interest}`;
-		// 3. userURL에는 user_id를 상수값이 아닌 호출 시점에 전달된 opt객체의 id로 등록해서 URL 생성
 		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
 		let url = '';
-		// 4. 만들어진 URL로 데이터 요청
 		opt.type === 'user' && (url = userURL);
 		opt.type === 'interest' && (url = interestURL);
 
@@ -39,7 +29,6 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
-		// 2. 처음 컴포넌트 마운트 시, 타입을 user로 지정하고, id값으로 내 아이디 값을 등록
 		fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
@@ -70,7 +59,7 @@ export default function Gallery() {
 										alt='사용자 프로필 이미지'
 										onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 									/>
-									<span>${pic.owner}</span>
+									<span onClick={() => fetchFlickr({ type: 'user', id: pic.owner })}>${pic.owner}</span>
 								</div>
 							</article>
 						);
