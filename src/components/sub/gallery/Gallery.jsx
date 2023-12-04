@@ -6,6 +6,8 @@ import './Gallery.scss';
 export default function Gallery() {
 	console.log('re-render');
 	const myID = useRef('199633413@N04');
+	const isUser = useRef(true);
+
 	const [Pics, setPics] = useState([]);
 	const refNav = useRef(null);
 
@@ -17,17 +19,22 @@ export default function Gallery() {
 
 	const handleInterest = (e) => {
 		if (e.target.classList.contains('on')) return;
+		isUser.current = false;
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
 	const handleMine = (e) => {
-		if (e.target.classList.contains('on')) return;
+		if (e.target.classList.contains('on') || isUser.current) return;
+		isUser.current = true;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 
 	const handleUser = (e) => {
+		if (isUser.current) return;
+		isUser.current = true;
+		// activateBtn에 e를 넣지 않음으로써, 전체 class 초기화만 이루어지게 하고, 현재 인수로 전달되는 e에 클래스 붙이는 작업은 안 하게끔 처리.
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
