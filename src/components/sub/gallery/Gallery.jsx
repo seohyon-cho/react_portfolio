@@ -37,7 +37,7 @@ export default function Gallery() {
 	const handleUser = (e) => {
 		// 4. isUser값이 비어있기만 하면 중지
 		if (isUser.current) return;
-		isUser.current = true;
+		isUser.current = e.target.innerText;
 		// activateBtn에 e를 넣지 않음으로써, 전체 class 초기화만 이루어지게 하고, 현재 인수로 전달되는 e에 클래스 붙이는 작업은 안 하게끔 처리.
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
