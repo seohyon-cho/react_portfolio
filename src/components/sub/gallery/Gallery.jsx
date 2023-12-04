@@ -7,6 +7,13 @@ export default function Gallery() {
 	console.log('re-render');
 	const myID = useRef('199633413@N04');
 	const [Pics, setPics] = useState([]);
+	const refNav = useRef(null);
+
+	const activateBtn = (e) => {
+		const btns = refNav.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+	};
 
 	const fetchFlickr = async (opt) => {
 		console.log('flickr');
@@ -35,9 +42,22 @@ export default function Gallery() {
 	return (
 		<Layout2 title={'Gallery'}>
 			<article className='controls'>
-				<nav className='btnSet'>
-					<button onClick={() => fetchFlickr({ type: 'interest' })}>Interest Gallery</button>
-					<button className='on' onClick={() => fetchFlickr({ type: 'user', id: myID.current })}>
+				<nav className='btnSet' ref={refNav}>
+					<button
+						onClick={(e) => {
+							activateBtn(e);
+							fetchFlickr({ type: 'interest' });
+						}}
+					>
+						Interest Gallery
+					</button>
+					<button
+						className='on'
+						onClick={(e) => {
+							activateBtn(e);
+							fetchFlickr({ type: 'user', id: myID.current });
+						}}
+					>
 						My Gallery
 					</button>
 				</nav>
