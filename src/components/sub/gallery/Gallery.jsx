@@ -37,7 +37,9 @@ export default function Gallery() {
 			<article className='controls'>
 				<nav className='btnSet'>
 					<button onClick={() => fetchFlickr({ type: 'interest' })}>Interest Gallery</button>
-					<button onClick={() => fetchFlickr({ type: 'user', id: myID.current })}>My Gallery</button>
+					<button className='on' onClick={() => fetchFlickr({ type: 'user', id: myID.current })}>
+						My Gallery
+					</button>
 				</nav>
 			</article>
 			<section>
