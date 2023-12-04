@@ -6,7 +6,8 @@ import './Gallery.scss';
 export default function Gallery() {
 	console.log('re-render');
 	const myID = useRef('199633413@N04');
-	const isUser = useRef(true);
+	// 1. isUser의 초기값을, 내 아이디의 문자값으로 등록.
+	const isUser = useRef(myID.current);
 
 	const [Pics, setPics] = useState([]);
 	const refNav = useRef(null);
@@ -19,19 +20,22 @@ export default function Gallery() {
 
 	const handleInterest = (e) => {
 		if (e.target.classList.contains('on')) return;
-		isUser.current = false;
+		// 2. interest 함수 호출 시, isUser 값을 빈 문자열(false로 인식됨)로 초기화.
+		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
 	const handleMine = (e) => {
-		if (e.target.classList.contains('on') || isUser.current) return;
-		isUser.current = true;
+		// 3. 콕 찍어서, 현재 isUser 값과 myID 의 값이 동일할 때만 return으로 함수 중지
+		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
+		isUser.current = myID.current;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 
 	const handleUser = (e) => {
+		// 4. isUser값이 비어있기만 하면 중지
 		if (isUser.current) return;
 		isUser.current = true;
 		// activateBtn에 e를 넣지 않음으로써, 전체 class 초기화만 이루어지게 하고, 현재 인수로 전달되는 e에 클래스 붙이는 작업은 안 하게끔 처리.
