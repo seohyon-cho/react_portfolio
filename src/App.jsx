@@ -19,6 +19,7 @@ import Detail from './components/sub/youtube/Detail';
 export default function App() {
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
+	const [Open, setOpen] = useState(false);
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>

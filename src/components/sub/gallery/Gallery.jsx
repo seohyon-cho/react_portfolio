@@ -3,6 +3,7 @@ import Masonry from 'react-masonry-component';
 import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
+import Modal from '../../common/modal/Modal';
 
 export default function Gallery() {
 	const myID = useRef('199633413@N04');
@@ -76,54 +77,56 @@ export default function Gallery() {
 	}, []);
 
 	return (
-		<Layout2 title={'Gallery'}>
-			<article className='controls'>
-				<nav className='btnSet' ref={refNav}>
-					<button onClick={handleInterest}>Interest Gallery</button>
-					<button onClick={handleMine} className='on'>
-						My Gallery
-					</button>
-				</nav>
+		<>
+			<Layout2 title={'Gallery'}>
+				<article className='controls'>
+					<nav className='btnSet' ref={refNav}>
+						<button onClick={handleInterest}>Interest Gallery</button>
+						<button onClick={handleMine} className='on'>
+							My Gallery
+						</button>
+					</nav>
 
-				<form onSubmit={handleSearch}>
-					<input type='text' placeholder='Search' />
-					<button className='btnSearch'>
-						<LuSearch />
-					</button>
-				</form>
-			</article>
+					<form onSubmit={handleSearch}>
+						<input type='text' placeholder='Search' />
+						<button className='btnSearch'>
+							<LuSearch />
+						</button>
+					</form>
+				</article>
 
-			<section>
-				<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: 20 }}>
-					{/* 3항 연산자를 사용해서, 배열에 받아지는 값이 없으면 경고 문구 출력하기 (3항 연산자로 JSX를 분기 처리 할 때에는, 괄호로 묶어줘야 함.) */}
-					{Pics.length === 0 ? (
-						<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
-					) : (
-						Pics.map((pic) => {
-							return (
-								<article key={pic.id}>
-									<div className='pic'>
-										<img
-											src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
-											alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
-										/>
-									</div>
-									<h2>{pic.title}</h2>
+				<section>
+					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: 20 }}>
+						{Pics.length === 0 ? (
+							<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
+						) : (
+							Pics.map((pic) => {
+								return (
+									<article key={pic.id}>
+										<div className='pic'>
+											<img
+												src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
+												alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
+											/>
+										</div>
+										<h2>{pic.title}</h2>
 
-									<div className='profile'>
-										<img
-											src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
-											alt='사용자 프로필 이미지'
-											onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
-										/>
-										<span onClick={handleUser}>{pic.owner}</span>
-									</div>
-								</article>
-							);
-						})
-					)}
-				</Masonry>
-			</section>
-		</Layout2>
+										<div className='profile'>
+											<img
+												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
+												alt='사용자 프로필 이미지'
+												onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+											/>
+											<span onClick={handleUser}>{pic.owner}</span>
+										</div>
+									</article>
+								);
+							})
+						)}
+					</Masonry>
+				</section>
+			</Layout2>
+			<Modal />
+		</>
 	);
 }

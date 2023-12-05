@@ -1,0 +1,27 @@
+.Modal {
+	width: 100%;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.9);
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 5vw;
+	z-index: 5;
+	.con {
+		width: 100%;
+		height: 100%;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+	span {
+		cursor: pointer;
+		position: absolute;
+		top: 3vw;
+		right: 3vw;
+		font-size: 0.8rem;
+		color: var(--baseColor);
+	}
+}
