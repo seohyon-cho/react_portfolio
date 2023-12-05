@@ -37,8 +37,16 @@ export default function Gallery() {
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 
+	const handleSearch = (e) => {
+		// 기본적으로 onSubmit 이벤트는 전송 기능이기 때문에, 무조건 화면이 새로고침됨
+		// 직접 전송을 할 것이 아니라 리액트로 추가 로직을 구현할 것이므로 기본 전송기능을 막는 것임.
+		e.preventDefault();
+		// e.target (form) 의 children (입력창 & 버튼) 의 [0]번째 자식 (입력창) 의 value (입력된 내용물)
+		const keyword = e.target.children[0].value;
+		console.log(keyword);
+	};
+
 	const fetchFlickr = async (opt) => {
-		console.log('flickr');
 		const num = 20;
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
 		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
@@ -61,8 +69,7 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
-		// fetchFlickr({ type: 'user', id: myID.current });
-		fetchFlickr({ type: 'search', keyword: 'landscape' }); // landscape 키워드로 검색 타입 갤러리 호출
+		fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
 	return (
@@ -75,9 +82,11 @@ export default function Gallery() {
 					</button>
 				</nav>
 
-				<form>
+				<form onSubmit={handleSearch}>
 					<input type='text' placeholder='Search' />
-					<LuSearch className='btnSearch' />
+					<button className='btnSearch'>
+						<LuSearch />
+					</button>
 				</form>
 			</article>
 
