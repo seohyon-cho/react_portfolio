@@ -42,7 +42,6 @@ export default function Gallery() {
 		isUser.current = '';
 		activateBtn();
 		const keyword = e.target.children[0].value;
-		// keyword로 아무 것도 입력되지 않았거나(빈칸 = false), 또는 띄어쓰기만 들어갔을 때는 Return으로 끊어서 FetchFlickr가 실행되지 않게 함.
 		if (!keyword.trim()) return;
 		e.target.children[0].value = '';
 		fetchFlickr({ type: 'search', keyword: keyword });
@@ -66,6 +65,8 @@ export default function Gallery() {
 
 		const data = await fetch(url);
 		const json = await data.json();
+
+		/* if (json.photos.photo.length === 0) return alert('해당 검색어의 결과 값이 없습니다.'); */
 
 		setPics(json.photos.photo);
 	};
@@ -94,28 +95,33 @@ export default function Gallery() {
 
 			<section>
 				<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: 20 }}>
-					{Pics.map((pic) => {
-						return (
-							<article key={pic.id}>
-								<div className='pic'>
-									<img
-										src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
-										alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
-									/>
-								</div>
-								<h2>{pic.title}</h2>
+					{/* 3항 연산자를 사용해서, 배열에 받아지는 값이 없으면 경고 문구 출력하기 (3항 연산자로 JSX를 분기 처리 할 때에는, 괄호로 묶어줘야 함.) */}
+					{Pics.length === 0 ? (
+						<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
+					) : (
+						Pics.map((pic) => {
+							return (
+								<article key={pic.id}>
+									<div className='pic'>
+										<img
+											src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
+											alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
+										/>
+									</div>
+									<h2>{pic.title}</h2>
 
-								<div className='profile'>
-									<img
-										src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
-										alt='사용자 프로필 이미지'
-										onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
-									/>
-									<span onClick={handleUser}>{pic.owner}</span>
-								</div>
-							</article>
-						);
-					})}
+									<div className='profile'>
+										<img
+											src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
+											alt='사용자 프로필 이미지'
+											onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+										/>
+										<span onClick={handleUser}>{pic.owner}</span>
+									</div>
+								</article>
+							);
+						})
+					)}
 				</Masonry>
 			</section>
 		</Layout2>
