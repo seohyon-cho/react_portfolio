@@ -1,17 +1,34 @@
 import './Modal.scss';
+import { AnimatePresence, motion } from 'framer-motion';
 
-// 모달 컴포넌트 자체적으로 특정 state 값에 따라서, 자기 자신의 컨텐츠를 보여줄지 말지를 결정
-// 부모 컴포넌트 기준에서 Modal 컴포넌트 자체는 계속 마운트되어 있는 상태이지만,
-// state 값에 따라서 DOM 출력 유무만 변경되는 것.
+/*
+	[[ framer-motion 관련 문법 및 개념 ]]
+
+	AnimatePresence : 모션을 적용할 컴포넌트의 wrapping 컴포넌트 지정 
+	- 자식 요소의 모션이 끝날 때까지 컴포넌트가 unmount 되는 시점을 holding처리 
+
+	motion : 모션을 걸고 싶은 JSX 컴포넌트에 연결해서 각각 initial, animate, exit라는 속성으로 모션 수치 값을 조절 가능하게 함.
+
+	- initial : 모션이 일어나기 전의 상태 값
+	- animate : 모션이 일어날 때의 상태 값
+	- exit : 모션이 끝날 때의 상태 값 (해당 컴포넌트가 사라질 때의 상태 값)
+
+*/
 export default function Modal({ Open, setOpen, children }) {
 	return (
-		<>
+		<AnimatePresence>
 			{Open && (
-				<aside className='Modal'>
+				<motion.aside
+					className='Modal'
+					initial={{ opacity: 0, scale: 0, rotate: -45 }}
+					animate={{ opacity: 1, scale: 1, rotate: 0 }}
+					exit={{ opacity: 0, scale: 2, rotate: 45 }}
+					transition={{ duration: 0.5 }}
+				>
 					<div className='con'>{children}</div>
 					<span onClick={() => setOpen(false)}>close</span>
-				</aside>
+				</motion.aside>
 			)}
-		</>
+		</AnimatePresence>
 	);
 }
