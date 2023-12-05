@@ -10,6 +10,7 @@ export default function Gallery() {
 	const isUser = useRef(myID.current);
 	const [Pics, setPics] = useState([]);
 	const [Open, setOpen] = useState(false);
+	const [Index, setIndex] = useState(0);
 
 	const refNav = useRef(null);
 
@@ -48,6 +49,10 @@ export default function Gallery() {
 		if (!keyword.trim()) return;
 		e.target.children[0].value = '';
 		fetchFlickr({ type: 'search', keyword: keyword });
+	};
+
+	const openModal = (e) => {
+		setOpen(true);
 	};
 
 	const fetchFlickr = async (opt) => {
@@ -102,10 +107,16 @@ export default function Gallery() {
 						{Pics.length === 0 ? (
 							<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
 						) : (
-							Pics.map((pic) => {
+							Pics.map((pic, idx) => {
 								return (
 									<article key={pic.id}>
-										<div className='pic' onClick={() => setOpen(true)}>
+										<div
+											className='pic'
+											onClick={() => {
+												setOpen(true);
+												setIndex(idx);
+											}}
+										>
 											<img
 												src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
 												alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
@@ -128,7 +139,11 @@ export default function Gallery() {
 					</Masonry>
 				</section>
 			</Layout2>
-			{Open && <Modal setOpen={setOpen} />}
+			{Open && (
+				<Modal setOpen={setOpen}>
+					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt='img' />
+				</Modal>
+			)}
 		</>
 	);
 }
