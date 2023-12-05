@@ -41,9 +41,11 @@ export default function Gallery() {
 		// 기본적으로 onSubmit 이벤트는 전송 기능이기 때문에, 무조건 화면이 새로고침됨
 		// 직접 전송을 할 것이 아니라 리액트로 추가 로직을 구현할 것이므로 기본 전송기능을 막는 것임.
 		e.preventDefault();
+		isUser.current = '';
+		activateBtn();
 		// e.target (form) 의 children (입력창 & 버튼) 의 [0]번째 자식 (입력창) 의 value (입력된 내용물)
 		const keyword = e.target.children[0].value;
-		console.log(keyword);
+		fetchFlickr({ type: 'search', keyword: keyword });
 	};
 
 	const fetchFlickr = async (opt) => {
@@ -52,8 +54,8 @@ export default function Gallery() {
 		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
-		const method_search = 'flickr.photos.search'; // search method 추가
-		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`; // search url 추가
+		const method_search = 'flickr.photos.search';
+		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
 		const interestURL = `${baseURL}${method_interest}`;
 		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
 		let url = '';
