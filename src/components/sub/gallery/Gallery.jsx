@@ -117,10 +117,7 @@ export default function Gallery() {
 												setIndex(idx);
 											}}
 										>
-											<img
-												src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`}
-												alt={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_b.jpg`}
-											/>
+											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
 										</div>
 										<h2>{pic.title}</h2>
 
@@ -141,7 +138,7 @@ export default function Gallery() {
 			</Layout2>
 			{Open && (
 				<Modal setOpen={setOpen}>
-					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt='img' />
+					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={Pics[Index].title} />
 				</Modal>
 			)}
 		</>
