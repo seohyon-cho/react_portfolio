@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Masonry from 'react-masonry-component';
 import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
+import { LuSearch } from 'react-icons/lu';
 
 export default function Gallery() {
 	const myID = useRef('199633413@N04');
@@ -43,8 +44,8 @@ export default function Gallery() {
 		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
-		const method_search = 'flickr.photos.search';
-		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
+		const method_search = 'flickr.photos.search'; // search method 추가
+		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`; // search url 추가
 		const interestURL = `${baseURL}${method_interest}`;
 		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
 		let url = '';
@@ -61,7 +62,7 @@ export default function Gallery() {
 
 	useEffect(() => {
 		// fetchFlickr({ type: 'user', id: myID.current });
-		fetchFlickr({ type: 'search', keyword: 'landscape' });
+		fetchFlickr({ type: 'search', keyword: 'landscape' }); // landscape 키워드로 검색 타입 갤러리 호출
 	}, []);
 
 	return (
@@ -73,6 +74,11 @@ export default function Gallery() {
 						My Gallery
 					</button>
 				</nav>
+
+				<form>
+					<input type='text' placeholder='Search' />
+					<LuSearch className='btnSearch' />
+				</form>
 			</article>
 
 			<section>
