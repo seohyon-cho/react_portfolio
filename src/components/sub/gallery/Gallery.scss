@@ -66,7 +66,7 @@
 		// gap이라는 변수 값을 컴포넌트에 적용하기 위해서는, JSX 파일에서 해당 변수가 등록될 요소를 참조해야 됨.
 		// JSX요소는 useRef로 참조 가능하지만, component는 참조 불가하므로,
 		// component로 출력되고 있는 Gallery 말고, JSX로 출력되고 있는 .frameWrap에 --gap 변수를 등록한 것임.
-		--gap: 20px;
+		// --gap: 20px; 이 값은, 리액트에서 처음 useEffect 실행 시 동적으로 생성되는 변수 값.
 		.frame {
 			width: 100%;
 			display: flex;
