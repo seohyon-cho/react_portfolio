@@ -1,11 +1,18 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Community.scss';
 import { GrUndo } from 'react-icons/gr';
 import { TfiWrite } from 'react-icons/tfi';
 
 export default function Community() {
-	const [Post, setPost] = useState([]);
+	const getLocalData = () => {
+		const data = localStorage.getItem('post');
+		// localStorage에 post라는 키값의 데이터가 있으면 parsing해서 리턴
+		if (data) return JSON.parse(data);
+		// post라는 키값의 데이터가 없으면 그냥 빈 배열을 리턴 (해당 컴포넌트가 최초로 호출될 때 (제일 처음 호출될 때) 한 번)
+		else return [];
+	};
+	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
 	const refCon = useRef(null);
 	console.log(Post);
@@ -22,6 +29,10 @@ export default function Community() {
 		setPost([{ title: refTit.current.value, content: refCon.current.value }, ...Post]);
 		resetPost();
 	};
+
+	useEffect(() => {
+		localStorage.setItem('post', JSON.stringify(Post));
+	}, [Post]);
 
 	return (
 		<div className='Community'>
