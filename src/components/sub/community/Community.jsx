@@ -1,23 +1,33 @@
+import { useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Community.scss';
 import { GrUndo } from 'react-icons/gr';
 import { TfiWrite } from 'react-icons/tfi';
 
 export default function Community() {
+	const [Post, setPost] = useState([]);
+	const refTit = useRef(null);
+	const refCon = useRef(null);
+	console.log(Post);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setPost([...Post, { title: refTit.current.value, content: refCon.current.value }]);
+	};
+
 	return (
 		<div className='Community'>
 			<Layout2 title={'Community'}>
 				<div className='wrap'>
 					<div className='inputBox'>
-						<form>
-							<input type='text' placeholder='title' name='tit' />
-							<textarea cols='30' rows='3' placeholder='content' name='con'></textarea>
+						<form onSubmit={handleSubmit}>
+							<input type='text' placeholder='title' name='tit' ref={refTit} />
+							<textarea cols='30' rows='3' placeholder='content' name='con' ref={refCon}></textarea>
 
 							<nav>
-								<button>
+								<button type='reset'>
 									<GrUndo />
 								</button>
-								<button>
+								<button type='submit'>
 									<TfiWrite />
 								</button>
 							</nav>
