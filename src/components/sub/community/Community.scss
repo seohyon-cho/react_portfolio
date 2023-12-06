@@ -37,16 +37,18 @@
 			}
 		}
 		.showBox {
+			--boxGap: 20px;
+			--num: 3;
 			width: 70%;
 			padding-left: 50px;
 			border-left: 1px solid rgba(var(--baseColor-code), 0.5);
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-between;
+			justify-content: flex-start;
 			align-content: flex-start;
-
+			gap: var(--boxGap);
 			article {
-				width: 32%;
+				width: calc((100% - (var(--boxGap) * (num - 1))) / var(--num));
 				height: 25vh;
 				background: rgba(var(--baseColor-code), 0.1);
 				padding: 20px;
