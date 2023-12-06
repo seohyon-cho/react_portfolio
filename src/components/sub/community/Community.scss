@@ -48,6 +48,7 @@
 			align-content: flex-start;
 			gap: var(--boxGap);
 			article {
+				// (전체 넓이 값 - 총 gap의 넓이값) / 갯수
 				width: calc((100% - (var(--boxGap) * (num - 1))) / var(--num));
 				height: 25vh;
 				background: rgba(var(--baseColor-code), 0.1);
