@@ -8,11 +8,13 @@ import Modal from '../../common/modal/Modal';
 export default function Gallery() {
 	const myID = useRef('199633413@N04');
 	const isUser = useRef(myID.current);
+	const refNav = useRef(null);
+	const refFrameWrap = useRef(null);
+
+	const gap = useRef(20);
 	const [Pics, setPics] = useState([]);
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
-
-	const refNav = useRef(null);
 
 	const activateBtn = (e) => {
 		const btns = refNav.current.querySelectorAll('button');
@@ -51,10 +53,6 @@ export default function Gallery() {
 		fetchFlickr({ type: 'search', keyword: keyword });
 	};
 
-	const openModal = (e) => {
-		setOpen(true);
-	};
-
 	const fetchFlickr = async (opt) => {
 		console.log('fetching again...');
 		const num = 20;
@@ -73,8 +71,6 @@ export default function Gallery() {
 
 		const data = await fetch(url);
 		const json = await data.json();
-
-		/* if (json.photos.photo.length === 0) return alert('해당 검색어의 결과 값이 없습니다.'); */
 
 		setPics(json.photos.photo);
 	};
@@ -102,8 +98,8 @@ export default function Gallery() {
 					</form>
 				</article>
 
-				<section>
-					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: 20 }}>
+				<section className='frameWrap' ref={refFrameWrap}>
+					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: gap.current }}>
 						{Pics.length === 0 ? (
 							<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
 						) : (
@@ -138,7 +134,7 @@ export default function Gallery() {
 			</Layout2>
 
 			<Modal Open={Open} setOpen={setOpen}>
-				{Pics.length != 0 && (
+				{Pics.length !== 0 && (
 					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={Pics[Index].title} />
 				)}
 			</Modal>
