@@ -43,9 +43,11 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
+			align-content: flex-start;
 
 			article {
 				width: 32%;
+				height: 25vh;
 				background: rgba(var(--baseColor-code), 0.1);
 				padding: 20px;
 				margin-bottom: 20px;
@@ -66,6 +68,26 @@
 						font: 1rem/1.4 'arial';
 						opacity: 0.6;
 						margin-bottom: 40px;
+					}
+				}
+
+				nav {
+					width: 100%;
+					display: flex;
+					justify-content: flex-end;
+					gap: 20px;
+
+					button {
+						border: none;
+						background: transparent;
+						cursor: pointer;
+
+						&:nth-of-type(1) {
+							color: orange;
+						}
+						&:nth-of-type(2) {
+							color: orangered;
+						}
 					}
 				}
 			}

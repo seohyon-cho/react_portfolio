@@ -14,8 +14,13 @@ export default function Community() {
 		refCon.current.value = '';
 	};
 	const createPost = (e) => {
+		if (!refTit.current.value.trim() || !refCon.current.value.trim()) {
+			resetPost();
+			return alert('제목과 본문을 모두 입력하세요!');
+		}
 		e.preventDefault();
 		setPost([{ title: refTit.current.value, content: refCon.current.value }, ...Post]);
+		resetPost();
 	};
 
 	return (
