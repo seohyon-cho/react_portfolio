@@ -9,8 +9,13 @@ export default function Community() {
 	const refTit = useRef(null);
 	const refCon = useRef(null);
 	console.log(Post);
-	const handleSubmit = (e) => {
+	const resetPost = (e) => {
+		refTit.current.value = '';
+		refCon.current.value = '';
+	};
+	const createPost = (e) => {
 		e.preventDefault();
+		// 기존 값을 ...Post로 먼저 복사 후, {}에 있는 데이터를 덮어쓰기 한다는 뜻.
 		setPost([...Post, { title: refTit.current.value, content: refCon.current.value }]);
 	};
 
@@ -19,19 +24,17 @@ export default function Community() {
 			<Layout2 title={'Community'}>
 				<div className='wrap'>
 					<div className='inputBox'>
-						<form onSubmit={handleSubmit}>
-							<input type='text' placeholder='title' name='tit' ref={refTit} />
-							<textarea cols='30' rows='3' placeholder='content' name='con' ref={refCon}></textarea>
+						<input type='text' placeholder='title' ref={refTit} />
+						<textarea cols='30' rows='3' placeholder='content' ref={refCon}></textarea>
 
-							<nav>
-								<button type='reset'>
-									<GrUndo />
-								</button>
-								<button type='submit'>
-									<TfiWrite />
-								</button>
-							</nav>
-						</form>
+						<nav>
+							<button onClick={resetPost}>
+								<GrUndo />
+							</button>
+							<button onClick={createPost}>
+								<TfiWrite />
+							</button>
+						</nav>
 					</div>
 					<div className='showBox'></div>
 				</div>
