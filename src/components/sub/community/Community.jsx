@@ -15,8 +15,7 @@ export default function Community() {
 	};
 	const createPost = (e) => {
 		e.preventDefault();
-		// 기존 값을 ...Post로 먼저 복사 후, {}에 있는 데이터를 덮어쓰기 한다는 뜻.
-		setPost([...Post, { title: refTit.current.value, content: refCon.current.value }]);
+		setPost([{ title: refTit.current.value, content: refCon.current.value }, ...Post]);
 	};
 
 	return (
@@ -36,7 +35,22 @@ export default function Community() {
 							</button>
 						</nav>
 					</div>
-					<div className='showBox'></div>
+					<div className='showBox'>
+						{Post.map((el, idx) => {
+							return (
+								<article key={el + idx}>
+									<div className='txt'>
+										<h2>{el.title}</h2>
+										<p>{el.content}</p>
+									</div>
+									<nav>
+										<button>Edit</button>
+										<button>Delete</button>
+									</nav>
+								</article>
+							);
+						})}
+					</div>
 				</div>
 			</Layout2>
 		</div>
