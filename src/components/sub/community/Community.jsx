@@ -16,6 +16,9 @@ export default function Community() {
 	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
 	const refCon = useRef(null);
+	const refEditTit = useRef(null);
+	const refEditCon = useRef(null);
+	const editMode = useRef(false);
 
 	const resetPost = (e) => {
 		refTit.current.value = '';
@@ -41,11 +44,32 @@ export default function Community() {
 		const abc = Post.filter((el) => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0);
 		console.log(abc);
 	};
+	// 글 수정하는 함수
+	const updatePost = (updateIndex) => {
+		if (!refEditTit.current.value.trim() || !refEditCon.current.value.trim()) {
+			return alert('수정할 글의 제목과 본문을 모두 입력하세요!');
+		}
+		editMode.current = false;
+
+		setPost(
+			Post.map((el, idx) => {
+				if (updateIndex === idx) {
+					el.title = refEditTit.current.value;
+					el.content = refEditCon.current.value;
+					el.enableUpdate = false;
+				}
+				return el;
+			})
+		);
+	};
 
 	// 수정모드 변경 함수
 	const enableUpdate = (editIndex) => {
 		// (1) 기존의 Post 배열을 반복 돌면서, 파라미터로 전달된 editIndex 순번의 포스트에만 enableUpdate = true; 라는 구분자를 추가해서 다시 state 변경 처리
 		// 다음 번 렌더링 때, 해당 구분자가 있는 포스트 객체만 수정모드로 분기처리하기 위함임.
+
+		if (editMode.current) return;
+		editMode.current = true;
 		setPost(
 			Post.map((el, idx) => {
 				if (editIndex === idx) el.enableUpdate = true;
@@ -56,6 +80,7 @@ export default function Community() {
 
 	// 다시 출력모드로 변경해주는 함수
 	const disableUpdate = (editIndex) => {
+		editMode.current = false;
 		setPost(
 			Post.map((el, idx) => {
 				if (editIndex === idx) el.enableUpdate = false;
@@ -95,14 +120,14 @@ export default function Community() {
 								return (
 									<article key={el + idx}>
 										<div className='txt'>
-											<input type='text' defaultValue={el.title} />
-											<textarea cols='30' rows='10' defaultValue={el.content}></textarea>
+											<input type='text' defaultValue={el.title} ref={refEditTit} />
+											<textarea cols='30' rows='4' defaultValue={el.content} ref={refEditCon}></textarea>
 											<span>{strDate}</span>
 										</div>
 										<nav>
 											{/* 수정모드일 때 해당 버튼 클릭 시 다시 출력모드 변경 */}
 											<button onClick={() => disableUpdate(idx)}>Cancel</button>
-											<button>Update</button>
+											<button onClick={() => updatePost(idx)}>Update</button>
 										</nav>
 									</article>
 								);

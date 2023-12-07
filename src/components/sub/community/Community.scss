@@ -72,6 +72,15 @@
 						opacity: 0.6;
 						margin-bottom: 40px;
 					}
+					input,
+					textarea {
+						width: 100%;
+						border: none;
+						padding: 3px 10px;
+						font-size: 1rem;
+						margin-bottom: 20px;
+						resize: none;
+					}
 				}
 
 				nav {
