@@ -6,7 +6,6 @@ import { TfiWrite } from 'react-icons/tfi';
 import { useCustomText } from '../../../hooks/useText';
 
 export default function Community() {
-	// 추후에 가져올 시간 값에서, -을 .으로 변경하기 위해 combined 타입의 텍스트 변환 함수를, 텍스트 관련 커스텀 훅으로부터 활성화
 	const changeText = useCustomText('combined');
 
 	const getLocalData = () => {
@@ -43,6 +42,28 @@ export default function Community() {
 		console.log(abc);
 	};
 
+	// 수정모드 변경 함수
+	const enableUpdate = (editIndex) => {
+		// (1) 기존의 Post 배열을 반복 돌면서, 파라미터로 전달된 editIndex 순번의 포스트에만 enableUpdate = true; 라는 구분자를 추가해서 다시 state 변경 처리
+		// 다음 번 렌더링 때, 해당 구분자가 있는 포스트 객체만 수정모드로 분기처리하기 위함임.
+		setPost(
+			Post.map((el, idx) => {
+				if (editIndex === idx) el.enableUpdate = true;
+				return el;
+			})
+		);
+	};
+
+	// 다시 출력모드로 변경해주는 함수
+	const disableUpdate = (editIndex) => {
+		setPost(
+			Post.map((el, idx) => {
+				if (editIndex === idx) el.enableUpdate = false;
+				return el;
+			})
+		);
+	};
+
 	useEffect(() => {
 		localStorage.setItem('post', JSON.stringify(Post));
 	}, [Post]);
@@ -69,20 +90,39 @@ export default function Community() {
 							const date = JSON.stringify(el.date);
 							const strDate = changeText(date?.split('T')[0].slice(1), '.');
 
-							return (
-								<article key={el + idx}>
-									<div className='txt'>
-										<h2>{el.title}</h2>
-										<p>{el.content}</p>
-										{/* 변환된 날짜값 최종 출력 */}
-										<span>{strDate}</span>
-									</div>
-									<nav>
-										<button onClick={() => filtering('a')}>Edit</button>
-										<button onClick={() => deletePost(idx)}>Delete</button>
-									</nav>
-								</article>
-							);
+							if (el.enableUpdate) {
+								// 수정모드
+								return (
+									<article key={el + idx}>
+										<div className='txt'>
+											<input type='text' defaultValue={el.title} />
+											<textarea cols='30' rows='10' defaultValue={el.content}></textarea>
+											<span>{strDate}</span>
+										</div>
+										<nav>
+											{/* 수정모드일 때 해당 버튼 클릭 시 다시 출력모드 변경 */}
+											<button onClick={() => disableUpdate(idx)}>Cancel</button>
+											<button>Update</button>
+										</nav>
+									</article>
+								);
+							} else {
+								// 출력모드
+								return (
+									<article key={el + idx}>
+										<div className='txt'>
+											<h2>{el.title}</h2>
+											<p>{el.content}</p>
+											{/* 변환된 날짜값 최종 출력 */}
+											<span>{strDate}</span>
+										</div>
+										<nav>
+											<button onClick={() => enableUpdate(idx)}>Edit</button>
+											<button onClick={() => deletePost(idx)}>Delete</button>
+										</nav>
+									</article>
+								);
+							}
 						})}
 					</div>
 				</div>
@@ -90,3 +130,13 @@ export default function Community() {
 		</div>
 	);
 }
+
+/*
+	[[ 글 수정 로직 단계 ]]
+
+	1. 각 포스트에서 수정 버튼 클릭 시, 해당 객체의 enableUpdate = true; 라는  property를 동적으로 추가 후, state에 저장. 
+	2. 다음 번 렌더링 사이클에서, 포스트를 반복 돌며 객체에 enableUpdate 값이 true이면 제목 본문을 input 요소에 담아서 출력되도록 분기처리. (출력 시 수정모드로 분기처리해서 출력하는 것.)
+	3. 수정 모드일 때에는, 수정취소 & 수정완료 버튼 생성
+	4. 수정 모드에서 수정취소 버튼 클릭 시, 해당 post 객체에만 enableUpdate 값을 false로 변경해서 다시 출력모드로 변경.
+	5. 수정 모드에서 수정완료 버튼 클릭 시, 해당 form 요소에 수정된 value값을 가져와서 저장한 뒤, 다시 출력모드로 변경. 
+*/
