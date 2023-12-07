@@ -3,13 +3,15 @@ import Layout2 from '../../common/layout2/Layout2';
 import './Community.scss';
 import { GrUndo } from 'react-icons/gr';
 import { TfiWrite } from 'react-icons/tfi';
+import { useCustomText } from '../../../hooks/useText';
 
 export default function Community() {
+	// 추후에 가져올 시간 값에서, -을 .으로 변경하기 위해 combined 타입의 텍스트 변환 함수를, 텍스트 관련 커스텀 훅으로부터 활성화
+	const changeText = useCustomText('combined');
+
 	const getLocalData = () => {
 		const data = localStorage.getItem('post');
-		// localStorage에 post라는 키값의 데이터가 있으면 parsing해서 리턴
 		if (data) return JSON.parse(data);
-		// post라는 키값의 데이터가 없으면 그냥 빈 배열을 리턴 (해당 컴포넌트가 최초로 호출될 때 (제일 처음 호출될 때) 한 번)
 		else return [];
 	};
 	const [Post, setPost] = useState(getLocalData);
@@ -26,8 +28,10 @@ export default function Community() {
 			resetPost();
 			return alert('제목과 본문을 모두 입력하세요!');
 		}
-		e.preventDefault();
-		setPost([{ title: refTit.current.value, content: refCon.current.value }, ...Post]);
+		// new Date().toLocaleString() : 해당 지역의 표준시로 변환 (단점: 원하지 않는 방향으로 값이 가공되어있음.)
+		const korTime = new Date().getTime() + 1000 * 60 * 60 * 9;
+		// 한국시로 변환된 시간 객체 값을 date 키값에 추가로 등록해서 state에 저장
+		setPost([{ title: refTit.current.value, content: refCon.current.value, date: new Date(korTime) }, ...Post]);
 		resetPost();
 	};
 	const deletePost = (delIndex) => {
@@ -66,11 +70,19 @@ export default function Community() {
 					</div>
 					<div className='showBox'>
 						{Post.map((el, idx) => {
+							// 시간값을 getLocaleDate 함수를 통해서 시간 인스턴스 객체 값을 객체 상태 그대로 JSX안쪽의 {}에 넣을 수 없으므로, 해당 변환된 객체값을 다시 강제로 문자화
+							const date = JSON.stringify(el.date);
+							// 문자화 시킨 값에서 먼저 T를 기점으로 앞의 시간문자를 찾고, 다시 맨앞의 "를 제외한 나머지 문자 반환 (년도-월-일)
+							// 반환된 문자값을 다시 changeText의 인수로 전달해서 (년도.월.일) 로 변환하여 출력.
+							const strDate = changeText(date?.split('T')[0].slice(1), '.');
+
 							return (
 								<article key={el + idx}>
 									<div className='txt'>
 										<h2>{el.title}</h2>
 										<p>{el.content}</p>
+										{/* 변환된 날짜값 최종 출력 */}
+										<span>{strDate}</span>
 									</div>
 									<nav>
 										<button onClick={() => filtering('a')}>Edit</button>
