@@ -15,11 +15,12 @@ export default function Community() {
 	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
 	const refCon = useRef(null);
-	console.log(Post);
+	// input 초기화 함수
 	const resetPost = (e) => {
 		refTit.current.value = '';
 		refCon.current.value = '';
 	};
+	// 글 저장 함수
 	const createPost = (e) => {
 		if (!refTit.current.value.trim() || !refCon.current.value.trim()) {
 			resetPost();
@@ -28,6 +29,13 @@ export default function Community() {
 		e.preventDefault();
 		setPost([{ title: refTit.current.value, content: refCon.current.value }, ...Post]);
 		resetPost();
+	};
+	const deletePost = (delIndex) => {
+		// console.log(delIndex);
+		// filter : 기존의 map과 마찬가지로, 기존의 배열값을 deep copy 해서 새로운 배열을 반환하되, 이때 안쪽에서 조건문을 처리해서 특정 조건에 부합하는 값만 필터링해서 return으로 내보냄.
+
+		// 만약 파라미터 (el, idx) 중 el가 존재는 하지만 사용하지 않는 파라미터라고 하면, _ 언더바를 써서 비울 수 있음.
+		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
 
 	useEffect(() => {
@@ -61,7 +69,7 @@ export default function Community() {
 									</div>
 									<nav>
 										<button>Edit</button>
-										<button>Delete</button>
+										<button onClick={() => deletePost(idx)}>Delete</button>
 									</nav>
 								</article>
 							);
