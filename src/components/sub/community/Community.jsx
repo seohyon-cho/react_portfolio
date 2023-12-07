@@ -73,7 +73,7 @@ export default function Community() {
 										<p>{el.content}</p>
 									</div>
 									<nav>
-										<button>Edit</button>
+										<button onClick={() => filtering('a')}>Edit</button>
 										<button onClick={() => deletePost(idx)}>Delete</button>
 									</nav>
 								</article>
