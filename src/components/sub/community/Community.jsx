@@ -38,6 +38,11 @@ export default function Community() {
 		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
 
+	const filtering = (txt) => {
+		const abc = Post.filter((el) => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0);
+		console.log(abc);
+	};
+
 	useEffect(() => {
 		localStorage.setItem('post', JSON.stringify(Post));
 	}, [Post]);
