@@ -6,6 +6,13 @@ import { TfiWrite } from 'react-icons/tfi';
 import { useCustomText } from '../../../hooks/useText';
 
 export default function Community() {
+	const [CurNum, setCurNum] = useState(0); // 페이징 버튼 클릭 시, 현재 보일 페이지 번호가 담길 state
+	const [PageNum, setPageNum] = useState(0);
+
+	const len = useRef(0); // 전체 Post 갯수를 담을 참조 객체
+	const pageNum = useRef(0); // 전체 페이지 갯수를 추후에 연산해서 담을 참조 객체
+	const perNum = useRef(4); // 한 페이지당 보일 Post 갯수
+
 	const changeText = useCustomText('combined');
 
 	const getLocalData = () => {
@@ -13,6 +20,7 @@ export default function Community() {
 		if (data) return JSON.parse(data);
 		else return [];
 	};
+
 	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
 	const refCon = useRef(null);
@@ -93,11 +101,33 @@ export default function Community() {
 		// Post 데이터가 변경되면 수정 모드를 강제로 false처리하면서 이를 로컬저장소에 저장하고, 컴포넌트 재실행.
 		Post.map((el) => (el.enableUpdate = false));
 		localStorage.setItem('post', JSON.stringify(Post));
+
+		// 전체 Post 갯수 구함.
+		len.current = Post.length;
+
+		// 전체 페이지 버튼 갯수를 구하는 공식
+		// '전체 데이터갯수 / 한 페이지당 보일 포스트 갯수' 가 딱 나누어 떨어지면, 나눈 몫을 페이지 갯수로 바로 담음.
+		// '전체 데이터갯수 / 한 페이지당 보일 포스트 갯수' 가 딱 나누어 떨어지지 않고 나머지가 생기면, 나눈 몫의 1을 더한 값을 페이지 갯수로 담음.
+		pageNum.current = len.current % perNum.current === 0 ? len.current / perNum.current : parseInt(len.current / perNum.current) + 1;
+		console.log(pageNum.current);
+		setPageNum(pageNum.current);
 	}, [Post]);
 
 	return (
 		<div className='Community'>
 			<Layout2 title={'Community'}>
+				{/* 위에서 만든 pageNum 값을 활용해, 자동으로 페이지 버튼 생성. */}
+				<nav className='pagination'>
+					{Array(PageNum)
+						.fill()
+						.map((_, idx) => {
+							return (
+								<button key={idx} onClick={() => setCurNum(idx)} className={idx === CurNum ? 'on' : ''}>
+									{idx + 1}
+								</button>
+							);
+						})}
+				</nav>
 				<div className='wrap'>
 					<div className='inputBox'>
 						<input type='text' placeholder='title' ref={refTit} />
@@ -117,38 +147,42 @@ export default function Community() {
 							const date = JSON.stringify(el.date);
 							const strDate = changeText(date?.split('T')[0].slice(1), '.');
 
-							if (el.enableUpdate) {
-								// 수정모드
+							if (idx >= perNum.current * CurNum && idx < perNum.current * (CurNum + 1)) {
 								return (
 									<article key={el + idx}>
-										<div className='txt'>
-											<input type='text' defaultValue={el.title} ref={refEditTit} />
-											<textarea cols='30' rows='4' defaultValue={el.content} ref={refEditCon}></textarea>
-											<span>{strDate}</span>
-										</div>
-										<nav>
-											{/* 수정모드일 때 해당 버튼 클릭 시 다시 출력모드 변경 */}
-											<button onClick={() => disableUpdate(idx)}>Cancel</button>
-											<button onClick={() => updatePost(idx)}>Update</button>
-										</nav>
+										{el.enableUpdate ? (
+											// 수정모드
+											<>
+												<div className='txt'>
+													<input type='text' defaultValue={el.title} ref={refEditTit} />
+													<textarea cols='30' rows='4' defaultValue={el.content} ref={refEditCon}></textarea>
+													<span>{strDate}</span>
+												</div>
+												<nav>
+													{/* 수정모드일 때 해당 버튼 클릭 시 다시 출력모드 변경 */}
+													<button onClick={() => disableUpdate(idx)}>Cancel</button>
+													<button onClick={() => updatePost(idx)}>Update</button>
+												</nav>
+											</>
+										) : (
+											// 출력모드
+											<>
+												<div className='txt'>
+													<h2>{el.title}</h2>
+													<p>{el.content}</p>
+													{/* 변환된 날짜값 최종 출력 */}
+													<span>{strDate}</span>
+												</div>
+												<nav>
+													<button onClick={() => enableUpdate(idx)}>Edit</button>
+													<button onClick={() => deletePost(idx)}>Delete</button>
+												</nav>
+											</>
+										)}
 									</article>
 								);
 							} else {
-								// 출력모드
-								return (
-									<article key={el + idx}>
-										<div className='txt'>
-											<h2>{el.title}</h2>
-											<p>{el.content}</p>
-											{/* 변환된 날짜값 최종 출력 */}
-											<span>{strDate}</span>
-										</div>
-										<nav>
-											<button onClick={() => enableUpdate(idx)}>Edit</button>
-											<button onClick={() => deletePost(idx)}>Delete</button>
-										</nav>
-									</article>
-								);
+								return null;
 							}
 						})}
 					</div>
