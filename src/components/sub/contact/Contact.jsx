@@ -11,8 +11,8 @@ export default function Contact() {
 	});
 
 	useEffect(() => {
-		var map = new kakao.maps.Map(mapFrame.current, mapOption.current);
-	}, []);
+		const map = new kakao.maps.Map(mapFrame.current, mapOption.current);
+	}, [kakao]);
 
 	return (
 		<div className='Contact'>
