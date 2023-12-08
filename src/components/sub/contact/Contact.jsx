@@ -11,8 +11,14 @@ export default function Contact() {
 	});
 
 	useEffect(() => {
-		const map = new kakao.maps.Map(mapFrame.current, mapOption.current);
-	}, [kakao]);
+		const mapInstance = new kakao.maps.Map(mapFrame.current, mapOption.current);
+		var posInstance = new kakao.maps.LatLng(33.450701, 126.570667);
+		var markerInstance = new kakao.maps.Marker({
+			position: posInstance,
+		});
+
+		markerInstance.setMap(mapInstance);
+	}, []);
 
 	return (
 		<div className='Contact'>
