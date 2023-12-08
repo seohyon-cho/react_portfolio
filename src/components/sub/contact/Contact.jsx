@@ -13,13 +13,21 @@ export default function Contact() {
 		level: 3,
 	});
 
+	const imgSrc = process.env.PUBLIC_URL + '/img/marker1.png';
+	const imgSize = new kakao.maps.Size(232, 99);
+	const imgOption = { offset: new kakao.maps.Point(116, 99) };
+
 	useEffect(() => {
 		const mapInstance = new kakao.maps.Map(mapFrame.current, mapOption.current);
+		const markerImageInstance = new kakao.maps.MarkerImage(imgSrc, imgSize, imgOption);
 		const markerInstance = new kakao.maps.Marker({
 			position: mapOption.current.center,
+			image: markerImageInstance,
 		});
 
 		markerInstance.setMap(mapInstance);
+
+		// 마커 생성?
 	}, []);
 
 	return (
