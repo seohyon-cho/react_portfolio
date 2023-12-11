@@ -55,6 +55,12 @@ export default function Contact() {
 		marker.current.setMap(mapInstance.current);
 		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
 		setTraffic(false);
+
+		// 지도 타입 컨트롤러 추가
+		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
+		// 지도 줌 컨트롤러 추가
+		mapInstance.current.addControl(new kakao.current.maps.ZoomControl(), kakao.current.maps.ControlPosition.RIGHT);
+
 		window.addEventListener('resize', setCenter);
 		return () => window.removeEventListener('resize', setCenter);
 	}, [Index]);
@@ -86,3 +92,11 @@ export default function Contact() {
 		</div>
 	);
 }
+
+/*
+	[[ 이번 예제에서 중요하게 숙지해야 할 개념 주석 정리 ]]
+
+	1. cdn 으로 window에 불러온 외부 객체 값을 가져와서 인스턴스 생성
+	2. 인스턴스 값을 참조객체(useRef)에 담는 이유 : useEffect의 의존성 배열[]에 불필요하게 등록하지 않기 위해서 
+	3. 화면 변경점이 발생해야 될 때, 무조건 state 값에 따라서 변경되게끔 로직화 한 뒤, 이벤트 발생 시 state 값을 변경해서 화면 재렌더링 유도하는 것임. 
+*/
