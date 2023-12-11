@@ -14,8 +14,17 @@ export default function Contact() {
 	const mapInstance = useRef(null);
 	// 교통정보 관련 state
 	const [Traffic, setTraffic] = useState(false);
+	const [View, setView] = useState(false);
 
-	const setCenter = () => mapInstance.current.setCenter(mapInfo.current[Index].latlng);
+	const roadview = () => {
+		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, (panoId) => {
+			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
+		});
+	};
+	const setCenter = () => {
+		mapInstance.current.setCenter(mapInfo.current[Index].latlng);
+		roadview();
+	};
 
 	// 참조객체를 사용해, 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
 	// 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
@@ -58,9 +67,7 @@ export default function Contact() {
 		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
 		setTraffic(false);
 
-		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, (panoId) => {
-			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
-		});
+		roadview();
 
 		// 지도 타입 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
@@ -93,10 +100,14 @@ export default function Contact() {
 					</nav>
 					<nav className='info'>
 						<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic OFF' : 'Traffic ON'}</button>
+						<button onClick={() => setView(!View)}>{View ? 'map' : 'road view'}</button>
+						<button onClick={setCenter}>위치 초기화</button>
 					</nav>
 				</div>
-				<article id='map' ref={mapFrame}></article>
-				<article className='viewBox' ref={viewFrame}></article>
+				<section className='tab'>
+					<article className={`mapBox ${View ? 'on' : ''}`} ref={mapFrame}></article>
+					<article className={`viewBox ${View ? '' : 'on'}`} ref={viewFrame}></article>
+				</section>
 			</Layout2>
 		</div>
 	);

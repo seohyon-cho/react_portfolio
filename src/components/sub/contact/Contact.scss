@@ -1,13 +1,24 @@
 .Contact {
-	#map {
+	.tab {
 		width: 100%;
 		height: 50vh;
 		background-color: var(--baseColor);
-	}
-	.viewBox {
-		width: 100%;
-		height: 50vh;
-		background-color: var(--baseColor);
-		margin-top: 50px;
+		position: relative;
+
+		.mapBox,
+		.viewBox {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			opacity: 0;
+			z-index: 1;
+
+			&.on {
+				opacity: 1;
+				z-index: 2;
+			}
+		}
 	}
 }
