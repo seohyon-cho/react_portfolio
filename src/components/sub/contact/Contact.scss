@@ -4,6 +4,11 @@
 		height: 50vh;
 		background-color: var(--baseColor);
 		position: relative;
+		filter: saturate(0);
+		transition: filter 0.5s;
+		&:hover {
+			filter: saturate(1);
+		}
 
 		.mapBox,
 		.viewBox {
@@ -22,3 +27,21 @@
 		}
 	}
 }
+
+.dark {
+	.Contact {
+		.tab {
+			filter: saturate(0) invert(1) contrast(0.7);
+		}
+	}
+}
+
+/*
+	filter 의 속성
+
+	- saturate() : 1을 기준으로, 1보다 적을수록 저채도, 클수록 고채도
+	- brightness() : 1을 기준으로, 1보다 적을수록 저명도, 클수록 고명도 
+	- contrast() : 1을 기준으로, 1보다 작을수록 명암의 대비폭을 낮추고, 클수록 명도 대비를 올림. 
+	- invert() : 1과 0만 있음. 1은 명도와 색상값을 반전, 0은 원래 값.
+	- hue-rotate(0deg) : 현재 색상 기준으로, 색상환의 각도를 변경해서 색상 자체를 변경. 180deg는 완전 반대색. 
+*/
