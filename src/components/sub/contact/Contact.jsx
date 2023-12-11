@@ -66,6 +66,7 @@ export default function Contact() {
 		marker.current.setMap(mapInstance.current);
 		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
 		setTraffic(false);
+		setView(false);
 
 		roadview();
 
@@ -105,8 +106,8 @@ export default function Contact() {
 					</nav>
 				</div>
 				<section className='tab'>
-					<article className={`mapBox ${View ? 'on' : ''}`} ref={mapFrame}></article>
-					<article className={`viewBox ${View ? '' : 'on'}`} ref={viewFrame}></article>
+					<article className={`mapBox ${View ? '' : 'on'}`} ref={mapFrame}></article>
+					<article className={`viewBox ${View ? 'on' : ''}`} ref={viewFrame}></article>
 				</section>
 			</Layout2>
 		</div>
