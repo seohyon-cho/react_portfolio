@@ -60,6 +60,8 @@ export default function Contact() {
 		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
 		// 지도 줌 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.ZoomControl(), kakao.current.maps.ControlPosition.RIGHT);
+		// 마우스 휠에 기본적으로 내장되어 있는 줌 기능 비활성화
+		mapInstance.current.setZoomable(false);
 
 		window.addEventListener('resize', setCenter);
 		return () => window.removeEventListener('resize', setCenter);
