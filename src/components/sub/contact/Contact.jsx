@@ -8,6 +8,8 @@ export default function Contact() {
 	// 화면에 출력될 지도 정보 배열의 순번이 담길 state
 	const [Index, setIndex] = useState(0);
 	const mapFrame = useRef(null);
+	const viewFrame = useRef(null);
+
 	const marker = useRef(null);
 	const mapInstance = useRef(null);
 	// 교통정보 관련 state
@@ -56,6 +58,10 @@ export default function Contact() {
 		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
 		setTraffic(false);
 
+		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, (panoId) => {
+			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
+		});
+
 		// 지도 타입 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
 		// 지도 줌 컨트롤러 추가
@@ -90,6 +96,7 @@ export default function Contact() {
 					</nav>
 				</div>
 				<article id='map' ref={mapFrame}></article>
+				<article className='viewBox' ref={viewFrame}></article>
 			</Layout2>
 		</div>
 	);
