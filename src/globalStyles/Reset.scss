@@ -24,12 +24,42 @@ a {
 	font-family: var(--baseFont);
 	background-color: var(--bgColor);
 	font-size: var(--bodySize);
-	transition: color 1s, background 1s;
+	transition: color 1s, background-color 1s;
 
-	// scrollbar 디자인 변경은, 리액트 단에서 테마변경 이벤트가 발생했을 때 scrollbar 변경 이벤트도 일어나야 되기 때문에, 리액트에서 관리하지 못 하는 html요소의 scrollbar가 아닌, 리액트가 제어할 수 있는 wrap 요소에 스크롤바 생성
+	.h {
+		position: absolute;
+		top: -9999999px;
+		opacity: 0;
+	}
+
+	table,
+	th,
+	td {
+		border-collapse: collpase;
+	}
+	textarea {
+		resize: none;
+	}
+	input,
+	button {
+		outline: 0;
+	}
+	fieldset {
+		border: none;
+	}
+	input,
+	textarea {
+		&::placeholder {
+			background-color: transparent;
+			font-size: 1rem;
+			color: rgba(var(--baseColor-code), 0.5);
+			font-family: var(--baseFont);
+		}
+	}
+
 	&::-webkit-scrollbar {
-		width: 6px;
-		background: transparent;
+		width: 8px;
+		background-color: transparent;
 	}
 	&::-webkit-scrollbar-thumb {
 		border-radius: 4px;
