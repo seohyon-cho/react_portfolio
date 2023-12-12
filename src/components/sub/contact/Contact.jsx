@@ -8,6 +8,13 @@ export default function Contact() {
 	const form = useRef();
 	const resetForm = () => {
 		const elArr = form.current.children;
+		// 그룹 형식의 DOM을 탐색할 때 반환되는 두 가지 형태의 유사 배열
+		// 1. parentDOM(부모돔).children : HTML Collection (유사배열: forEach, map 모두 반복 불가. Live DOM: 상태변경이 실시간으로 이루어짐.)
+		// 2. parentDOM(부모돔).querySelectorAll : NodeList (유사배열이긴 하지만, 제한적으로 forEach로는 반복 가능. static DOM: 탐색된 시점의 정적인 돔.)
+
+		// form.current.children은 콘솔로 찍어보면 HTML 컬렉션 어쩌구 뜰 거임.
+		// .children으로 받는 건 forEach랑 map으로 반복 불가능함.
+		// DOM의 children으로 받은 건 유사배열이긴 한데 forEach로 반복이 불가능해서, Array.from으로 해당 배열을 순수 배열로 변경해서 forEach로 반복을 돌 수 있게 처리.
 		Array.from(elArr).forEach(el => {
 			if (el.name === 'user_name' || el.name === 'user_email' || el.name === 'message') el.value = '';
 		});
