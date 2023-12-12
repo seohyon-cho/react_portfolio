@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import Layout2 from '../../common/layout/Layout2';
+import Layout2 from '../../common/layout2/Layout2';
 import './Contact.scss';
 import useScript from '../../../hooks/useScript';
 
