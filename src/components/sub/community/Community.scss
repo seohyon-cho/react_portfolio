@@ -11,6 +11,7 @@
 
 			input,
 			textarea {
+				font-family: var(--baseFont);
 				width: 100%;
 				border: none;
 				border-bottom: 1px solid rgba(var(--baseColor-code), 0.5);
