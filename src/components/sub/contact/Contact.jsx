@@ -1,8 +1,38 @@
 import { useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Contact.scss';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
+	// form Email
+	const form = useRef();
+	const resetForm = () => {
+		const elArr = form.current.children;
+		Array.from(elArr).forEach(el => {
+			if (el.name === 'user_name' || el.name === 'user_email' || el.name === 'message') el.value = '';
+		});
+	};
+
+	const sendEmail = e => {
+		e.preventDefault();
+
+		const elArr = form.current.children;
+		const result = Array.from(elArr).forEach(el => {
+			if (!el.value) return false;
+		});
+		if (!result) return alert('모든 항목을 입력해주세요!');
+
+		emailjs.sendForm('service_v8ufydl', 'template_e33l0oe', form.current, 'upPLj_wKd4_bGkOZ4').then(
+			result => {
+				alert('문의 내용이 성공적으로 전송되었습니다!');
+				resetForm();
+			},
+			error => {
+				alert('일시적인 장애로 문의 전송에 실패하였습니다. 다음의 메일 주소로 전송해주세요.');
+				resetForm();
+			}
+		);
+	};
 	// const { kakao } = window;
 	const kakao = useRef(window.kakao);
 	// 화면에 출력될 지도 정보 배열의 순번이 담길 state
@@ -91,24 +121,37 @@ export default function Contact() {
 	return (
 		<div className='Contact'>
 			<Layout2 title={'Contact'}>
-				<div className='controlBox'>
-					<nav className='branch'>
-						{mapInfo.current.map((el, idx) => (
-							<button key={idx} onClick={() => setIndex(idx)} className={idx === Index ? 'on' : ''}>
-								{el.title}
-							</button>
-						))}
-					</nav>
-					<nav className='info'>
-						<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic OFF' : 'Traffic ON'}</button>
-						<button onClick={() => setView(!View)}>{View ? 'map' : 'road view'}</button>
-						<button onClick={setCenter}>위치 초기화</button>
-					</nav>
+				<div id='mailSection'>
+					<form ref={form} onSubmit={sendEmail}>
+						<label>Name</label>
+						<input type='text' name='user_name' />
+						<label>Email</label>
+						<input type='email' name='user_email' />
+						<label>Message</label>
+						<textarea name='message' />
+						<input type='submit' value='Send' />
+					</form>
 				</div>
-				<section className='tab'>
-					<article className={`mapBox ${View ? '' : 'on'}`} ref={mapFrame}></article>
-					<article className={`viewBox ${View ? 'on' : ''}`} ref={viewFrame}></article>
-				</section>
+				<div id='mapSection'>
+					<div className='controlBox'>
+						<nav className='branch'>
+							{mapInfo.current.map((el, idx) => (
+								<button key={idx} onClick={() => setIndex(idx)} className={idx === Index ? 'on' : ''}>
+									{el.title}
+								</button>
+							))}
+						</nav>
+						<nav className='info'>
+							<button onClick={() => setTraffic(!Traffic)}>{Traffic ? 'Traffic OFF' : 'Traffic ON'}</button>
+							<button onClick={() => setView(!View)}>{View ? 'map' : 'road view'}</button>
+							<button onClick={setCenter}>위치 초기화</button>
+						</nav>
+					</div>
+					<section className='tab'>
+						<article className={`mapBox ${View ? '' : 'on'}`} ref={mapFrame}></article>
+						<article className={`viewBox ${View ? 'on' : ''}`} ref={viewFrame}></article>
+					</section>
+				</div>
 			</Layout2>
 		</div>
 	);
