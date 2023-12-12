@@ -23,11 +23,15 @@ export default function Contact() {
 	const sendEmail = e => {
 		e.preventDefault();
 
-		const elArr = form.current.children;
-		const result = Array.from(elArr).forEach(el => {
-			if (!el.value) return false;
-		});
-		if (!result) return alert('모든 항목을 입력해주세요!');
+		const [user, email] = form.current.querySelectorAll('input');
+		const txtArea = form.current.querySelector('textarea');
+
+		if (!user.value || !email.value || !txtArea.value) return alert('성함과 회신 받을 이메일 주소, 문의 내용을 모두 입력해주세요.');
+		// const elArr = form.current.children;
+		// const result = Array.from(elArr).forEach(el => {
+		// 	if (!el.value) return false;
+		// });
+		// if (!result) return alert('모든 항목을 입력해주세요!');
 
 		emailjs.sendForm('service_v8ufydl', 'template_e33l0oe', form.current, 'upPLj_wKd4_bGkOZ4').then(
 			result => {
