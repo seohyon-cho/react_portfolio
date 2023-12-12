@@ -4,15 +4,13 @@ import './Community.scss';
 import { GrUndo } from 'react-icons/gr';
 import { TfiWrite } from 'react-icons/tfi';
 import { useCustomText } from '../../../hooks/useText';
-import postData from './dummyPosts.json';
 
 export default function Community() {
 	const changeText = useCustomText('combined');
 
 	const getLocalData = () => {
 		const data = localStorage.getItem('post');
-		if (data) return JSON.parse(data);
-		else return postData.dummyPosts;
+		return JSON.parse(data);
 	};
 	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
@@ -41,10 +39,6 @@ export default function Community() {
 		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
 
-	const filtering = txt => {
-		const abc = Post.filter(el => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0);
-		console.log(abc);
-	};
 	// 글 수정하는 함수
 	const updatePost = updateIndex => {
 		if (!refEditTit.current.value.trim() || !refEditCon.current.value.trim()) {
