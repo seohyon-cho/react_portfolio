@@ -4,6 +4,7 @@ import './Community.scss';
 import { GrUndo } from 'react-icons/gr';
 import { TfiWrite } from 'react-icons/tfi';
 import { useCustomText } from '../../../hooks/useText';
+import postData from './dummyPosts.json';
 
 export default function Community() {
 	const changeText = useCustomText('combined');
@@ -11,7 +12,7 @@ export default function Community() {
 	const getLocalData = () => {
 		const data = localStorage.getItem('post');
 		if (data) return JSON.parse(data);
-		else return [];
+		else return postData.dummyPosts;
 	};
 	const [Post, setPost] = useState(getLocalData);
 	const refTit = useRef(null);
@@ -20,12 +21,12 @@ export default function Community() {
 	const refEditCon = useRef(null);
 	const editMode = useRef(false);
 
-	const resetPost = (e) => {
+	const resetPost = e => {
 		refTit.current.value = '';
 		refCon.current.value = '';
 	};
 
-	const createPost = (e) => {
+	const createPost = e => {
 		if (!refTit.current.value.trim() || !refCon.current.value.trim()) {
 			resetPost();
 			return alert('제목과 본문을 모두 입력하세요!');
@@ -35,17 +36,17 @@ export default function Community() {
 		setPost([{ title: refTit.current.value, content: refCon.current.value, date: new Date(korTime) }, ...Post]);
 		resetPost();
 	};
-	const deletePost = (delIndex) => {
+	const deletePost = delIndex => {
 		if (!window.confirm('정말 해당 게시글을 삭제하시겠습니까?')) return;
 		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
 
-	const filtering = (txt) => {
-		const abc = Post.filter((el) => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0);
+	const filtering = txt => {
+		const abc = Post.filter(el => el.title.indexOf(txt) >= 0 || el.content.indexOf(txt) >= 0);
 		console.log(abc);
 	};
 	// 글 수정하는 함수
-	const updatePost = (updateIndex) => {
+	const updatePost = updateIndex => {
 		if (!refEditTit.current.value.trim() || !refEditCon.current.value.trim()) {
 			return alert('수정할 글의 제목과 본문을 모두 입력하세요!');
 		}
@@ -64,7 +65,7 @@ export default function Community() {
 	};
 
 	// 수정모드 변경 함수
-	const enableUpdate = (editIndex) => {
+	const enableUpdate = editIndex => {
 		// (1) 기존의 Post 배열을 반복 돌면서, 파라미터로 전달된 editIndex 순번의 포스트에만 enableUpdate = true; 라는 구분자를 추가해서 다시 state 변경 처리
 		// 다음 번 렌더링 때, 해당 구분자가 있는 포스트 객체만 수정모드로 분기처리하기 위함임.
 
@@ -79,7 +80,7 @@ export default function Community() {
 	};
 
 	// 다시 출력모드로 변경해주는 함수
-	const disableUpdate = (editIndex) => {
+	const disableUpdate = editIndex => {
 		editMode.current = false;
 		setPost(
 			Post.map((el, idx) => {
@@ -91,7 +92,7 @@ export default function Community() {
 
 	useEffect(() => {
 		// Post 데이터가 변경되면 수정 모드를 강제로 false처리하면서 이를 로컬저장소에 저장하고, 컴포넌트 재실행.
-		Post.map((el) => (el.enableUpdate = false));
+		Post.map(el => (el.enableUpdate = false));
 		localStorage.setItem('post', JSON.stringify(Post));
 	}, [Post]);
 
