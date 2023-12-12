@@ -1,7 +1,23 @@
+import { useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Members.scss';
 
 export default function Members() {
+	const initVal = useRef({
+		userid: ''
+	});
+
+	const [Val, setVal] = useState(initVal.current);
+
+	// 실시간으로 이루어짐.
+	const handleChange = e => {
+		console.log('name', e.target.name);
+		console.log('value', e.target.value);
+		const key = e.target.name; // userid
+		const value = e.target.value; // 현재 입력하고 있는 input 값
+		setVal({ ...Val, [key]: value });
+	};
+
 	return (
 		<Layout2 title={'Members'}>
 			<div className='wrap'>
@@ -18,7 +34,7 @@ export default function Members() {
 									{/* userid, email */}
 									<tr>
 										<td>
-											<input type='text' name='userid' placeholder='User ID' />
+											<input type='text' name='userid' placeholder='User ID' value={Val.userid} onChange={handleChange} />
 										</td>
 										<td>
 											<input type='text' name='email' placeholder='Email' />
@@ -105,7 +121,7 @@ export default function Members() {
 	throttle vs debounce
 	throttle : 물리적으로 핸들러함수 호출자체를 일정횟수로 줄임
 	debounce : 특정 이벤트가 단시간에 반복으로 계속 발생하고 있으면 핸들러함수 호출 자체를 계속 뒤로 밀면서 호출 막음
-	
+
 	리액트에서의 폼 인증 구현 로직 순서
 	1. 폼요소에 입력하는 값을 이벤트 핸들러 함수를 통해 실시간으로 state에 저장
 	2. state값이 변경될때마다 check 함수를 통해 항목별로 인증 실패시 에러 객체로 묶어서 반환
