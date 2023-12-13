@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Members.scss';
 import { useHistory } from 'react-router-dom';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 export default function Members() {
 	const history = useHistory();
@@ -17,6 +18,8 @@ export default function Members() {
 	});
 
 	const [Val, setVal] = useState(initVal.current);
+	// useDebounced 훅의 인수로 특정 state (여기서는 Val이라는 state) 를 전달해서, debouncing이 적용된 새로운 state 값을 반환 받음.
+	const DebouncedVal = useDebounce(Val, 1000);
 	const [Errs, setErrs] = useState({});
 
 	// 실시간으로 이루어짐.
@@ -39,6 +42,7 @@ export default function Members() {
 
 	// 인증 절차 함수 로직
 	const check = value => {
+		console.log('check!');
 		const errs = {};
 		// 정규표현식 : 문자열 안에 패턴을 만들어서, 그 패턴을 ...
 		// [0-9] 모든 숫자
@@ -89,10 +93,10 @@ export default function Members() {
 		}
 	};
 
+	// debouncing이 적용된 state를 의존성 배열에 등록해서, 해당 값으로 check함수 호출
 	useEffect(() => {
-		setErrs(check(Val));
-		console.log(Val);
-	}, [Val]);
+		setErrs(check(DebouncedVal));
+	}, [DebouncedVal]);
 
 	return (
 		<Layout2 title={'Members'}>
