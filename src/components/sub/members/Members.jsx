@@ -38,6 +38,18 @@ export default function Members() {
 	// 인증 절차 함수 로직
 	const check = value => {
 		const errs = {};
+		// 정규표현식 : 문자열 안에 패턴을 만들어서, 그 패턴을 ...
+		// [0-9] 모든 숫자
+		const num = /[0-9]/;
+		// [a-z] 모든 소문자 알파벳과 모든 대문자 알파벳
+		const txt = /[a-zA-Z]/;
+		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여주면 됨.)
+		const spc = /[~!@#$%^&*()_.+]/;
+		// 입력한 pwd1의 내용에 num 값이 없거나, txt 값이 없거나, spc 값이 없거나, 5글자 미만인 경우
+		if (!num.test(value.pwd1) || !txt.test(value.pwd1) || !spc.test(value.pwd1) || value.pwd1.length < 5)
+			errs.pwd1 = '비밀번호는 특수문자, 문자, 숫자를 모두 포함해 5글자 이상 입력하세요.';
+		// pwd1 와 pwd2 가 일치하지 않는 경우
+		if (value.pwd1 !== value.pwd2 || !value.pwd2) errs.pwd2 = '입력한 비밀번호가 일치하지 않습니다.';
 		// 사용자가 입력한 아이디의 글자 수가 5글자 이상이도록
 		if (value.userid.length < 5) errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
 		// comments 최소 글자수 제한
@@ -84,9 +96,11 @@ export default function Members() {
 									<tr>
 										<td>
 											<input type='password' name='pwd1' placeholder='Password' value={Val.pwd1} onChange={handleChange} />
+											{Errs.pwd1 && <p>{Errs.pwd1}</p>}
 										</td>
 										<td>
 											<input type='password' name='pwd2' placeholder='Re-Password' value={Val.pwd2} onChange={handleChange} />
+											{Errs.pwd2 && <p>{Errs.pwd2}</p>}
 										</td>
 									</tr>
 
