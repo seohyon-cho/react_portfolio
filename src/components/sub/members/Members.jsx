@@ -45,6 +45,7 @@ export default function Members() {
 		const txt = /[a-zA-Z]/;
 		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여주면 됨.)
 		const spc = /[~!@#$%^&*()_.+]/;
+
 		// 입력한 pwd1의 내용에 num 값이 없거나, txt 값이 없거나, spc 값이 없거나, 5글자 미만인 경우
 		// test 는 정규표현식 전용 메소드 (num이 value.pwd1에 있으면 true 반환하는 로직.)
 		if (!num.test(value.pwd1) || !txt.test(value.pwd1) || !spc.test(value.pwd1) || value.pwd1.length < 5)
@@ -64,26 +65,29 @@ export default function Members() {
 
 		// email 주소 관련 인증 로직 (인증 조건에 맞지 않을 때 에러 처리)
 		// 문자열에 @ 포함, @ 앞뒤로 모두 문자 필수 포함, @ 뒷부분에 . 필수 포함, . 앞뒤로 모두 문자 필수 포함.
-		if (!/@/.test(value.email)) {
-			errs.email = '@를 포함해야 합니다.';
-		} else {
-			// @를 기준으로 split해서 앞의 문자를 forward, 뒤의 문자를 backward로 할당.
-			const [forward, backward] = value.email.split('@');
-			if (!forward || !backward) {
-				errs.email = '@ 앞뒤로 문자가 모두 포함되어야 합니다.';
-			} else {
-				const [forward, backward] = value.email.split('.');
-				if (!forward || !backward) {
-					errs.email = '. 앞뒤로 문자가 모두 포함되어야 합니다.';
-				}
-			}
-		}
+		// 이메일 인증 로직 간소화
+		const [m1, m2] = value.email.split('@');
+		// 여기서는 m2 && m2.split('.') 구문이 실행된다는 보장이 아직 없기 때문에 [m3, m4] 로 나눌 수 없음. 따라서 일단 m3으로 담고, 뒤에서 [0], [1]로 호출하기.
+		const m3 = m2 && m2.split('.');
+		if (!m1 || !m2 || !m3[0] || !m3[1]) errs.email = '올바른 이메일 형식을 입력하세요.';
 
 		return errs;
 	};
 
+	const handleCancel = () => {
+		setVal(initVal.current);
+	};
+
+	const handleSubmit = e => {
+		e.preventDefault();
+		if (Object.keys(check()).length === 0) {
+			alert('회원가입을 축하합니다!');
+		}
+	};
+
 	useEffect(() => {
 		setErrs(check(Val));
+		console.log(Val);
 	}, [Val]);
 
 	return (
@@ -185,8 +189,8 @@ export default function Members() {
 									</tr>
 									<tr>
 										<td colSpan='2'>
-											<input type='reset' value='Cancel' />
-											<input type='submit' value='Submit' />
+											<input type='reset' value='Cancel' onClick={handleCancel} />
+											<input type='submit' value='Submit' onClick={handleSubmit} />
 										</td>
 									</tr>
 								</tbody>
