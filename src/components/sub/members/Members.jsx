@@ -46,6 +46,7 @@ export default function Members() {
 		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여주면 됨.)
 		const spc = /[~!@#$%^&*()_.+]/;
 		// 입력한 pwd1의 내용에 num 값이 없거나, txt 값이 없거나, spc 값이 없거나, 5글자 미만인 경우
+		// test 는 정규표현식 전용 메소드 (num이 value.pwd1에 있으면 true 반환하는 로직.)
 		if (!num.test(value.pwd1) || !txt.test(value.pwd1) || !spc.test(value.pwd1) || value.pwd1.length < 5)
 			errs.pwd1 = '비밀번호는 특수문자, 문자, 숫자를 모두 포함해 5글자 이상 입력하세요.';
 		// pwd1 와 pwd2 가 일치하지 않는 경우
@@ -60,6 +61,23 @@ export default function Members() {
 		if (!value.interest.length) errs.interest = '관심사를 한 가지 이상 선택하세요.';
 		// edu를 선택하지 않아 빈 칸(false)인 경우가 없도록.
 		if (!value.edu) errs.edu = '최종학력을 선택하세요.';
+
+		// email 주소 관련 인증 로직 (인증 조건에 맞지 않을 때 에러 처리)
+		// 문자열에 @ 포함, @ 앞뒤로 모두 문자 필수 포함, @ 뒷부분에 . 필수 포함, . 앞뒤로 모두 문자 필수 포함.
+		if (!/@/.test(value.email)) {
+			errs.email = '@를 포함해야 합니다.';
+		} else {
+			// @를 기준으로 split해서 앞의 문자를 forward, 뒤의 문자를 backward로 할당.
+			const [forward, backward] = value.email.split('@');
+			if (!forward || !backward) {
+				errs.email = '@ 앞뒤로 문자가 모두 포함되어야 합니다.';
+			} else {
+				const [forward, backward] = value.email.split('.');
+				if (!forward || !backward) {
+					errs.email = '. 앞뒤로 문자가 모두 포함되어야 합니다.';
+				}
+			}
+		}
 
 		return errs;
 	};
@@ -89,6 +107,7 @@ export default function Members() {
 										</td>
 										<td>
 											<input type='text' name='email' placeholder='Email' value={Val.email} onChange={handleChange} />
+											{Errs.email && <p>{Errs.email}</p>}
 										</td>
 									</tr>
 
