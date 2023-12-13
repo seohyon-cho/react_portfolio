@@ -82,7 +82,7 @@ export default function Members() {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		if (Object.keys(check()).length === 0) {
+		if (Object.keys(check(Val)).length === 0) {
 			alert('회원가입을 축하합니다!');
 			// 회원가입 창 띄운 뒤, 라우터로 경로를 강제로 / 로 전환해서 메인으로 이동하도록 처리
 			history.push('/');
