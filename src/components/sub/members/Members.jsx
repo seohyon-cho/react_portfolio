@@ -10,7 +10,8 @@ export default function Members() {
 		pwd1: '',
 		pwd2: '',
 		edu: '',
-		gender: ''
+		gender: '',
+		interest: []
 	});
 
 	const [Val, setVal] = useState(initVal.current);
@@ -22,6 +23,15 @@ export default function Members() {
 		// 비구조화 할당으로 가져오기
 		const { name, value } = e.target;
 		setVal({ ...Val, [name]: value });
+	};
+
+	const handleCheck = e => {
+		const { name } = e.target;
+		const inputs = e.target.parentElement.querySelectorAll('input');
+		const checkArr = [];
+		// input들을 반복 돌면서, input.checked가 true (=체크 되어 있는 것.) 일 때, checkArr 이라는 빈 배열에 input의 value를 push로 집어넣음.
+		inputs.forEach(input => input.checked && checkArr.push(input.value));
+		setVal({ ...Val, [name]: checkArr });
 	};
 
 	useEffect(() => {
@@ -91,16 +101,16 @@ export default function Members() {
 									{/* interests */}
 									<tr>
 										<td colSpan='2'>
-											<input type='checkbox' name='interest' id='sports' defaultValue='sports' />
+											<input type='checkbox' name='interest' id='sports' defaultValue='sports' onChange={handleCheck} />
 											<label htmlFor='sports'>Sports</label>
 
-											<input type='checkbox' name='interest' id='reading' defaultValue='reading' />
+											<input type='checkbox' name='interest' id='reading' defaultValue='reading' onChange={handleCheck} />
 											<label htmlFor='reading'>Reading</label>
 
-											<input type='checkbox' name='interest' id='music' defaultValue='music' />
+											<input type='checkbox' name='interest' id='music' defaultValue='music' onChange={handleCheck} />
 											<label htmlFor='music'>Music</label>
 
-											<input type='checkbox' name='interest' id='game' defaultValue='game' />
+											<input type='checkbox' name='interest' id='game' defaultValue='game' onChange={handleCheck} />
 											<label htmlFor='game'>Game</label>
 										</td>
 									</tr>
