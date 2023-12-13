@@ -15,6 +15,7 @@ export default function Members() {
 	});
 
 	const [Val, setVal] = useState(initVal.current);
+	const [Errs, setErrs] = useState({});
 
 	// 실시간으로 이루어짐.
 	const handleChange = e => {
@@ -34,8 +35,25 @@ export default function Members() {
 		setVal({ ...Val, [name]: checkArr });
 	};
 
+	// 인증 절차 함수 로직
+	const check = value => {
+		const errs = {};
+		// 사용자가 입력한 아이디의 글자 수가 5글자 이상이도록
+		if (value.userid.length < 5) errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
+		// comments 최소 글자수 제한
+		if (value.comments.length < 10) errs.comments = '코멘트는 최소 10글자 이상 입력하세요.';
+		// 성별을 반드시 선택해서 gender가 빈 칸(false)이 되지 않도록 제한
+		if (!value.gender) errs.gender = '성별을 선택해주세요.';
+		// interest를 하나도 선택하지 않아서 0개 (length가 0개 = false) 인 경우가 없도록.
+		if (!value.interest.length) errs.interest = '관심사를 한 가지 이상 선택하세요.';
+		// edu를 선택하지 않아 빈 칸(false)인 경우가 없도록.
+		if (!value.edu) errs.edu = '최종학력을 선택하세요.';
+
+		return errs;
+	};
+
 	useEffect(() => {
-		console.log(Val);
+		setErrs(check(Val));
 	}, [Val]);
 
 	return (
@@ -55,6 +73,7 @@ export default function Members() {
 									<tr>
 										<td>
 											<input type='text' name='userid' placeholder='User ID' value={Val.userid} onChange={handleChange} />
+											{Errs.userid && <p>{Errs.userid}</p>}
 										</td>
 										<td>
 											<input type='text' name='email' placeholder='Email' value={Val.email} onChange={handleChange} />
@@ -82,6 +101,7 @@ export default function Members() {
 												<option value='high-school'>고등학교 졸업</option>
 												<option value='college'>대학교 졸업</option>
 											</select>
+											{Errs.edu && <p>{Errs.edu}</p>}
 										</td>
 									</tr>
 
@@ -95,6 +115,7 @@ export default function Members() {
 
 											<input type='radio' defaultValue='male' id='male' name='gender' onChange={handleChange} />
 											<label htmlFor='male'>Male</label>
+											{Errs.gender && <p>{Errs.gender}</p>}
 										</td>
 									</tr>
 
@@ -112,6 +133,7 @@ export default function Members() {
 
 											<input type='checkbox' name='interest' id='game' defaultValue='game' onChange={handleCheck} />
 											<label htmlFor='game'>Game</label>
+											{Errs.interest && <p>{Errs.interest}</p>}
 										</td>
 									</tr>
 
@@ -125,6 +147,7 @@ export default function Members() {
 												placeholder='Leave a comment'
 												value={Val.comments}
 												onChange={handleChange}></textarea>
+											{Errs.comments && <p>{Errs.comments}</p>}
 										</td>
 									</tr>
 									<tr>
