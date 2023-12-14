@@ -18,11 +18,13 @@ import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
 
 export default function App() {
+	// 순서 (2) dispatch 함수를 활성화 (추후 fetching된 데이터를 action에 담아서, reducer에게 전달하기 위함임.)
 	const dispatch = useDispatch();
 	const path = useRef(process.env.PUBLIC_URL);
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
 
+	// 순서 (3) fetching된 데이터 값을 받아서 action 객체에 담은 뒤, dispatch로 reducer에게 전달하는 함수를 정의.
 	const fetchDepartment = () => {
 		fetch(`${path.current}/DB/department.json`)
 			.then(data => data.json())
@@ -32,6 +34,9 @@ export default function App() {
 			});
 	};
 
+	// 순서 (4) 컴포넌트가 처음 mount 되었을 때 함수를 호출해서, 비동기 데이터를 reducer에 전달
+	// 첫 번째 렌더링 때 : 전역 store의 값은 빈 배열인 상태 []
+	// 두 번째 렌더링 때 : 이때 비로소 각 컴포넌트에서 useSelector로 해당 비동기 데이터에 접근 가능하게 됨.
 	useEffect(() => fetchDepartment(), []);
 
 	return (
