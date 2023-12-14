@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Detail.scss';
 import { useParams } from 'react-router-dom';
@@ -9,20 +9,22 @@ export default function Detail() {
 	const { id } = useParams();
 	const [YoutubeData, setYoutubeData] = useState(null);
 
+	// 아래처럼 데이터 패칭하는 무거운 함수는 useCallback 쓰는 게 좋음. (특정 인수에 따라서 값이 달라지고, 달라지는 값에 따라서 추적되도록 메모이제이션이 임시로 해제되어야 하므로)
+	// id를 의존성 배열에 넣어서, id값이 달라질 때만 메모이제이션을 풀어주게 됨.
 	console.log(YoutubeData);
-	const fetchSingleData = async () => {
+	const fetchSingleData = useCallback(async () => {
 		const api_key = process.env.REACT_APP_YOUTUBE_API;
 		const baseURL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${api_key}&part=snippet&id=${id}`;
 
 		const data = await fetch(baseURL);
 		const json = await data.json();
 		setYoutubeData(json.items[0].snippet);
-	};
+	}, [id]);
 
 	useEffect(() => {
 		console.log('useEffect');
 		fetchSingleData();
-	}, []);
+	}, [fetchSingleData]);
 
 	return (
 		<Layout2 title={'Detail'}>

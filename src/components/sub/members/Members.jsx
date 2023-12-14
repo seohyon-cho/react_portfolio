@@ -19,7 +19,7 @@ export default function Members() {
 
 	const [Val, setVal] = useState(initVal.current);
 	// useDebounced 훅의 인수로 특정 state (여기서는 Val이라는 state) 를 전달해서, debouncing이 적용된 새로운 state 값을 반환 받음.
-	const DebouncedVal = useDebounce(Val, 1000);
+	const DebouncedVal = useDebounce(Val, 500);
 	const [Errs, setErrs] = useState({});
 
 	// 실시간으로 이루어짐.
@@ -42,14 +42,13 @@ export default function Members() {
 
 	// 인증 절차 함수 로직
 	const check = value => {
-		console.log('check!');
 		const errs = {};
 		// 정규표현식 : 문자열 안에 패턴을 만들어서, 그 패턴을 ...
 		// [0-9] 모든 숫자
 		const num = /[0-9]/;
 		// [a-z] 모든 소문자 알파벳과 모든 대문자 알파벳
 		const txt = /[a-zA-Z]/;
-		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여주면 됨.)
+		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여서 escape 처리해주면 됨.)
 		const spc = /[~!@#$%^&*()_.+]/;
 
 		// 입력한 pwd1의 내용에 num 값이 없거나, txt 값이 없거나, spc 값이 없거나, 5글자 미만인 경우

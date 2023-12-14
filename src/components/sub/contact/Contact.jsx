@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Contact.scss';
 import emailjs from '@emailjs/browser';
@@ -57,15 +57,16 @@ export default function Contact() {
 	const [Traffic, setTraffic] = useState(false);
 	const [View, setView] = useState(false);
 
-	const roadview = () => {
+	const roadview = useRef(() => {
 		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, panoId => {
 			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
 		});
-	};
-	const setCenter = () => {
+	});
+
+	const setCenter = useCallback(() => {
 		mapInstance.current.setCenter(mapInfo.current[Index].latlng);
-		roadview();
-	};
+		roadview.current();
+	}, [Index]);
 
 	// 참조객체를 사용해, 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
 	// 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
@@ -109,7 +110,7 @@ export default function Contact() {
 		setTraffic(false);
 		setView(false);
 
-		roadview();
+		roadview.current();
 
 		// 지도 타입 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
@@ -120,7 +121,7 @@ export default function Contact() {
 
 		window.addEventListener('resize', setCenter);
 		return () => window.removeEventListener('resize', setCenter);
-	}, [Index]);
+	}, [Index, setCenter]);
 
 	// 교통정보 관련 false, true를 담은 state를 만들고, 해당 state의 값에 따라서 특정 값을 출력하는 함수를 만드는 것.
 	useEffect(() => {
