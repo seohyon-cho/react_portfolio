@@ -1,7 +1,6 @@
 import './Footer2.scss';
 import { FaFacebookF, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-// npm i react-icons (설치 후, 구글에 react-icons 접속해서 활용)
 
 export default function Footer2() {
 	const MemberData = useSelector(store => store.memberReducer.members);
