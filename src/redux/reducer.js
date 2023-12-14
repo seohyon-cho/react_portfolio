@@ -66,7 +66,7 @@ const memberReducer = (state = initMember, action) => {
 
 // switch 버전 (위랑 똑같은 내용인데 switch를 좀 더 많이 씀.)
 */
-const memberReducer = (state = initMember, action) => {
+const memberReducer = (state = [], action) => {
 	switch (action.type) {
 		case 'SET_MEMBERS':
 			return { ...state, members: action.payload };

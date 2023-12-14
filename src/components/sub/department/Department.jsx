@@ -6,23 +6,11 @@ import { useSelector } from 'react-redux';
 
 export default function Department() {
 	const MemberData = useSelector(store => store.memberReducer.members);
-
+	const path = useRef(process.env.PUBLIC_URL);
 	const combinedTitle = useCustomText('combined');
-	// const [MemberTit, setMemberTit] = useState('');
-	// const [MemberData, setMemberData] = useState([]);
 	const [HistoryTit, setHistoryTit] = useState('');
 	const [HistoryData, setHistoryData] = useState([]);
 
-	const path = useRef(process.env.PUBLIC_URL);
-
-	// const fetchDepartment = () => {
-	// 	fetch(`${path.current}/DB/department.json`)
-	// 		.then((data) => data.json())
-	// 		.then((json) => {
-	// 			setMemberTit(Object.keys(json)[0]);
-	// 			setMemberData(Object.values(json)[0]);
-	// 		});
-	// };
 	const fetchHistory = () => {
 		fetch(`${path.current}/DB/history.json`)
 			.then(data => data.json())
@@ -33,7 +21,6 @@ export default function Department() {
 	};
 
 	useEffect(() => {
-		// fetchDepartment();
 		fetchHistory();
 	}, []);
 
