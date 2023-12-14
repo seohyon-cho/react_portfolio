@@ -15,9 +15,6 @@ export default function Department() {
 
 	const path = useRef(process.env.PUBLIC_URL);
 
-	const test1 = 'our+members-score_abc';
-	console.log(combinedTitle(test1));
-
 	// const fetchDepartment = () => {
 	// 	fetch(`${path.current}/DB/department.json`)
 	// 		.then((data) => data.json())
