@@ -1,5 +1,17 @@
 // store에 요청을 보내는 함수가 있는 곳
 import { combineReducers } from 'redux';
+/*
+	지금 같은 구조는 실무에서 쓰이기 힘듦.
+	왜냐하면 원래, 데이터는 자체DB이든, 외부 API데이터이든, 어쨌든 fetching을 통해 외부 데이터를 가져와야 되므로, 이처럼 reducer 내에 const 로 초기 데이터를 설정하는 것이 불가능함. 
+
+	--> 이게 바로 dispatch 가 필요한 이유
+
+	[dispatch로 외부 데이터를 fetching후 전역 state에 담는 순서]
+	1. 컴포넌트 안쪽에서, useEffect로 mount시 fetching함수 호출 후 데이터 반환 받기.
+	2. 해당 데이터를 지역 state에 담지 않고, action 객체의 payload에 담아서 dispatch로 reducer에 전달.
+	3. 하단의 reducer 함수의 로직에 의해서, fetching된 데이터가 store에 전달되고,
+	4. 이후 각 컴포넌트에서 useSelector를 사용하여 해당 데이터에 자유롭게 접근할 수 있게 됨.
+*/
 
 const initMember = {
 	members: [
