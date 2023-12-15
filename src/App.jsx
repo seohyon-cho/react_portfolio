@@ -49,7 +49,7 @@ export default function App() {
 			const json = await data.json();
 			dispatch({ type: 'SET_YOUTUBE', payload: json.items });
 		} catch (err) {
-			dispatch({ type: 'SET_YOUTUBE', payload: err });
+			dispatch({ type: 'SET_YOUTUBE_ERR', payload: err });
 		}
 	}, [dispatch]);
 
