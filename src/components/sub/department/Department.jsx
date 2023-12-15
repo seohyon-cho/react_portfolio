@@ -15,7 +15,7 @@ export default function Department() {
 			<section className='historyBox'>
 				<h2>{combinedTitle('History')}</h2>
 				<div className='con'>
-					{HistoryData.map((history, idx) => {
+					{HistoryData?.map((history, idx) => {
 						return (
 							<article key={history + idx}>
 								<h3>{Object.keys(history)[0]}</h3>
@@ -32,7 +32,7 @@ export default function Department() {
 			<section className='memberBox'>
 				<h2>{combinedTitle('Members')}</h2>
 				<div className='con'>
-					{MemberData.map((member, idx) => {
+					{MemberData?.map((member, idx) => {
 						return (
 							<article key={member + idx}>
 								<div className='pic'>
