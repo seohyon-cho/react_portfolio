@@ -5,29 +5,15 @@ import { useCustomText } from '../../../hooks/useText';
 import { useSelector } from 'react-redux';
 
 export default function Department() {
+	const HistoryData = useSelector(store => store.historyReducer.history);
 	const MemberData = useSelector(store => store.memberReducer.members);
 	const path = useRef(process.env.PUBLIC_URL);
 	const combinedTitle = useCustomText('combined');
-	const [HistoryTit, setHistoryTit] = useState('');
-	const [HistoryData, setHistoryData] = useState([]);
-
-	const fetchHistory = () => {
-		fetch(`${path.current}/DB/history.json`)
-			.then(data => data.json())
-			.then(json => {
-				setHistoryTit(Object.keys(json)[0]);
-				setHistoryData(Object.values(json)[0]);
-			});
-	};
-
-	useEffect(() => {
-		fetchHistory();
-	}, []);
 
 	return (
 		<Layout2 title={'Department'}>
 			<section className='historyBox'>
-				<h2>{combinedTitle(HistoryTit)}</h2>
+				<h2>{combinedTitle('History')}</h2>
 				<div className='con'>
 					{HistoryData.map((history, idx) => {
 						return (
