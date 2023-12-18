@@ -10,7 +10,9 @@ export default function Footer2() {
 
 			<p>2023 Dcodelab &copy; All Rights Reserved.</p>
 
-			<p>{MemberData && `${MemberData[0].position}:${MemberData[0].name}`}</p>
+			<p>
+				{MemberData[0]?.position}:{MemberData[0]?.name}
+			</p>
 
 			<ul>
 				<li>
