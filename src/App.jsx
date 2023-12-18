@@ -24,7 +24,6 @@ export default function App() {
 	useSelector(store => console.log(store));
 	const path = useRef(process.env.PUBLIC_URL);
 	const [Dark, setDark] = useState(false);
-	const [Toggle, setToggle] = useState(false);
 
 	// department 관련 패칭
 	const fetchDepartment = useCallback(async () => {
@@ -63,7 +62,7 @@ export default function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header2 Dark={Dark} setDark={setDark} Toggle={Toggle} setToggle={setToggle} />
+			<Header2 Dark={Dark} setDark={setDark} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
@@ -73,7 +72,7 @@ export default function App() {
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/detail/:id' component={Detail} />
 			<Footer2 />
-			{Toggle && <Menu setToggle={setToggle} />}
+			<Menu />
 		</div>
 	);
 }
