@@ -4,18 +4,20 @@ import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
+import { useDispatch } from 'react-redux';
+import * as types from '../../../redux/action';
 
 export default function Gallery() {
+	const dispatch = useDispatch();
+
 	const myID = useRef('199633413@N04');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
-	// 검색 함수가 실행됐는지를 확인하기 위한 참조객체
 	const searched = useRef(false);
 
 	const gap = useRef(20);
 	const [Pics, setPics] = useState([]);
-	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 
 	const activateBtn = e => {
@@ -105,7 +107,6 @@ export default function Gallery() {
 
 				<section className='frameWrap' ref={refFrameWrap}>
 					<Masonry className={'frame'} options={{ transitionDuration: '0.5s', gutter: gap.current }}>
-						{/* searched 값이 true고, 검색결과가 없는 2가지 조건이 동시에 만족해야지만 에러메시지 출력 */}
 						{searched.current && Pics.length === 0 ? (
 							<h2>해당 키워드에 대한 검색 결과가 없습니다.</h2>
 						) : (
@@ -115,7 +116,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												dispatch({ type: types.MODAL.start, payload: true });
 												setIndex(idx);
 											}}>
 											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
@@ -138,7 +139,7 @@ export default function Gallery() {
 				</section>
 			</Layout2>
 
-			<Modal Open={Open} setOpen={setOpen}>
+			<Modal>
 				{Pics.length !== 0 && (
 					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={Pics[Index].title} />
 				)}
