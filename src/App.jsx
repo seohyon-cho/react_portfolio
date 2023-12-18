@@ -10,16 +10,24 @@ import Gallery from './components/sub/gallery/Gallery';
 import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 
+import * as types from './redux/actionType';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
 
 export default function App() {
+	const dispatch = useDispatch();
+	useSelector(store => console.log(store));
+	useEffect(() => {
+		dispatch({ type: types.MEMBERS.start });
+	}, [dispatch]);
+
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
-	const [Open, setOpen] = useState(false);
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
