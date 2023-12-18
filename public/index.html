@@ -12,6 +12,58 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+
+  <script>
+    /*
+      Generator : 해당 함수 안쪽의 자식 함수의 리턴 값을 반복 가능한 객체 형태로 묶어서 반환하는 것. (Iterable Object)
+      Iterable Object : next라는 메서드를 호출해서 Generator 안쪽에 있는 함수들을 원하는 시점에 동기적으로 호출 가능.
+
+      promise (then, catch, async await) 와 더불어서 ES7 이후에 나온 동기화 처리 함수임.
+
+      promise 대비 Generator의 장점
+      - promise와는 달리, 특정 코드를 동기화시킬 때 호출 시점을 지정할 수 있음.
+      - 하나의 함수 안에서 리턴 값을 여러 개 반환할 수 있음. 
+
+      redux-saga에서 generator를 쓰는 이유
+      - 기존의 redux 서버 데이터 요청, 응답성공, 응답 실패에 대한 모든 과정을 개발자가 관리해서 값을 reducer에 넘겨주는 구조
+      - saga는 자체적으로 redux 시스템에서 위의 모든 과정을 스스로 관리하기 때문에 동기적으로 실행해야 되는 함수들이 많이 있음.
+      - saga에서는 모든 함수를 generator로 구성을 해야지 saga가 적절한 시점에 내부 함수를 동기적으로 호출 가능.
+
+    */
+
+    function test1() {
+      console.log('test1');
+      return 'test1';
+    }
+    function test2() {
+      console.log('test2');
+      return 'test2';
+    }
+    function test3() {
+      console.log('test3');
+      return 'test3';
+    }
+
+    function* generator() {
+      yield test1();
+      yield test2();
+      yield test3();
+    }
+
+    const result = generator();
+
+    const r1 = result.next();
+    console.log(r1);
+    console.log('중간 작업1');
+
+    const r2 = result.next();
+    console.log(r2);
+
+    result.next();
+    const last = result.next();
+    console.log(last)
+
+  </script>
 </body>
 
 </html>
