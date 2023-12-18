@@ -18,34 +18,34 @@ export default function Gallery() {
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 
-	const activateBtn = (e) => {
+	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
-		btns.forEach((btn) => btn.classList.remove('on'));
+		btns.forEach(btn => btn.classList.remove('on'));
 		e && e.target.classList.add('on');
 	};
 
-	const handleInterest = (e) => {
+	const handleInterest = e => {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
-	const handleMine = (e) => {
+	const handleMine = e => {
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 
-	const handleUser = (e) => {
+	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 
-	const handleSearch = (e) => {
+	const handleSearch = e => {
 		e.preventDefault();
 		isUser.current = '';
 		activateBtn();
@@ -57,7 +57,7 @@ export default function Gallery() {
 		searched.current = true;
 	};
 
-	const fetchFlickr = async (opt) => {
+	const fetchFlickr = async opt => {
 		console.log('fetching again...');
 		const num = 20;
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
@@ -117,8 +117,7 @@ export default function Gallery() {
 											onClick={() => {
 												setOpen(true);
 												setIndex(idx);
-											}}
-										>
+											}}>
 											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
 										</div>
 										<h2>{pic.title}</h2>
@@ -127,7 +126,7 @@ export default function Gallery() {
 											<img
 												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 												alt='사용자 프로필 이미지'
-												onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+												onError={e => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 											/>
 											<span onClick={handleUser}>{pic.owner}</span>
 										</div>
@@ -147,19 +146,3 @@ export default function Gallery() {
 		</>
 	);
 }
-
-/*
-	순서 1. 일반 동적 데이터를 제외한 일반 정적인 콘텐츠가 렌더링됨. (참조 객체에 20이라는 상수 값을 미리 담아 놓음.)
-
-	순서 2. 정적인 JSX 요소가 일단 브랑추저에 렌더링 완료되었기 때문에 useEffect가 실행 가능해지는 상태가 됨. (=정적인 스크립트 DOM은 제어할 수 있는 상태가 되었다는 말) 
-
-	순서 3. useEffect 안쪽에서 미리 참조객체에 연결해놓은 refFrameWrap에 접근 가능해짐. (이때 refFrameWrap에 --gap 변수에 20이라는 값을 강제 적용.) (이때부터는 scss파일에 --gap이라는 변수가 없더라도 리액트 상에서 동적으로 gap이라는 변수값을 꽂아넣었기 때문에 활용 가능.)
-
-	순서 4. 리액트가 동적으로 변수값을 적용해서 DOM을 생성하고 나면, 그 이후 scss가 해당 변수값을 읽어서 화면 스타일링 진행. 
-
-	=
-
-	순서 1. 처음에 gap이라는 참조 객체 값을 해석
-	순서 2. 두 번째 렌더링 타임에 useEffect가 실행되면서 참조 객체에 담겨있는 section요소에 강제로 gap 변수값을 꽂아넣음(적용).
-	순서 3. 세 번째 렌더링 타임에 fetching 데이터에 의한 동적 요소가 출력되면서, 이때 비로소 변수 값이 적용된 scss 스타일링이 적용됨. (paint 라고 함.)
-*/

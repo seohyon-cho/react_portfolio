@@ -30,5 +30,15 @@ const youtubeReducer = (state = [], action) => {
 	}
 };
 
-const reducers = combineReducers({ memberReducer, historyReducer, youtubeReducer });
+// state에 들어가는 값은 무조건 객체여야 함.
+const modalReducer = (state = { modal: false }, action) => {
+	switch (action.type) {
+		case types.MODAL.start:
+			return { ...state, modal: action.payload };
+		default:
+			return state;
+	}
+};
+
+const reducers = combineReducers({ memberReducer, historyReducer, youtubeReducer, modalReducer });
 export default reducers;

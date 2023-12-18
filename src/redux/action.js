@@ -16,3 +16,7 @@ export const YOUTUBE = {
 	success: 'YOUTUBE_SUCCESS',
 	fail: 'YOUTUBE_FAIL'
 };
+// modal은 클라이언트 side data라 전송받고 어쩌고 실패하고 하는 데이터가 아니므로 start, success, fail 세 가지로 나눌 필요 없음.
+export const MODAL = {
+	start: 'MODAL_START'
+};
