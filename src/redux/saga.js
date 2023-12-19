@@ -56,8 +56,8 @@ function* callYoutube() {
 
 // flickr Server Data
 // 얘는 action 통해서 opt 값도 인수로 전달해야 함.
-function* callFlickr(action) {
-	yield takeLatest(types.FLICKR.start, function* () {
+function* callFlickr() {
+	yield takeLatest(types.FLICKR.start, function* (action) {
 		try {
 			const response = yield call(fetchFlickr, action.opt);
 			yield put({ type: types.FLICKR.success, payload: response.photos.photo });
