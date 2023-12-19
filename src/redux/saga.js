@@ -9,6 +9,8 @@
   순서 (1) : 초기 액션 타입을 인지해서 fetching 관련 메서드를 대신 호출해주는 함수 정의 
   순서 (2) : 데이터 fetching 후, 비동기 데이터 상태에 따라 (pending, success, fail...) 액션 객체를 만들어 reducer로 전달하는 함수 정의 
   순서 (3) : saga 메서드를 비동기적으로 호출해주는 함수를 정의 후 rootSaga라는 이름으로 export(추후 미들웨어로 reducer에 적용됨)
+
+  generator 함수는 화살표 함수 형태로 못 쓰고 무조건 function* 함수명(){} 으로 정의해야 함.
 */
 
 import { takeLatest, call, put, fork, all } from 'redux-saga/effects';
@@ -17,16 +19,14 @@ import * as types from './actionType';
 
 // Department Server Data
 function* callMembers() {
-	yield takeLatest(types.MEMBERS.start, returnMembers);
-}
-
-function* returnMembers() {
-	try {
-		const response = yield call(fetchDepartment);
-		yield put({ type: types.MEMBERS.success, payload: response.members });
-	} catch (err) {
-		yield put({ type: types.MEMBERS.fail, payload: err });
-	}
+	yield takeLatest(types.MEMBERS.start, function* () {
+		try {
+			const response = yield call(fetchDepartment);
+			yield put({ type: types.MEMBERS.success, payload: response.members });
+		} catch (err) {
+			yield put({ type: types.MEMBERS.fail, payload: err });
+		}
+	});
 }
 
 // History Server Data
