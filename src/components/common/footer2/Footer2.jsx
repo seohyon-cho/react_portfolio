@@ -12,9 +12,10 @@ export default function Footer2() {
 
 			<ul>
 				<li>
-					<Link to={{ pathname: 'https://www.facebook.com' }} target='_blank'>
+					{/* 외부 사이트 링크 연결 시, 일반 <a>태그에 꼭 rel=noopener noreferrer 속성을 추가해서 window객체에 이전 리액트 컴포넌트의 정보를 참조 못 하게 처리해야 함. */}
+					<a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>
 						<FaFacebookF />
-					</Link>
+					</a>
 				</li>
 				<li>
 					<FaTwitter />
