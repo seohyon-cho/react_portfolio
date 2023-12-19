@@ -11,7 +11,7 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 
 import * as types from './redux/actionType';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,6 @@ import Detail from './components/sub/youtube/Detail';
 
 export default function App() {
 	const dispatch = useDispatch();
-	useSelector(store => console.log(store));
 	useEffect(() => {
 		dispatch({ type: types.MEMBERS.start });
 		dispatch({ type: types.HISTORY.start });
