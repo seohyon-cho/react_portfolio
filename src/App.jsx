@@ -24,6 +24,7 @@ export default function App() {
 	useSelector(store => console.log(store));
 	useEffect(() => {
 		dispatch({ type: types.MEMBERS.start });
+		dispatch({ type: types.HISTORY.start });
 	}, [dispatch]);
 
 	const [Dark, setDark] = useState(false);
