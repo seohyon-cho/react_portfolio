@@ -30,5 +30,11 @@ const flickrReducer = (state = { flickr: [] }, action) => {
 	else return state;
 };
 
-const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer });
+const modalReducer = (state = { modal: false }, action) => {
+	console.log(action);
+	if (action.type === types.MODAL.start) return { ...state, modal: action.payload };
+	else return state;
+};
+
+const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer, modalReducer });
 export default reducers;
