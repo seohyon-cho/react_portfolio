@@ -41,5 +41,10 @@ const menuReducer = (state = { menu: false }, action) => {
 	else return state;
 };
 
-const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer, modalReducer, menuReducer });
+const darkReducer = (state = { dark: false }, action) => {
+	if (action.type === types.DARK.start) return { ...state, dark: action.payload };
+	else return state;
+};
+
+const reducers = combineReducers({ membersReducer, historyReducer, youtubeReducer, flickrReducer, modalReducer, menuReducer, darkReducer });
 export default reducers;

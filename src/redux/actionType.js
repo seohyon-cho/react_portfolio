@@ -27,3 +27,7 @@ export const MODAL = {
 export const MENU = {
 	start: 'MENU_START'
 };
+
+export const DARK = {
+	start: 'DARK_START'
+};
