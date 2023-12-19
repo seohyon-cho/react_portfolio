@@ -1,5 +1,6 @@
 import './Footer2.scss';
 import { FaFacebookF, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 // npm i react-icons (설치 후, 구글에 react-icons 접속해서 활용)
 
 export default function Footer2() {
@@ -11,7 +12,9 @@ export default function Footer2() {
 
 			<ul>
 				<li>
-					<FaFacebookF />
+					<Link to={{ pathname: 'https://www.facebook.com' }} target='_blank'>
+						<FaFacebookF />
+					</Link>
 				</li>
 				<li>
 					<FaTwitter />
