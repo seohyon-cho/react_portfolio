@@ -25,6 +25,7 @@ export default function App() {
 		dispatch({ type: types.MEMBERS.start });
 		dispatch({ type: types.HISTORY.start });
 		dispatch({ type: types.YOUTUBE.start });
+		dispatch({ type: types.FLICKR.start, opt: { type: 'user', id: '199633413@N04' } });
 	}, [dispatch]);
 
 	const [Dark, setDark] = useState(false);
