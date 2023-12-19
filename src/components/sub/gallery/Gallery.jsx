@@ -4,19 +4,19 @@ import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as types from '../../../redux/actionType';
 
 export default function Gallery() {
-	useSelector(store => console.log(store.flickrReducer.flickr));
+	const dispatch = useDispatch();
+	const Pics = useSelector(store => store.flickrReducer.flickr);
 	const myID = useRef('199633413@N04');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
 	const refFrameWrap = useRef(null);
-	// 검색 함수가 실행됐는지를 확인하기 위한 참조객체
 	const searched = useRef(false);
 
 	const gap = useRef(20);
-	const [Pics, setPics] = useState([]);
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 
@@ -30,21 +30,21 @@ export default function Gallery() {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
-		fetchFlickr({ type: 'interest' });
+		dispatch({ type: types.FLICKR.start, opt: { type: 'interest' } });
 	};
 
 	const handleMine = e => {
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
-		fetchFlickr({ type: 'user', id: myID.current });
+		dispatch({ type: types.FLICKR.start, opt: { type: 'user', id: myID.current } });
 	};
 
 	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
-		fetchFlickr({ type: 'user', id: e.target.innerText });
+		dispatch({ type: types.FLICKR.start, opt: { type: 'user', id: e.target.innerText } });
 	};
 
 	const handleSearch = e => {
@@ -54,36 +54,12 @@ export default function Gallery() {
 		const keyword = e.target.children[0].value;
 		if (!keyword.trim()) return;
 		e.target.children[0].value = '';
-		fetchFlickr({ type: 'search', keyword: keyword });
-		// 검색함수가 한 번이라도 실행되면 영구적으로 초기값을 true로 변경.
+		dispatch({ type: types.FLICKR.start, opt: { type: 'search', keyword: keyword } });
 		searched.current = true;
-	};
-
-	const fetchFlickr = async opt => {
-		console.log('fetching again...');
-		const num = 20;
-		const flickr_api = process.env.REACT_APP_FLICKR_API;
-		const baseURL = `https://www.flickr.com/services/rest/?&api_key=${flickr_api}&per_page=${num}&format=json&nojsoncallback=1&method=`;
-		const method_interest = 'flickr.interestingness.getList';
-		const method_user = 'flickr.people.getPhotos';
-		const method_search = 'flickr.photos.search';
-		const searchURL = `${baseURL}${method_search}&tags=${opt.keyword}`;
-		const interestURL = `${baseURL}${method_interest}`;
-		const userURL = `${baseURL}${method_user}&user_id=${opt.id}`;
-		let url = '';
-		opt.type === 'user' && (url = userURL);
-		opt.type === 'interest' && (url = interestURL);
-		opt.type === 'search' && (url = searchURL);
-
-		const data = await fetch(url);
-		const json = await data.json();
-
-		setPics(json.photos.photo);
 	};
 
 	useEffect(() => {
 		refFrameWrap.current.style.setProperty('--gap', gap.current);
-		fetchFlickr({ type: 'user', id: myID.current });
 	}, []);
 
 	return (
