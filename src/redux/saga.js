@@ -14,7 +14,7 @@
 */
 
 import { takeLatest, call, put, fork, all } from 'redux-saga/effects';
-import { fetchDepartment, fetchHistory } from './api';
+import { fetchDepartment, fetchHistory, fetchYoutube } from './api';
 import * as types from './actionType';
 
 // Department Server Data
@@ -42,8 +42,19 @@ function* returnHistory() {
 		yield put({ type: types.HISTORY.fail, payload: err });
 	}
 }
+// youtube server Data
+function* callYoutube() {
+	yield takeLatest(types.YOUTUBE.start, function* () {
+		try {
+			const response = yield call(fetchYoutube);
+			yield put({ type: types.YOUTUBE.success, payload: response.items });
+		} catch (err) {
+			yield put({ type: types.YOUTUBE.fail, payload: err });
+		}
+	});
+}
 
 // 순서 (3) : saga 메서드를 비동기적으로 호출해주는 함수를 정의 후 rootSaga라는 이름으로 export(추후 미들웨어로 reducer에 적용됨)
 export default function* rootSaga() {
-	yield all([fork(callMembers), fork(callHistory)]);
+	yield all([fork(callMembers), fork(callHistory), fork(callYoutube)]);
 }
