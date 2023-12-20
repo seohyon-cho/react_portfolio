@@ -27,6 +27,19 @@ export default function App() {
 
 	const [Dark, setDark] = useState(false);
 	const [Toggle, setToggle] = useState(false);
+	/* 
+
+	// Promise.all([p1, p2, p3]).then(result => 프로미스 실행 완료 값 배열로 받음)
+	
+	const promiseArr = useRef([fetchYoutube(), fetchMember(), fetchHistory(0)]);
+
+	useEffect(() => {
+		Promise.all(promiseArr.current).then(arr => {
+			arr.forEach(action => dispatch(action));
+		});
+	}, [dispatch]); 
+
+	*/
 
 	useEffect(() => {
 		dispatch(fetchYoutube());
