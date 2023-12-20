@@ -20,7 +20,7 @@ export const fetchYoutube = createAsyncThunk('youtube/requestYoutube', async () 
 
 // 위의 fetchYoutube 가 반환하는 action 객체의 promise 인스턴스 상태 값 (pending, fulfilled, rejected)에 따라 자동으로 action Type을 생성하고,
 // 해당 actionType에 따른 전역 데이터 변경을 자동으로 처리함.
-const YoutubeSlice = createSlice({
+const youtubeSlice = createSlice({
 	name: 'youtube',
 	initialState: {
 		data: [],
@@ -42,4 +42,4 @@ const YoutubeSlice = createSlice({
 });
 
 // youtubeSlice 라는 reducer가 변경한 전역 데이터 객체를 내보냄.
-export default YoutubeSlice.reducer;
+export default youtubeSlice.reducer;
