@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Contact.scss';
 import emailjs from '@emailjs/browser';
+import { useThrottle } from '../../../hooks/useThrottle';
 
 export default function Contact() {
 	// form Email
@@ -66,9 +67,12 @@ export default function Contact() {
 
 	// 지도 위치 중앙 고정 함수
 	const setCenter = useCallback(() => {
+		console.log('setCenter');
 		mapInstance.current.setCenter(mapInfo.current[Index].latlng);
-		// roadview.current();
 	}, [Index]);
+
+	// useThrottle로 setCenter 함수를 인수로 넣어서, throttling이 적용된 새로운 함수로 반환 (hof : 고차함수)
+	const throttledSetCenter = useThrottle(setCenter, 100);
 
 	// 참조객체를 사용해, 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
 	// 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
@@ -123,9 +127,10 @@ export default function Contact() {
 		// 마우스 휠에 기본적으로 내장되어 있는 줌 기능 비활성화
 		mapInstance.current.setZoomable(false);
 
-		window.addEventListener('resize', setCenter);
-		return () => window.removeEventListener('resize', setCenter);
-	}, [Index, setCenter]);
+		// resize 이벤트에 throttle 적용된 함수를 등록 (이벤트 자체는 1초에 60번 발생하지만, 핸들러함수는 1초에 2번만 실행됨.)
+		window.addEventListener('resize', throttledSetCenter);
+		return () => window.removeEventListener('resize', throttledSetCenter);
+	}, [Index, throttledSetCenter]);
 
 	// 교통정보 관련 false, true를 담은 state를 만들고, 해당 state의 값에 따라서 특정 값을 출력하는 함수를 만드는 것.
 	// Traffic 토글 시마다 화면 재렌더링 useEffect
