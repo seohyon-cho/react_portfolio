@@ -57,12 +57,14 @@ export default function Contact() {
 	const [Traffic, setTraffic] = useState(false);
 	const [View, setView] = useState(false);
 
+	// 로드뷰 출력 함수
 	const roadview = useCallback(() => {
 		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, panoId => {
 			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
 		});
 	}, [Index]);
 
+	// 지도 위치 중앙 고정 함수
 	const setCenter = useCallback(() => {
 		mapInstance.current.setCenter(mapInfo.current[Index].latlng);
 		// roadview.current();
@@ -101,9 +103,13 @@ export default function Contact() {
 	});
 
 	// 컴포넌트 마운트 시, 참조객체에 담아놓은 돔 프레임에 지도 인스턴스 출력 및 마커 세팅
+	// Index 값 변경 시마다 지도 정보 갱신하여 화면 재렌더링 useEffect
 	useEffect(() => {
 		// 지도 중첩 생성 안 되도록 생성 직전 초기화 작업
+
+		// Index값이 변경되는 것은 결국 출력할 맵 정보가 변경된다는 의미이므로, 기존의 viewFrame안쪽의 정보를 지워서 초기화
 		mapFrame.current.innerHTML = '';
+		viewFrame.current.innerHTML = '';
 		mapInstance.current = new kakao.current.maps.Map(mapFrame.current, { center: mapInfo.current[Index].latlng, level: 3 });
 		marker.current.setMap(mapInstance.current);
 		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
@@ -122,15 +128,17 @@ export default function Contact() {
 	}, [Index, setCenter]);
 
 	// 교통정보 관련 false, true를 담은 state를 만들고, 해당 state의 값에 따라서 특정 값을 출력하는 함수를 만드는 것.
+	// Traffic 토글 시마다 화면 재렌더링 useEffect
 	useEffect(() => {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(kakao.current.maps.MapTypeId.TRAFFIC)
 			: mapInstance.current.removeOverlayMapTypeId(kakao.current.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
+	// view 토글 시마다 화면 재렌더링 useEffect
 	useEffect(() => {
-		viewFrame.current.innerHTML = '';
-		View && roadview();
+		// View 토글 시에 무조건 로드뷰 정보를 호출하는 것이 아닌, viewFrame 내에 내용이 없을 때에만 호출하고, 값이 있을 때에는 기존 데이터를 그대로 재활용해서 불필요한 로드뷰 중복호출(재호출)을 막음으로써 고용량의 이미지 re-fetching을 방지해줌.
+		View && viewFrame.current.children.length === 0 && roadview();
 	}, [View, roadview]);
 	return (
 		<div className='Contact'>
