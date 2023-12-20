@@ -18,16 +18,16 @@ export default function Department() {
 
 	const fetchDepartment = () => {
 		fetch(`${path.current}/DB/department.json`)
-			.then((data) => data.json())
-			.then((json) => {
+			.then(data => data.json())
+			.then(json => {
 				setMemberTit(Object.keys(json)[0]);
 				setMemberData(Object.values(json)[0]);
 			});
 	};
 	const fetchHistory = () => {
 		fetch(`${path.current}/DB/history.json`)
-			.then((data) => data.json())
-			.then((json) => {
+			.then(data => data.json())
+			.then(json => {
 				setHistoryTit(Object.keys(json)[0]);
 				setHistoryData(Object.values(json)[0]);
 			});
