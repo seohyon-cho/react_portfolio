@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const fetchMember = createAsyncThunk('member/requestMember', async () => {
+export const fetchMember = createAsyncThunk('member', async () => {
 	const data = await fetch(`${process.env.PUBLIC_URL}/DB/department.json`);
 	const json = await data.json();
 	return json.members;

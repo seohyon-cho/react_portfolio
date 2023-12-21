@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchYoutube } from './redux/youtubeSlice';
 import { fetchHistory } from './redux/historySlice';
 import { fetchMember } from './redux/memberSlice';
+import { fetchFlickr } from './redux/flickrSlice';
 
 export default function App() {
 	const dispatch = useDispatch();
@@ -45,6 +46,7 @@ export default function App() {
 		dispatch(fetchYoutube());
 		dispatch(fetchMember());
 		dispatch(fetchHistory());
+		dispatch(fetchFlickr({ type: 'interest' }));
 	}, [dispatch]);
 
 	return (

@@ -18,34 +18,34 @@ export default function Gallery() {
 	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
 
-	const activateBtn = (e) => {
+	const activateBtn = e => {
 		const btns = refNav.current.querySelectorAll('button');
-		btns.forEach((btn) => btn.classList.remove('on'));
+		btns.forEach(btn => btn.classList.remove('on'));
 		e && e.target.classList.add('on');
 	};
 
-	const handleInterest = (e) => {
+	const handleInterest = e => {
 		if (e.target.classList.contains('on')) return;
 		isUser.current = '';
 		activateBtn(e);
 		fetchFlickr({ type: 'interest' });
 	};
 
-	const handleMine = (e) => {
+	const handleMine = e => {
 		if (e.target.classList.contains('on') || isUser.current === myID.current) return;
 		isUser.current = myID.current;
 		activateBtn(e);
 		fetchFlickr({ type: 'user', id: myID.current });
 	};
 
-	const handleUser = (e) => {
+	const handleUser = e => {
 		if (isUser.current) return;
 		isUser.current = e.target.innerText;
 		activateBtn();
 		fetchFlickr({ type: 'user', id: e.target.innerText });
 	};
 
-	const handleSearch = (e) => {
+	const handleSearch = e => {
 		e.preventDefault();
 		isUser.current = '';
 		activateBtn();
@@ -57,7 +57,7 @@ export default function Gallery() {
 		searched.current = true;
 	};
 
-	const fetchFlickr = async (opt) => {
+	const fetchFlickr = async opt => {
 		console.log('fetching again...');
 		const num = 20;
 		const flickr_api = process.env.REACT_APP_FLICKR_API;
@@ -117,8 +117,7 @@ export default function Gallery() {
 											onClick={() => {
 												setOpen(true);
 												setIndex(idx);
-											}}
-										>
+											}}>
 											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
 										</div>
 										<h2>{pic.title}</h2>
@@ -127,7 +126,7 @@ export default function Gallery() {
 											<img
 												src={`http://farm${pic.farm}.staticflickr.com/${pic.server}/buddyicons/${pic.owner}.jpg`}
 												alt='사용자 프로필 이미지'
-												onError={(e) => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
+												onError={e => e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif')}
 											/>
 											<span onClick={handleUser}>{pic.owner}</span>
 										</div>
