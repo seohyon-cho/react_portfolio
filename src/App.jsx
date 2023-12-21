@@ -11,7 +11,7 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 
 import { Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
@@ -44,7 +44,7 @@ export default function App() {
 		dispatch(fetchYoutube());
 		dispatch(fetchMember());
 		dispatch(fetchHistory());
-		dispatch(fetchFlickr({ type: 'interest' }));
+		dispatch(fetchFlickr({ type: 'user', id: '199633413@N04' }));
 	}, [dispatch]);
 
 	return (
