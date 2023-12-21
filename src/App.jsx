@@ -42,6 +42,7 @@ export default function App() {
 
 	*/
 
+	// slice로부터 fetcing함수를 가져와서 dispatch로 자동생성된 액션 객체 전달
 	useEffect(() => {
 		dispatch(fetchYoutube());
 		dispatch(fetchMember());
