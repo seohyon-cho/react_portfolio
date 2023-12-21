@@ -8,8 +8,12 @@ const modalSlice = createSlice({
 	initialState: { open: false },
 	// extraReducers는, [pending, fulfilled, rejected] 와 같은 상태 관리를 위한 reducer이므로, 여기서는 정적인 데이터를 관리하는 것이기 때문에 해당하지 않음.
 	reducers: {
-		modalOpen: state => (state.open = true),
-		modalClose: state => (state.open = false)
+		modalOpen: state => {
+			state.open = true;
+		},
+		modalClose: state => {
+			state.open = false;
+		}
 	}
 });
 

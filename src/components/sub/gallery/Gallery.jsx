@@ -4,8 +4,12 @@ import Layout2 from '../../common/layout2/Layout2';
 import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../../redux/modalSlice';
 
 export default function Gallery() {
+	const dispatch = useDispatch();
+
 	const myID = useRef('199633413@N04');
 	const isUser = useRef(myID.current);
 	const refNav = useRef(null);
@@ -115,7 +119,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												dispatch(modalOpen());
 												setIndex(idx);
 											}}>
 											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
