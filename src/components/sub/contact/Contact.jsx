@@ -126,11 +126,13 @@ export default function Contact() {
 		mapInstance.current.addControl(new kakao.current.maps.ZoomControl(), kakao.current.maps.ControlPosition.RIGHT);
 		// 마우스 휠에 기본적으로 내장되어 있는 줌 기능 비활성화
 		mapInstance.current.setZoomable(false);
+	}, [Index]);
 
+	useEffect(() => {
 		// resize 이벤트에 throttle 적용된 함수를 등록 (이벤트 자체는 1초에 60번 발생하지만, 핸들러함수는 1초에 2번만 실행됨.)
 		window.addEventListener('resize', throttledSetCenter);
 		return () => window.removeEventListener('resize', throttledSetCenter);
-	}, [Index, throttledSetCenter]);
+	}, [throttledSetCenter]);
 
 	// 교통정보 관련 false, true를 담은 state를 만들고, 해당 state의 값에 따라서 특정 값을 출력하는 함수를 만드는 것.
 	// Traffic 토글 시마다 화면 재렌더링 useEffect
