@@ -27,7 +27,6 @@ export default function App() {
 	useSelector(store => console.log(store));
 
 	const [Dark, setDark] = useState(false);
-	const [Toggle, setToggle] = useState(false);
 	/* 
 
 	// Promise.all([p1, p2, p3]).then(result => 프로미스 실행 완료 값 배열로 받음)
@@ -52,7 +51,7 @@ export default function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header2 Dark={Dark} setDark={setDark} Toggle={Toggle} setToggle={setToggle} />
+			<Header2 Dark={Dark} setDark={setDark} />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
@@ -62,7 +61,7 @@ export default function App() {
 			<Route path='/youtube' component={Youtube} />
 			<Route path='/detail/:id' component={Detail} />
 			<Footer2 />
-			{Toggle && <Menu setToggle={setToggle} />}
+			<Menu />
 		</div>
 	);
 }
