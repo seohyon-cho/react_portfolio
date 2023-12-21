@@ -10,6 +10,7 @@ import historyReducer from './redux/historySlice';
 import flickrReducer from './redux/flickrSlice';
 import modalReducer from './redux/modalSlice';
 import menuReducer from './redux/menuSlice';
+import darkReducer from './redux/darkSlice';
 
 // reducer 객체 값들을 하나로 묶어서 store 생성.
 const store = configureStore({
@@ -19,7 +20,8 @@ const store = configureStore({
 		history: historyReducer,
 		flickr: flickrReducer,
 		modal: modalReducer,
-		menu: menuReducer
+		menu: menuReducer,
+		dark: darkReducer
 	}
 });
 

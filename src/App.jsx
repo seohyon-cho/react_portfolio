@@ -24,9 +24,7 @@ import { fetchFlickr } from './redux/flickrSlice';
 
 export default function App() {
 	const dispatch = useDispatch();
-	useSelector(store => console.log(store));
-
-	const [Dark, setDark] = useState(false);
+	const Dark = useSelector(store => store.dark.isDark);
 	/* 
 
 	// Promise.all([p1, p2, p3]).then(result => 프로미스 실행 완료 값 배열로 받음)
@@ -51,7 +49,7 @@ export default function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header2 Dark={Dark} setDark={setDark} />
+			<Header2 />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
