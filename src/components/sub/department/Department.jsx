@@ -29,11 +29,6 @@ import { useSelector } from 'react-redux';
 */
 
 export default function Department() {
-	const [Mounted, setMounted] = useState(true);
-	useEffect(() => {
-		return () => setMounted(false);
-	}, [Mounted]);
-
 	const HistoryData = useSelector(store => store.historyReducer.history);
 	const MemberData = useSelector(store => store.memberReducer.members);
 	const path = useRef(process.env.PUBLIC_URL);
@@ -44,36 +39,34 @@ export default function Department() {
 			<section className='historyBox'>
 				<h2>{combinedTitle('History')}</h2>
 				<div className='con'>
-					{Mounted &&
-						HistoryData?.map((history, idx) => {
-							return (
-								<article key={history + idx}>
-									<h3>{Object.keys(history)[0]}</h3>
-									<ul>
-										{Object.values(history)[0].map((list, idx) => {
-											return <li key={list + idx}>{list}</li>;
-										})}
-									</ul>
-								</article>
-							);
-						})}
+					{HistoryData?.map((history, idx) => {
+						return (
+							<article key={history + idx}>
+								<h3>{Object.keys(history)[0]}</h3>
+								<ul>
+									{Object.values(history)[0].map((list, idx) => {
+										return <li key={list + idx}>{list}</li>;
+									})}
+								</ul>
+							</article>
+						);
+					})}
 				</div>
 			</section>
 			<section className='memberBox'>
 				<h2>{combinedTitle('Members')}</h2>
 				<div className='con'>
-					{Mounted &&
-						MemberData?.map((member, idx) => {
-							return (
-								<article key={member + idx}>
-									<div className='pic'>
-										<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
-									</div>
-									<h3>{member.name}</h3>
-									<p>{member.position}</p>
-								</article>
-							);
-						})}
+					{MemberData?.map((member, idx) => {
+						return (
+							<article key={member + idx}>
+								<div className='pic'>
+									<img src={`${path.current}/img/${member.pic}`} alt={member.name} />
+								</div>
+								<h3>{member.name}</h3>
+								<p>{member.position}</p>
+							</article>
+						);
+					})}
 				</div>
 			</section>
 		</Layout2>

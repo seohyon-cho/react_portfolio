@@ -11,7 +11,7 @@ import Members from './components/sub/members/Members';
 import Youtube from './components/sub/youtube/Youtube';
 
 import { Route } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMedia } from './hooks/useMedia';
 import Menu from './components/common/menu/Menu';
@@ -21,9 +21,9 @@ import * as types from './redux/action';
 
 export default function App() {
 	const dispatch = useDispatch();
+	const Dark = useSelector(store => store.darkReducer.dark);
 	useSelector(store => console.log(store));
 	const path = useRef(process.env.PUBLIC_URL);
-	const [Dark, setDark] = useState(false);
 
 	// department 관련 패칭
 	const fetchDepartment = useCallback(async () => {
@@ -35,7 +35,6 @@ export default function App() {
 	const fetchHistory = useCallback(async () => {
 		const data = await fetch(`${path.current}/DB/history.json`);
 		const json = await data.json();
-		console.log(json);
 		dispatch({ type: types.HISTORY.success, payload: json.history });
 	}, [dispatch]);
 
@@ -62,7 +61,7 @@ export default function App() {
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
-			<Header2 Dark={Dark} setDark={setDark} />
+			<Header2 />
 			<Route exact path='/' component={MainWrap} />
 			<Route path='/department' component={Department} />
 			<Route path='/gallery' component={Gallery} />
