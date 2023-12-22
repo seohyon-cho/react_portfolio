@@ -49,4 +49,6 @@ ReactDOM.render(
 		1. 비동기 데이터의 fetching 함수가 api.js에 등록되어 있고, 각 컴포넌트 마운트 시 fetching 호출이 있는지 확인. (member, history, youtube, flickr)
 		2. client-side-data 가 saga 없이 reducer만으로 전역 관리되는지 확인 (modal, menu, dark)
 		3. Layout.jsx에서 setTimeout 안쪽에 참조객체 optional chaining되어 있는지 확인
+		4. 특정 컴포넌트에서 store로부터 복수 개의 reducer를 가져올 때 store를 통째로 가져온 다음에 비구조화 할당 하는 것 금지. (특정 컴포넌트에 모든 reducer 객체를 다 가져올 필요가 없기 때문임. (에러는 아니고 콘솔에 경고문구 뜸.)
+		5. 초기 App.jsx에서 api.js로 fetching함수 호출 시 인수가 전달되는 값이 있다면 그냥 api.js 단에서 내부에서 default option 처리 하는 것이 효율적임.
 */
