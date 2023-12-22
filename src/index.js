@@ -42,3 +42,11 @@ ReactDOM.render(
 		--> reducer (saga로부터 넘겨받은 액션 객체를 통해서 전역 객체 생성) 
 		--> store (넘겨받은 전역 객체를 저장)
 */
+
+/*
+		Redux-saga 버전에서의 자가진단 항목
+
+		1. 비동기 데이터의 fetching 함수가 api.js에 등록되어 있고, 각 컴포넌트 마운트 시 fetching 호출이 있는지 확인. (member, history, youtube, flickr)
+		2. client-side-data 가 saga 없이 reducer만으로 전역 관리되는지 확인 (modal, menu, dark)
+		3. Layout.jsx에서 setTimeout 안쪽에 참조객체 optional chaining되어 있는지 확인
+*/
