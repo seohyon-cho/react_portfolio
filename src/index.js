@@ -15,14 +15,9 @@ ReactDOM.render(
 );
 
 /*
-	[ redux ] 
-
-	- store : 어떤 컴포넌트에서든 자유롭게 데이터를 공유할 수 있도록 컴포넌트 외부에 있는 독립적인 전역 데이터 공간.
-	- reducer : action으로부터 받은 데이터를 변형한 뒤, 이렇게 변형한 데이터를 store에 전달해주는 변형자 함수 (action 객체를 전달받아야지만 store에 변경 요청이 가능하게 됨.)
-	- action : 컴포넌트가 reducer에 데이터 변경 요청을 의뢰할 때에 필요한 특별한 형태의 객체 {type: '타입', payload: '(변경할)데이터'}
-			--> 여기까지는 react 가 아닌 순수 redux의 기능
-
-			--> 여기부터는 react 컴포넌트의 기능을 가져와야 하므로 react-redux 의 기능.
-	- dispatch : 컴포넌트에서 action 객체를 전달할 때에는, 무조건 dispatch를 통해서만 전달할 수 있음. 
-	- selector : 컴포넌트에서 전역 store에 있는 데이터를 요청할 때에는, 무조건 selector를 통해서만 호출할 수 있음. 
+	[ Redux 버전에서 반드시 숙지해야 할 내용 ]
+	1. flickr를 제외하고, 비동기 데이터를 사용하는 컴포넌트에서 store에서 데이터를 공유하고 있는지. (Member, History, Youtube 관련)
+	2. client sida data 가 store로 공유되고 있는지. (Modal, Menu, Dark theme 관련)
+	3. Layout에서 0.3초 후에 클래스 on이 붙게 되는데, 라우터 간 이동이 0.3초보다 빠르게 이루어질 때 optional chaining 으로 에러 핸들링하고 있는지.
+	4. contact 컴포넌트에서 throttle이 적용된 throttledSetCenter resize이벤트 연결문을 따로 useEffect문으로 분리해두었는지.
 */
