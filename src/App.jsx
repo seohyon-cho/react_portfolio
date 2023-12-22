@@ -17,12 +17,8 @@ import Menu from './components/common/menu/Menu';
 import Detail from './components/sub/youtube/Detail';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchYoutube } from './redux/youtubeSlice';
-import { fetchHistory } from './redux/historySlice';
-import { fetchMember } from './redux/memberSlice';
-import { fetchFlickr } from './redux/flickrSlice';
 
-export default function App() {
+export default function App({ api }) {
 	const dispatch = useDispatch();
 	const Dark = useSelector(store => store.dark.isDark);
 	/* 
@@ -41,11 +37,12 @@ export default function App() {
 
 	// slice로부터 fetcing함수를 가져와서 dispatch로 자동생성된 액션 객체 전달
 	useEffect(() => {
-		dispatch(fetchYoutube());
-		dispatch(fetchMember());
-		dispatch(fetchHistory());
-		dispatch(fetchFlickr({ type: 'user', id: '199633413@N04' }));
-	}, [dispatch]);
+		// dispatch(fetchYoutube());
+		// dispatch(fetchMember());
+		// dispatch(fetchHistory());
+		// dispatch(fetchFlickr());
+		api.forEach(func => dispatch(func()));
+	}, [dispatch, api]);
 
 	return (
 		<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>

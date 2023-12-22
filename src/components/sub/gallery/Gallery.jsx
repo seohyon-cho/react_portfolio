@@ -63,8 +63,10 @@ export default function Gallery() {
 	};
 
 	useEffect(() => {
-		refFrameWrap.current.style.setProperty('--gap', gap.current);
-	}, []);
+		refFrameWrap.current.style.setProperty('--gap', gap.current + 'px');
+		// 특정 카테고리의 연결된 데이터 띄운 상태에서 타 컴포넌트 갔다가 다시 복귀하면 기본 데이터값이 아니라 직전에 출력됐던 데이터값이 나오는 현상 개선
+		dispatch(fetchFlickr({ type: 'user', id: '199633413@N04' }));
+	}, [dispatch]);
 
 	return (
 		<>
