@@ -5,6 +5,7 @@ import './Gallery.scss';
 import { LuSearch } from 'react-icons/lu';
 import Modal from '../../common/modal/Modal';
 import { useFlickrQuery } from '../../../hooks/useFlickrQuery';
+import { useGlobalData } from '../../../hooks/useGlobalData';
 
 export default function Gallery() {
 	const myID = useRef('199633413@N04');
@@ -14,9 +15,8 @@ export default function Gallery() {
 	// 검색 함수가 실행됐는지를 확인하기 위한 참조객체
 	const searched = useRef(false);
 	const gap = useRef(20);
-
-	const [Open, setOpen] = useState(false);
 	const [Index, setIndex] = useState(0);
+	const { setModalOpen } = useGlobalData();
 
 	const [Opt, setOpt] = useState({ type: 'user', id: myID.current });
 	const { data: Pics, isSuccess } = useFlickrQuery(Opt);
@@ -96,7 +96,7 @@ export default function Gallery() {
 										<div
 											className='pic'
 											onClick={() => {
-												setOpen(true);
+												setModalOpen(true);
 												setIndex(idx);
 											}}>
 											<img src={`https://live.staticflickr.com/${pic.server}/${pic.id}_${pic.secret}_m.jpg`} alt={pic.title} />
@@ -119,7 +119,7 @@ export default function Gallery() {
 				</section>
 			</Layout2>
 
-			<Modal Open={Open} setOpen={setOpen}>
+			<Modal>
 				{isSuccess && Pics.length !== 0 && (
 					<img src={`https://live.staticflickr.com/${Pics[Index].server}/${Pics[Index].id}_${Pics[Index].secret}_b.jpg`} alt={Pics[Index].title} />
 				)}

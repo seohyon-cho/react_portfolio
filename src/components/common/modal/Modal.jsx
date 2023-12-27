@@ -2,12 +2,12 @@ import { useGlobalData } from '../../../hooks/useGlobalData';
 import './Modal.scss';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function Modal({ Open, setOpen, children }) {
-	const result = useGlobalData();
-	console.log(result);
+export default function Modal({ children }) {
+	const { ModalOpen, setModalOpen } = useGlobalData();
+
 	return (
 		<AnimatePresence>
-			{Open && (
+			{ModalOpen && (
 				<motion.aside
 					className='Modal'
 					initial={{ opacity: 0, scale: 0, rotate: -45 }}
@@ -22,7 +22,7 @@ export default function Modal({ Open, setOpen, children }) {
 						transition={{ duration: 0.5, delay: 1 }}>
 						{children}
 					</motion.div>
-					<span onClick={() => setOpen(false)}>close</span>
+					<span onClick={() => setModalOpen(false)}>close</span>
 				</motion.aside>
 			)}
 		</AnimatePresence>
