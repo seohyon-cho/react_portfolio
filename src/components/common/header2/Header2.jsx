@@ -2,8 +2,8 @@ import { useGlobalData } from '../../../hooks/useGlobalData';
 import './Header2.scss';
 import { NavLink, Link } from 'react-router-dom';
 
-export default function Header2({ Dark, setDark }) {
-	const { MenuOpen, setMenuOpen } = useGlobalData();
+export default function Header2() {
+	const { MenuOpen, setMenuOpen, Dark, setDark } = useGlobalData();
 	return (
 		<header className='Header2'>
 			<h1>
