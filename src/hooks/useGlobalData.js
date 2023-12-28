@@ -7,8 +7,8 @@ export const GlobalContext = createContext();
 export function GlobalProvider({ children }) {
 	const [MenuOpen, setMenuOpen] = useState(false);
 	const [ModalOpen, setModalOpen] = useState(false);
-	const [Dark, setDark] = useState(false);
-	return <GlobalContext.Provider value={{ MenuOpen, setMenuOpen, ModalOpen, setModalOpen, Dark, setDark }}>{children}</GlobalContext.Provider>;
+	const [Mode, setMode] = useState('light');
+	return <GlobalContext.Provider value={{ MenuOpen, setMenuOpen, ModalOpen, setModalOpen, Mode, setMode }}>{children}</GlobalContext.Provider>;
 }
 
 // useContext로 반환한 전체 전역 데이터를 내보내는 커스텀 훅 생성 후 export

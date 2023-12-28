@@ -21,12 +21,12 @@ import { useGlobalData } from './hooks/useGlobalData';
 import CookieModal from './components/common/cookieModal/CookieModal';
 
 export default function App() {
-	const { Dark } = useGlobalData();
+	const { Mode } = useGlobalData();
 	const queryClient = new QueryClient();
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div className={`wrap ${Dark ? 'dark' : ''} ${useMedia()}`}>
+			<div className={`wrap ${Mode === 'dark' ? 'dark' : 'light'} ${useMedia()}`}>
 				<Header2 />
 				<Route exact path='/' component={MainWrap} />
 				<Route path='/department' component={Department} />
