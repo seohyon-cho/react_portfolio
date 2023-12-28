@@ -7,8 +7,8 @@ export function useCookie() {
 		console.log(document.cookie);
 	};
 
-	const isCookie = cookieName => {
-		if (document.cookie.indexOf(cookieName) < 0) return false;
+	const isCookie = cookieKey => {
+		if (document.cookie.indexOf(cookieKey) < 0) return false;
 		else return true;
 	};
 
