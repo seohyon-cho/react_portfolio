@@ -8,7 +8,7 @@ export default function CookieModal({ wid, ht, children }) {
 	// 체크박스 요소를 담을 참조 객체 생성
 	const checkEl = useRef(null);
 	// Close의 초기값으로 isCookie의 리턴 값을 담음.
-	// Close = true : 쿠키 없음, 팝업 안 보임 / Close = false : 쿠키 없음, 팝업 보임
+	// Close = true : 쿠키 있음, 팝업 안 보임 / Close = false : 쿠키 없음, 팝업 보임
 	const [Close, setClose] = useState(isCookie('today=done'));
 
 	// 닫기 버튼 클릭 시 실행될 함수
