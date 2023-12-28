@@ -1,4 +1,5 @@
 import { useGlobalData } from '../../../hooks/useGlobalData';
+import ThemeControl from '../themeControl/ThemeControl';
 import './Header2.scss';
 import { NavLink, Link } from 'react-router-dom';
 
@@ -50,6 +51,8 @@ export default function Header2() {
 			<button className='menuToggle' onClick={() => setMenuOpen(!MenuOpen)}>
 				menu
 			</button>
+
+			<ThemeControl />
 		</header>
 	);
 }
