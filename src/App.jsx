@@ -18,6 +18,7 @@ import Detail from './components/sub/youtube/Detail';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useGlobalData } from './hooks/useGlobalData';
+import CookieModal from './components/common/cookieModal/CookieModal';
 
 export default function App() {
 	const { Dark } = useGlobalData();
@@ -37,6 +38,7 @@ export default function App() {
 				<Route path='/detail/:id' component={Detail} />
 				<Footer2 />
 				<Menu />
+				<CookieModal wid={300} ht={200}></CookieModal>
 			</div>
 			<ReactQueryDevtools />
 		</QueryClientProvider>
