@@ -1,37 +1,44 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './CookieModal.scss';
 import { useCookie } from '../../../hooks/useCookie';
 
 export default function CookieModal({ wid, ht, children }) {
+	// 커스텀 훅으로부터 쿠키 확인, 쿠키 생성함수 가져오기.
 	const { setCookie, isCookie } = useCookie();
-	const [ModalShow, setModalShow] = useState(true);
-	const [MakeCookie, setMakeCookie] = useState(false);
+	// 체크박스 요소를 담을 참조 객체 생성
+	const checkEl = useRef(null);
+	// Close의 초기값으로 isCookie의 리턴 값을 담음.
+	// Close = true : 쿠키 없음, 팝업 안 보임 / Close = false : 쿠키 없음, 팝업 보임
+	const [Close, setClose] = useState(isCookie('today=done'));
 
-	if (isCookie('today=done') === false && ModalShow) {
-		return (
-			<aside className='CookieModal' style={{ width: wid, height: ht, marginLeft: -wid / 2, marginTop: -ht / 2 }}>
-				<div className='content'>{children}</div>
-				<div className='controls'>
-					<nav>
-						<input type='checkbox' onChange={() => setMakeCookie(!MakeCookie)} />
-						<span>오늘 하루 팝업 보지 않기</span>
-					</nav>
+	// 닫기 버튼 클릭 시 실행될 함수
+	const handleClose = () => {
+		const isChecked = checkEl.current.checked;
+		// 함수 호출 시, 체크가 되어있으면 쿠키 생성
+		if (isChecked) setCookie('today', 'done', 60 * 60 * 24);
+		// 미 체크 시, 쿠키 생성 무시하고 그냥 팝업만 닫기
+		setClose(true);
+	};
 
-					<span
-						onClick={() => {
-							if (MakeCookie) {
-								setCookie('today', 'done', 10);
-							}
-							setModalShow(false);
-						}}>
-						닫기
-					</span>
-				</div>
-			</aside>
-		);
-	} else {
-		return null;
-	}
+	return (
+		<>
+			{/* Close값이 false 이면 팝업보임처리 */}
+			{!Close && (
+				<aside className='CookieModal' style={{ width: wid, height: ht, marginLeft: -wid / 2, marginTop: -ht / 2 }}>
+					<div className='content'>{children}</div>
+
+					<div className='controls'>
+						<nav>
+							<input ref={checkEl} type='checkbox' />
+							<span>오늘하루 팝업보지 않기</span>
+						</nav>
+
+						<span onClick={handleClose}>close</span>
+					</div>
+				</aside>
+			)}
+		</>
+	);
 }
 
 /*
