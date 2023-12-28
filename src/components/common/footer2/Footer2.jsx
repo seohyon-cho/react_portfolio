@@ -1,14 +1,10 @@
 import { useCookie } from '../../../hooks/useCookie';
 import './Footer2.scss';
 import { FaFacebookF, FaTwitter, FaYoutube } from 'react-icons/fa';
-// npm i react-icons (설치 후, 구글에 react-icons 접속해서 활용)
 
 export default function Footer2() {
-	const setCookie = useCookie();
-	const createCookie = () => {
-		setCookie('today', 'done', 20);
-	};
-	console.log(document.cookie);
+	const { setCookie, isCookie, viewCookie } = useCookie();
+
 	return (
 		<footer className='Footer2'>
 			<h1>Dcodelab</h1>
@@ -27,7 +23,10 @@ export default function Footer2() {
 				</li>
 			</ul>
 
-			<button onClick={createCookie}>쿠키 생성</button>
+			<button onClick={() => setCookie('today', 'done', 3600)}>쿠키 생성</button>
+			<button onClick={() => setCookie('today', 'done', 0)}>쿠키 삭제</button>
+			<button onClick={() => console.log(isCookie('today=done'))}>쿠키 확인</button>
+			<button onClick={() => viewCookie()}>모든 쿠키 보기</button>
 		</footer>
 	);
 }
