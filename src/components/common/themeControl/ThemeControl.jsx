@@ -13,8 +13,8 @@ export default function ThemeControl() {
 		// 해당 쿠키 컬러값으로 자동 셋팅
 		document.body.style.setProperty('--pointColor', document.cookie.split('theme=')[1].split(';')[0]);
 	}
-
 	// 만약 쿠키가 없으면 그냥 scss 변수로 등록되어 있는 기본 --pointColor 값 활용
+
 	const changeThemeColor = () => {
 		const color = inputEl.current.value;
 		setCookie('theme', color, 20);
