@@ -15,7 +15,8 @@ function Btns() {
 	useEffect(() => {
 		swiper.init(0);
 		// swiper.slideNext(300);
-		// swiper.slideReset(0);
+		// swiper.autoplay.start();
+		// swiper.slideTo(4);
 	}, [swiper]);
 
 	return (
