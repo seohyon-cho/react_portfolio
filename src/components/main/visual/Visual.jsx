@@ -12,8 +12,20 @@ function Btns() {
 
 	return (
 		<nav className='swiperController'>
-			<button onClick={() => swiper.autoplay.stop()}>stop</button>
-			<button onClick={() => swiper.autoplay.start()}>start</button>
+			<button
+				onClick={() => {
+					swiper.autoplay.stop();
+				}}>
+				stop
+			</button>
+			<button
+				onClick={() => {
+					// 다시 롤링 시작 버튼 클릭 시, 딜레이 없이 바로 slide를 넘기기 위해서 일단은 버튼 클릭 직후에는 다음 슬라이드로 한 번 넘기고 동시에 롤링 재시작.
+					swiper.slideNext(300);
+					swiper.autoplay.start();
+				}}>
+				start
+			</button>
 		</nav>
 	);
 }
