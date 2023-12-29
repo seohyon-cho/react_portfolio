@@ -47,5 +47,12 @@
 				}
 			}
 		}
+
+		.swiperController {
+			position: absolute;
+			bottom: 50px;
+			right: 100px;
+			z-index: 4;
+		}
 	}
 }

@@ -1,21 +1,38 @@
 import './Visual.scss';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useSelector } from 'react-redux';
+
+function Btns() {
+	// Swiper 컴포넌트 안쪽에 있는 또 다른 자식 컴포넌트 안쪽에서만 useSwiper hook을 호출하고 사용할 수 있음.
+	// hook으로부터 생성된 객체(인스턴스)에서는 다양한 prototype 메서드와 property 활용이 가능함.
+	const swiper = useSwiper();
+
+	return (
+		<nav className='swiperController'>
+			<button onClick={() => swiper.autoplay.stop()}>stop</button>
+			<button onClick={() => swiper.autoplay.start()}>start</button>
+		</nav>
+	);
+}
 
 export default function Visual() {
 	const { youtube } = useSelector(store => store.youtubeReducer);
 	return (
 		<figure className='Visual'>
 			<Swiper
-				modules={[Pagination]}
+				modules={[Pagination, Autoplay]}
 				pagination={{
 					clickable: true,
 					renderBullet: (index, className) => {
 						return `<span class=${className}>${index + 1}</span>`;
 					}
+				}}
+				autoplay={{
+					delay: 3000,
+					disableOnInteraction: true
 				}}
 				loop={true}>
 				{youtube.map((vid, idx) => {
@@ -28,9 +45,18 @@ export default function Visual() {
 						</SwiperSlide>
 					);
 				})}
+				<Btns />
 			</Swiper>
 		</figure>
 	);
 }
 
 // npm install swiper@8 스와이퍼 설치 명령어
+
+/*
+	React 에서 Swiper의 코어 기능을 적용하기 위해서는 useSwiper라는 hook을 호출해야 함.
+
+	Swiper 안 쪽에서 또 다른 컴포넌트를 연결해주고, 그 컴포넌트 안쪽에서 useSwiper로부터 객체 생성
+
+	해당 자식 컴포넌트 안쪽에서 생성된 객체로부터 Swiper core에 등록되어 있는 모든 메서드와 property를 리액트에서도 사용가능하게 됨.
+*/
