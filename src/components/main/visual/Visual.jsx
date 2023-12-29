@@ -4,20 +4,22 @@ import { Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useCustomText } from '../../../hooks/useText';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
-function Btns() {
+function Btns({ btnDetail }) {
 	// Swiper 컴포넌트 안쪽에 있는 또 다른 자식 컴포넌트 안쪽에서만 useSwiper hook을 호출하고 사용할 수 있음.
 	// hook으로부터 생성된 객체(인스턴스)에서는 다양한 prototype 메서드와 property 활용이 가능함.
 	const swiper = useSwiper();
 	useEffect(() => {
 		swiper.init(0);
+		btnDetail?.addEventListener('mouseenter', () => swiper.autoplay.stop());
+		btnDetail?.addEventListener('mouseleave', () => swiper.autoplay.start());
 		// swiper.slideNext(300);
 		// swiper.autoplay.start();
 		// swiper.slideTo(4);
-	}, [swiper]);
+	}, [swiper, btnDetail]);
 
 	return (
 		<nav className='swiperController'>
@@ -40,6 +42,8 @@ function Btns() {
 }
 
 export default function Visual() {
+	const btnDetail = useRef(null);
+
 	const { youtube } = useSelector(store => store.youtubeReducer);
 	const shortenText = useCustomText('short');
 
@@ -74,13 +78,15 @@ export default function Visual() {
 								</div>
 								<div className='txtBox'>
 									<h2>{shortenText(vid.snippet.title, 50)}</h2>
-									<Link to={`/detail/${vid.id}`}>View Detail</Link>
+									<Link to={`/detail/${vid.id}`} ref={btnDetail}>
+										View Detail
+									</Link>
 								</div>
 							</div>
 						</SwiperSlide>
 					);
 				})}
-				<Btns />
+				<Btns btnDetail={btnDetail.current} />
 			</Swiper>
 		</figure>
 	);
