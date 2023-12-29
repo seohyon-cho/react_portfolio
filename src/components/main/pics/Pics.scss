@@ -1,3 +1,15 @@
+/*
+  hover motion 순서 
+
+  [hover in] before 회전 (delay: 0) -> after 회전 (delay: 0.3) -> span 선 생성 (delay: 0.8)
+
+  [hover out] span 선 제거 -> after 회전하며 제거 -> before 회전하며 제거 
+
+  :hover 이전에 설정하는 delay 값 -> hover-out 될 때 적용됨.
+  :hover 에 설정하는 delay 값 -> hover-in 될 때 적용됨.
+  
+*/
+
 .Pics {
 	width: 100%;
 	height: 100vh;
@@ -34,7 +46,7 @@
 		}
 		&::before {
 			transform: rotate(135deg);
-			transition-delay: 0;
+			transition-delay: 0.8s;
 		}
 		&::after {
 			transform: rotate(-135deg);
@@ -44,7 +56,7 @@
 			width: 0;
 			transition-property: opacity, width;
 			transition-duration: 0.5s;
-			transition-delay: 0.6s;
+			transition-delay: 0s;
 		}
 	}
 	.box1:hover {
@@ -55,12 +67,15 @@
 		}
 		&::before {
 			transform: rotate(45deg);
+			transition-delay: 0s;
 		}
 		&::after {
 			transform: rotate(-45deg);
+			transition-delay: 0.3s;
 		}
 		span {
 			width: 150px;
+			transition-delay: 0.8s;
 		}
 	}
 }
