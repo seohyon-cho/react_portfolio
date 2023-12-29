@@ -2,19 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Layout2 from '../../common/layout2/Layout2';
 import './Contact.scss';
 import emailjs from '@emailjs/browser';
+import { useThrottle } from '../../../hooks/useThrottle';
 
 export default function Contact() {
-	// form Email
 	const form = useRef();
 	const resetForm = () => {
 		const elArr = form.current.children;
-		// 그룹 형식의 DOM을 탐색할 때 반환되는 두 가지 형태의 유사 배열
-		// 1. parentDOM(부모돔).children : HTML Collection (유사배열: forEach, map 모두 반복 불가. Live DOM: 상태변경이 실시간으로 이루어짐.)
-		// 2. parentDOM(부모돔).querySelectorAll : NodeList (유사배열이긴 하지만, 제한적으로 forEach로는 반복 가능. static DOM: 탐색된 시점의 정적인 돔.)
 
-		// form.current.children은 콘솔로 찍어보면 HTML 컬렉션 어쩌구 뜰 거임.
-		// .children으로 받는 건 forEach랑 map으로 반복 불가능함.
-		// DOM의 children으로 받은 건 유사배열이긴 한데 forEach로 반복이 불가능해서, Array.from으로 해당 배열을 순수 배열로 변경해서 forEach로 반복을 돌 수 있게 처리.
 		Array.from(elArr).forEach(el => {
 			if (el.name === 'user_name' || el.name === 'user_email' || el.name === 'message') el.value = '';
 		});
@@ -27,11 +21,6 @@ export default function Contact() {
 		const txtArea = form.current.querySelector('textarea');
 
 		if (!user.value || !email.value || !txtArea.value) return alert('성함과 회신 받을 이메일 주소, 문의 내용을 모두 입력해주세요.');
-		// const elArr = form.current.children;
-		// const result = Array.from(elArr).forEach(el => {
-		// 	if (!el.value) return false;
-		// });
-		// if (!result) return alert('모든 항목을 입력해주세요!');
 
 		emailjs.sendForm('service_v8ufydl', 'template_e33l0oe', form.current, 'upPLj_wKd4_bGkOZ4').then(
 			result => {
@@ -44,32 +33,27 @@ export default function Contact() {
 			}
 		);
 	};
-	// const { kakao } = window;
+
 	const kakao = useRef(window.kakao);
-	// 화면에 출력될 지도 정보 배열의 순번이 담길 state
 	const [Index, setIndex] = useState(0);
 	const mapFrame = useRef(null);
 	const viewFrame = useRef(null);
 
 	const marker = useRef(null);
 	const mapInstance = useRef(null);
-	// 교통정보 관련 state
 	const [Traffic, setTraffic] = useState(false);
 	const [View, setView] = useState(false);
 
-	const roadview = useRef(() => {
+	const roadview = useCallback(() => {
 		new kakao.current.maps.RoadviewClient().getNearestPanoId(mapInfo.current[Index].latlng, 50, panoId => {
 			new kakao.current.maps.Roadview(viewFrame.current).setPanoId(panoId, mapInfo.current[Index].latlng);
 		});
-	});
+	}, [Index]);
 
 	const setCenter = useCallback(() => {
 		mapInstance.current.setCenter(mapInfo.current[Index].latlng);
-		roadview.current();
 	}, [Index]);
 
-	// 참조객체를 사용해, 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
-	// 지점마다 출력할 정보를 개별적인 객체로 묶어서 배열로 그룹화
 	const mapInfo = useRef([
 		{
 			title: '삼성역 코엑스',
@@ -94,36 +78,35 @@ export default function Contact() {
 		}
 	]);
 
-	// 마커 인스턴스 생성
 	marker.current = new kakao.current.maps.Marker({
 		position: mapInfo.current[Index].latlng,
 		image: new kakao.current.maps.MarkerImage(mapInfo.current[Index].imgSrc, mapInfo.current[Index].imgSize, mapInfo.current[Index].imgOpt)
 	});
 
-	// 컴포넌트 마운트 시, 참조객체에 담아놓은 돔 프레임에 지도 인스턴스 출력 및 마커 세팅
+	const throttleSetCenter = useThrottle(setCenter);
+
 	useEffect(() => {
-		// 지도 중첩 생성 안 되도록 생성 직전 초기화 작업
 		mapFrame.current.innerHTML = '';
+		viewFrame.current.innerHTML = '';
 		mapInstance.current = new kakao.current.maps.Map(mapFrame.current, { center: mapInfo.current[Index].latlng, level: 3 });
 		marker.current.setMap(mapInstance.current);
-		// Index가 바뀔 때마다 setTraffic이 다시 false로 기본셋팅 되도록.
 		setTraffic(false);
 		setView(false);
 
-		roadview.current();
-
-		// 지도 타입 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.MapTypeControl(), kakao.current.maps.ControlPosition.TOPRIGHT);
-		// 지도 줌 컨트롤러 추가
 		mapInstance.current.addControl(new kakao.current.maps.ZoomControl(), kakao.current.maps.ControlPosition.RIGHT);
-		// 마우스 휠에 기본적으로 내장되어 있는 줌 기능 비활성화
 		mapInstance.current.setZoomable(false);
+	}, [Index]);
 
-		window.addEventListener('resize', setCenter);
-		return () => window.removeEventListener('resize', setCenter);
-	}, [Index, setCenter]);
+	useEffect(() => {
+		window.addEventListener('resize', throttleSetCenter);
+		return () => window.removeEventListener('resize', throttleSetCenter);
+	}, [throttleSetCenter]);
 
-	// 교통정보 관련 false, true를 담은 state를 만들고, 해당 state의 값에 따라서 특정 값을 출력하는 함수를 만드는 것.
+	useEffect(() => {
+		View && viewFrame.current.children.length === 0 && roadview();
+	}, [View, roadview]);
+
 	useEffect(() => {
 		Traffic
 			? mapInstance.current.addOverlayMapTypeId(kakao.current.maps.MapTypeId.TRAFFIC)
