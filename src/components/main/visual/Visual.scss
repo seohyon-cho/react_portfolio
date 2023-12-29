@@ -2,4 +2,28 @@
 	width: 100%;
 	height: calc(100vh - 90px);
 	position: relative;
+	margin: 0 auto;
+
+	.swiper {
+		width: 100%;
+		height: 100%;
+		border: 1px solid blue;
+		.swiper-wrapper {
+			.swiper-slide {
+				padding: 100px 0;
+				// swiper 쓸 때, 개발자도구에서 어떤 요소에 element.style로 들어가있는 속성은 직접 제어할 수 없는 속성이므로, 제어할 수 없는 속성을 가지고 있는 요소 안에 아래의 .inner 처럼 사용자가 직접 요소를 하나 더 만들어서 속성을 제어하면 됨.
+				.inner {
+					width: 70%;
+					height: 100%;
+					margin: 0 auto;
+					background-color: var(--pointColor);
+					color: var(--bgColor);
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+	}
 }
