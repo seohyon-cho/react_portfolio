@@ -25,5 +25,27 @@
 				}
 			}
 		}
+		.swiper-pagination {
+			bottom: 40px;
+			width: 70%;
+			left: 15%;
+
+			span {
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				margin: 0 5px;
+				border-radius: 5px;
+				background-color: var(--baseColor);
+				color: var(--bgColor);
+				text-indent: -9999px;
+				cursor: pointer;
+				transition: 0.5s;
+
+				&.swiper-pagination-bullet-active {
+					width: 60px;
+				}
+			}
+		}
 	}
 }
