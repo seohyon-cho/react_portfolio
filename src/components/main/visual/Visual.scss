@@ -7,7 +7,6 @@
 	.swiper {
 		width: 100%;
 		height: 100%;
-		border: 1px solid blue;
 		.swiper-wrapper {
 			.swiper-slide {
 				padding: 100px 0;
@@ -16,12 +15,43 @@
 					width: 70%;
 					height: 100%;
 					margin: 0 auto;
-					background-color: var(--pointColor);
-					color: var(--bgColor);
 					display: flex;
 					flex-wrap: wrap;
-					justify-content: center;
+					justify-content: space-between;
 					align-items: center;
+
+					.picBox {
+						width: 40%;
+						height: 100%;
+						position: relative;
+						display: flex;
+
+						img {
+							width: 100%;
+							height: 100%;
+							object-fit: cover;
+							position: absolute;
+							top: 0;
+							left: 0;
+
+							&:nth-of-type(1) {
+								top: 30px;
+								left: 30px;
+								filter: blur(20px) saturate(1.2);
+								opacity: 0.7;
+							}
+						}
+					}
+					.txtBox {
+						width: 50%;
+						height: 100%;
+						border: 1px solid blue;
+
+						h2 {
+							font-size: 4rem;
+							font-weight: normal;
+						}
+					}
 				}
 			}
 		}
