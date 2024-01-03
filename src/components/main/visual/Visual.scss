@@ -3,45 +3,42 @@
 	height: calc(100vh - 90px);
 	position: relative;
 	margin: 0 auto;
-
 	.swiper {
 		width: 100%;
 		height: 100%;
 		.swiper-wrapper {
 			.swiper-slide {
-				padding: 18vh 0 15vh;
-				// swiper 쓸 때, 개발자도구에서 어떤 요소에 element.style로 들어가있는 속성은 직접 제어할 수 없는 속성이므로, 제어할 수 없는 속성을 가지고 있는 요소 안에 아래의 .inner 처럼 사용자가 직접 요소를 하나 더 만들어서 속성을 제어하면 됨.
-				.inner {
+				padding: 18vh 0px 15vh;
+				> .inner {
 					width: 70%;
 					height: 100%;
 					margin: 0 auto;
 					display: flex;
-					flex-wrap: wrap;
 					justify-content: space-between;
-					align-items: center;
-
+					flex-wrap: wrap;
+					align-content: center;
 					.picBox {
-						width: 40%;
+						width: 35%;
 						height: 100%;
 						position: relative;
 						display: flex;
+						opacity: 0;
+						transform: scale(1.5);
+						transition: transform 0.8s 0s, opacity 0.8s 0s;
 
 						> p {
 							width: 100%;
 							height: 100%;
 							overflow: hidden;
-							position: relative;
 							position: absolute;
 							top: 0;
 							left: 0;
-
 							img {
 								width: 100%;
 								height: 100%;
 								object-fit: cover;
 								transform: scale(1.5);
 							}
-
 							&:nth-of-type(1) {
 								top: 40px;
 								left: 40px;
@@ -51,41 +48,139 @@
 						}
 					}
 					.txtBox {
-						width: 50%;
+						width: 55%;
 						height: 100%;
-						border: 1px solid blue;
-
 						h2 {
-							font-size: 4rem;
+							font-size: 3.8vmax;
 							font-weight: normal;
+							margin-bottom: 100px;
+							opacity: 0;
+							transform: translateX(300px);
+							transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+						}
+
+						a {
+							background-color: var(--baseColor);
+							color: var(--bgColor);
+							border: none;
+							display: inline-block;
+							padding: 10px 30px;
+							font-size: 0.8rem;
+							position: relative;
+							box-shadow: 10px 10px 20px rgba(var(--baseColor-code), 0.5);
+							opacity: 0;
+							transform: translateY(200px);
+							/*
+							transition-property: background-color, padding, box-shadow;
+							transition-duration: 0.5s;
+							transition-delay: 0.6s;
+							*/
+							transition: background-color 0.5s 0.6s, padding 0.5s 0.6s, box-shadow 0.5s 0.6s, opacity 0.5s 0.5s, transform 0.5s 0.5s;
+
+							&::before,
+							&::after {
+								content: '';
+								position: absolute;
+								width: 10px;
+								height: 1px;
+								background: var(--bgColor);
+								transform-origin: right center;
+								right: 20px;
+								top: 50%;
+								opacity: 0;
+								transition-property: transform, opacity;
+								transition-duration: 0.8s;
+								transition-delay: 0.3s;
+							}
+							&::before {
+								transform: rotate(245deg);
+							}
+							&::after {
+								transform: rotate(-245deg);
+							}
+							span {
+								position: absolute;
+								width: 0px;
+								height: 1px;
+								background: var(--bgColor);
+								right: 20px;
+								top: 50%;
+								opacity: 0;
+								transition-duration: 0.5s;
+								transition-delay: 0s;
+							}
+							&:hover {
+								background-color: var(--pointColor);
+								color: #fff;
+								padding: 10px 30px;
+								padding-right: 80px;
+								padding-left: 20px;
+								box-shadow: 10px 10px 20px rgba(var(--pointColor-code), 0.5);
+								transition-delay: 0s;
+								&::before {
+									transform: rotate(35deg);
+									opacity: 1;
+									transition-delay: 0.3s;
+								}
+								&::after {
+									transform: rotate(-35deg);
+									opacity: 1;
+									transition-delay: 0.3s;
+								}
+								span {
+									width: 20px;
+									opacity: 1;
+									transition-delay: 0.8s;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//active panel styling
+			.swiper-slide-active {
+				> .inner {
+					.picBox {
+						opacity: 1;
+						transform: scale(1);
+					}
+					.txtBox {
+						h2 {
+							opacity: 1;
+							transform: translateX(0px);
+						}
+						a {
+							opacity: 1;
+							transform: translateY(0px);
 						}
 					}
 				}
 			}
 		}
+
 		.swiper-pagination {
-			bottom: 40px;
 			width: 70%;
 			left: 15%;
-
+			bottom: 40px;
 			span {
 				display: inline-block;
 				width: 10px;
 				height: 10px;
-				margin: 0 5px;
+				margin: 0px 5px;
 				border-radius: 5px;
 				background-color: var(--baseColor);
 				color: var(--bgColor);
 				text-indent: -9999px;
 				cursor: pointer;
-				transition: 0.5s;
-
-				&.swiper-pagination-bullet-active {
-					width: 60px;
-				}
+				transition-property: width, background-color;
+				transition-duration: 0.5s;
+			}
+			span.swiper-pagination-bullet-active {
+				width: 60px;
+				background-color: var(--pointColor);
 			}
 		}
-
 		.swiperController {
 			position: absolute;
 			bottom: 50px;
