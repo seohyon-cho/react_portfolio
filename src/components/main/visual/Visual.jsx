@@ -69,13 +69,16 @@ function Btns({ swiperRef }) {
 		setRolling(false);
 	};
 
+	// Btns 컴포넌트에서 인스턴스의 이벤트문을 활용하여
 	useEffect(() => {
+		// slide가 바뀔 때마다 현재 롤링 유무에 따라 Rolling state값 변경
 		swiperRef.current.on('slideChange', () => {
 			swiperRef.current.autoplay.running ? setRolling(true) : setRolling(false);
 		});
 	}, [swiperRef]);
 
+	// Rolling state 값에 따라서 버튼 활성화 처리
 	return (
-		<nav className='swiperController'>{Rolling ? <button onClick={stopRolling}>start</button> : <button onClick={startRolling}>stop</button>}</nav>
+		<nav className='swiperController'>{Rolling ? <button onClick={stopRolling}>stop</button> : <button onClick={startRolling}>start</button>}</nav>
 	);
 }
