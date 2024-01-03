@@ -12,18 +12,27 @@
 			width: 100%;
 			height: 100%;
 			display: flex;
+			perspective: 600px;
 
 			.swiper-slide {
 				width: 100%;
 				height: 100%;
+				perspective: 900px;
 
 				> .inner {
 					width: 100%;
 					height: 100%;
+					position: relative;
+					opacity: 0;
+					transform: scale(0.5) rotateY(0deg);
+					transition: opacity 0.5s, transform 0.5s;
 					.picBox {
 						width: 100%;
 						height: 100%;
 						overflow: hidden;
+						position: absolute;
+						top: 0;
+						left: 0;
 						img {
 							width: 100%;
 							height: 100%;
@@ -31,6 +40,49 @@
 							scale: 1.4;
 						}
 					}
+					.txtBox {
+						padding: 40px;
+						text-align: right;
+						position: absolute;
+						bottom: 0;
+						right: 0;
+						color: white;
+						font-weight: normal;
+						font-size: 1.3rem;
+						opacity: 0;
+						transform: translateX(300px);
+						transition: opacity 0.5s 0.5s, transform 0.5s 0.5s;
+						h2 {
+							font-weight: inherit;
+						}
+					}
+				}
+			}
+
+			// active slide style
+			.swiper-slide-active {
+				.inner {
+					opacity: 1;
+					transform: scale(1) rotateY(0deg);
+					.txtBox {
+						opacity: 1;
+						transform: translateX(0);
+					}
+				}
+			}
+
+			// prev slide style
+			.swiper-slide-prev {
+				.inner {
+					opacity: 0.7;
+					transform: scale(0.7) rotateY(30deg);
+				}
+			}
+			// next slide style
+			.swiper-slide-next {
+				.inner {
+					opacity: 0.7;
+					transform: scale(0.7) rotateY(-30deg);
 				}
 			}
 		}
