@@ -25,7 +25,20 @@ export default function Visual() {
 
 	return (
 		<figure className='Visual'>
-			<div className='txtBox'></div>
+			<div className='txtBox'>
+				<ul>
+					{isSuccess &&
+						data.map((el, idx) => {
+							if (idx >= 5) return null;
+
+							return (
+								<li key={el.id} className={idx === Index ? 'on' : ''}>
+									<h3>{el.snippet.title}</h3>
+								</li>
+							);
+						})}
+				</ul>
+			</div>
 			<Swiper {...swiperOpt.current}>
 				{isSuccess &&
 					data.map((el, idx) => {

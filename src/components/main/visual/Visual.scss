@@ -6,8 +6,39 @@
 	justify-content: flex-end;
 
 	.txtBox {
-		width: 20%;
+		width: 60%;
 		height: 100%;
+		padding-left: 15vw;
+		position: relative;
+
+		ul {
+			width: 100%;
+			height: 100%;
+			position: relative;
+
+			li {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: flex;
+				flex-wrap: wrap;
+				align-content: center;
+				font-size: 3rem;
+				opacity: 0;
+				transform: scale(1.5);
+				transition: opacity 1s, transform 1s;
+				h3 {
+					font-weight: normal;
+					color: var(--baseColor);
+				}
+			}
+			li.on {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
 	}
 
 	.swiper {
