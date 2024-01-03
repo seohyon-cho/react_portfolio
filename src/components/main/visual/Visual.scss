@@ -2,4 +2,23 @@
 	width: 100%;
 	height: calc(100vh - 90px);
 	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	.txtBox {
+		width: 30%;
+		height: 100%;
+		border: 1px solid blue;
+	}
+
+	.swiper {
+		display: inline-block;
+		width: 70%;
+		height: 100%;
+		padding: 10vw 0;
+		border: 1px solid red;
+
+		.swiper-wrapper {
+			height: inherit;
+		}
+	}
 }
