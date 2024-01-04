@@ -55,6 +55,8 @@ export default function Btns() {
 		secs.current = document.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
 		wrap.current.addEventListener('scroll', activation);
+
+		return () => wrap.current.removeEventListener('scroll', activation);
 	}, []);
 
 	return (
