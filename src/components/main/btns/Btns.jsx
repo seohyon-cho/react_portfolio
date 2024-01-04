@@ -13,16 +13,16 @@ import { useThrottle } from '../../../hooks/useThrottle';
 */
 
 export default function Btns() {
-	const [Index, setIndex] = useState(0);
 	const [Num, setNum] = useState(0);
 	const btns = useRef(null);
 	const secs = useRef(null);
 	const wrap = useRef(null);
+	const baseLine = useRef(-window.innerHeight / 2); // 현재 섹션의 컨텐츠가 절반 이상 보이게 되면 해당 섹션의 스크롤 버튼 활성화
 
 	const activation = () => {
 		const scroll = wrap.current.scrollTop;
 		secs.current.forEach((sec, idx) => {
-			if (scroll >= secs.current[idx].offsetTop) {
+			if (scroll >= secs.current[idx].offsetTop + baseLine.current) {
 				Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
 				btns.current.children[idx].classList.add('on');
 			}
@@ -48,7 +48,7 @@ export default function Btns() {
 					return (
 						<li
 							key={idx}
-							className={idx === Index ? 'on' : ''}
+							className={idx === 0 ? 'on' : ''}
 							onClick={() => {
 								// new Anime (선택자, {모션속성명1: 속성값1, 모션속셩명2: 속성값2}, {duration: 속도, easeType: 가속도, callback: 컴플리트함수})
 								// 마지막 인수는 필수값은 아니고 선택사항. 안 넣으면 그냥 기본값으로 들어감.
