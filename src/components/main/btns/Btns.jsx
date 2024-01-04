@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './Btns.scss';
 import Anime from '../../../asset/anime';
+import { useThrottle } from '../../../hooks/useThrottle';
 
 /*
   window.scrollY
@@ -28,14 +29,16 @@ export default function Btns() {
 		});
 	};
 
+	const throttledActivation = useThrottle(activation);
+
 	useEffect(() => {
 		wrap.current = document.querySelector('.wrap');
 		secs.current = document.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
-		wrap.current.addEventListener('scroll', activation);
+		wrap.current.addEventListener('scroll', throttledActivation);
 
-		return () => wrap.current.removeEventListener('scroll', activation);
-	}, []);
+		return () => wrap.current.removeEventListener('scroll', throttledActivation);
+	}, [throttledActivation]);
 
 	return (
 		<ul className='Btns' ref={btns}>
