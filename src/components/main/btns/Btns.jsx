@@ -53,7 +53,8 @@ export default function Btns() {
 									wrap.current,
 									{ scroll: secs.current[idx].offsetTop },
 									{
-										duration: 300,
+										duration: 1000,
+										ease: [1, -0.01, 0, 1.49],
 										callback: () => {
 											console.log('complete');
 										}
