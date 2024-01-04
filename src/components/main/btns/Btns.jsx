@@ -47,7 +47,18 @@ export default function Btns() {
 							key={idx}
 							className={idx === Index ? 'on' : ''}
 							onClick={() => {
-								new Anime(wrap.current, { scroll: secs.current[idx].offsetTop }, { duration: 300 });
+								// new Anime (선택자, {모션속성명1: 속성값1, 모션속셩명2: 속성값2}, {duration: 속도, easeType: 가속도, callback: 컴플리트함수})
+								// 마지막 인수는 필수값은 아니고 선택사항. 안 넣으면 그냥 기본값으로 들어감.
+								new Anime(
+									wrap.current,
+									{ scroll: secs.current[idx].offsetTop },
+									{
+										duration: 300,
+										callback: () => {
+											console.log('complete');
+										}
+									}
+								);
 							}}></li>
 					);
 				})}
