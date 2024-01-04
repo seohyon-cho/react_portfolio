@@ -34,6 +34,15 @@ export default function Btns() {
 
 	const throttledActivation = useThrottle(activation);
 
+	const modifyPos = () => {
+		const btnsArr = Array.from(btns.current.children);
+		const activeEl = btns.current.querySelector('li.on');
+		const activeIndex = btnsArr.indexOf(activeEl);
+		wrap.current.scrollTop = secs.current[activeIndex].offsetTop;
+	};
+
+	const throttledModifyPos = useThrottle(modifyPos, 200);
+
 	const moveScroll = idx => {
 		// 초기값이 false이므로 처음 한 번은 해당 조건문이 무시되면서 하단의 코드 실행.
 		if (isMotion.current) return;
@@ -71,13 +80,15 @@ export default function Btns() {
 		secs.current = wrap.current.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
 
+		window.addEventListener('resize', throttledModifyPos);
 		isAutoScroll.current && wrap.current.addEventListener('mousewheel', autoScroll);
 		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => {
+			window.removeEventListener('resize', throttledModifyPos);
 			wrap.current.removeEventListener('scroll', throttledActivation);
 			wrap.current.removeEventListener('mousewheel', autoScroll);
 		};
-	}, [throttledActivation, autoScroll]);
+	}, [throttledActivation, autoScroll, throttledModifyPos]);
 
 	return (
 		<ul className='Btns' ref={btns}>
