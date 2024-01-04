@@ -3,6 +3,35 @@
 	height: calc(100vh - 90px);
 	position: relative;
 	overflow: hidden;
+	.barFrame {
+		width: 70%;
+		height: 4px;
+		position: absolute;
+		top: 50px;
+		left: 15%;
+		background: #888;
+
+		.bar {
+			width: 0%;
+			height: 100%;
+			background: var(--pointColor);
+			position: absolute;
+			top: 0;
+			left: 0;
+			transition: width 0.5s;
+		}
+	}
+	.counter {
+		position: absolute;
+		top: 80px;
+		right: 15vw;
+		color: var(--baseColor);
+		font-size: 1.5rem;
+
+		strong {
+			font-size: 2.5rem;
+		}
+	}
 	.txtBox {
 		width: 40%;
 		height: 100%;

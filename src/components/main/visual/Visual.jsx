@@ -40,7 +40,13 @@ export default function Visual() {
 	};
 
 	return (
-		<figure className='Visual myScroll'>
+		<figure className='Visual'>
+			<div className='barFrame'>
+				<p className='bar' style={{ width: 20 * (Index + 1) + '%' }}></p>
+			</div>
+			<div className='counter'>
+				<strong>0{Index + 1}</strong>/<span>0{num.current}</span>
+			</div>
 			<div className='txtBox'>
 				<ul>
 					{isSuccess &&

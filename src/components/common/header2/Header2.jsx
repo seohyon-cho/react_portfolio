@@ -7,7 +7,7 @@ import { NavLink, Link } from 'react-router-dom';
 export default function Header2() {
 	const { MenuOpen, setMenuOpen } = useGlobalData();
 	return (
-		<header className='Header2'>
+		<header className='Header2 myScroll'>
 			<h1>
 				<Link to='/'>SEOHYON</Link>
 			</h1>
