@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './Btns.scss';
 import Anime from '../../../asset/anime';
 import { useThrottle } from '../../../hooks/useThrottle';
@@ -14,6 +14,7 @@ import { useThrottle } from '../../../hooks/useThrottle';
 
 export default function Btns() {
 	const [Num, setNum] = useState(0);
+	const isAutoScroll = useRef(false);
 	const btns = useRef(null);
 	const secs = useRef(null);
 	const wrap = useRef(null);
@@ -43,37 +44,40 @@ export default function Btns() {
 		new Anime(wrap.current, { scroll: secs.current[idx].offsetTop }, { duration: 1000, callback: () => (isMotion.current = false) });
 	};
 
-	const autoScroll = e => {
-		const btnsArr = Array.from(btns.current.children);
-		const activeEl = btns.current.querySelector('li.on');
-		// 현재 활성화된 버튼의 순번을 구하기.
-		const activeIndex = btnsArr.indexOf(activeEl);
+	const autoScroll = useCallback(
+		e => {
+			const btnsArr = Array.from(btns.current.children);
+			const activeEl = btns.current.querySelector('li.on');
+			// 현재 활성화된 버튼의 순번을 구하기.
+			const activeIndex = btnsArr.indexOf(activeEl);
 
-		// 마우스 휠을 다운할 경우
-		if (e.deltaY > 0) {
-			console.log('wheel down');
-			// 현재 순번이 마지막 순번이 아니기만 하면 다음 순번의 섹션 위치로 모션 이동
-			activeIndex !== Num - 1 && moveScroll(activeIndex + 1);
-		} else {
-			// 마우스 휠을 업할 경우
-			console.log('wheel up');
-			// 현재 순번이 첫 번째 순번만 아니면 이전 순번의 섹션 위치로 모션 이동
-			activeIndex !== 0 && moveScroll(activeIndex - 1);
-		}
-	};
+			// 마우스 휠을 다운할 경우
+			if (e.deltaY > 0) {
+				console.log('wheel down');
+				// 현재 순번이 마지막 순번이 아니기만 하면 다음 순번의 섹션 위치로 모션 이동
+				activeIndex !== Num - 1 && moveScroll(activeIndex + 1);
+			} else {
+				// 마우스 휠을 업할 경우
+				console.log('wheel up');
+				// 현재 순번이 첫 번째 순번만 아니면 이전 순번의 섹션 위치로 모션 이동
+				activeIndex !== 0 && moveScroll(activeIndex - 1);
+			}
+		},
+		[Num]
+	);
 
 	useEffect(() => {
 		wrap.current = document.querySelector('.wrap');
 		secs.current = wrap.current.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
 
-		wrap.current.addEventListener('mousewheel', autoScroll);
+		isAutoScroll && wrap.current.addEventListener('mousewheel', autoScroll);
 		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => {
 			wrap.current.removeEventListener('scroll', throttledActivation);
 			wrap.current.removeEventListener('mousewheel', autoScroll);
 		};
-	}, [throttledActivation]);
+	}, [throttledActivation, autoScroll]);
 
 	return (
 		<ul className='Btns' ref={btns}>
