@@ -9,9 +9,9 @@ export default function Visual() {
 	const num = useRef(8);
 	const swiperRef = useRef(null);
 	const { isSuccess, data } = useYoutubeQuery();
-	const [Index, setIndex] = useState(1);
-	const [PrevIndex, setPrevIndex] = useState(2);
-	const [NextIndex, setNextIndex] = useState(3);
+	const [Index, setIndex] = useState(0);
+	const [PrevIndex, setPrevIndex] = useState(0);
+	const [NextIndex, setNextIndex] = useState(0);
 
 	const swiperOpt = useRef({
 		modules: [Autoplay],
@@ -19,12 +19,15 @@ export default function Visual() {
 		slidesPerView: 1,
 		centeredSlides: true,
 		spaceBetween: 50,
+		loopedSlides: num.current, //loop모드일때 실제동작될 슬라이드 갯수 지정하면 초기순번 어그러지는 무제 해결 가능
+		onSwiper: swiper => {
+			swiperRef.current = swiper;
+		},
 		onSlideChange: swiper => {
 			setIndex(swiper.realIndex);
 			swiper.realIndex === 0 ? setPrevIndex(num.current - 1) : setPrevIndex(swiper.realIndex - 1);
 			swiper.realIndex === num.current - 1 ? setNextIndex(0) : setNextIndex(swiper.realIndex + 1);
 		},
-		onSwiper: swiper => (swiperRef.current = swiper),
 		breakpoints: {
 			1000: { slidesPerView: 2 },
 			1400: { slidesPerView: 3 }
