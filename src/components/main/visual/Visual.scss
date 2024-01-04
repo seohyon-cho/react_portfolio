@@ -5,9 +5,9 @@
 	overflow: hidden;
 	.barFrame {
 		width: 70%;
-		height: 4px;
+		height: 2px;
 		position: absolute;
-		top: 50px;
+		bottom: 50px;
 		left: 15%;
 		background: #888;
 
@@ -23,7 +23,7 @@
 	}
 	.counter {
 		position: absolute;
-		top: 80px;
+		bottom: 80px;
 		right: 15vw;
 		color: var(--baseColor);
 		font-size: 1.5rem;

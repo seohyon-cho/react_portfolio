@@ -6,7 +6,7 @@ import 'swiper/css';
 import { useRef, useState } from 'react';
 
 export default function Visual() {
-	const num = useRef(5);
+	const num = useRef(8);
 	const swiperRef = useRef(null);
 	const { isSuccess, data } = useYoutubeQuery();
 	const [Index, setIndex] = useState(1);
@@ -42,7 +42,7 @@ export default function Visual() {
 	return (
 		<figure className='Visual'>
 			<div className='barFrame'>
-				<p className='bar' style={{ width: 20 * (Index + 1) + '%' }}></p>
+				<p className='bar' style={{ width: (100 / num.current) * (Index + 1) + '%' }}></p>
 			</div>
 			<div className='counter'>
 				<strong>0{Index + 1}</strong>/<span>0{num.current}</span>
@@ -51,7 +51,7 @@ export default function Visual() {
 				<ul>
 					{isSuccess &&
 						data.map((el, idx) => {
-							if (idx >= 5) return null;
+							if (idx >= num.current) return null;
 
 							return (
 								<li key={el.id} className={idx === Index ? 'on' : ''}>
