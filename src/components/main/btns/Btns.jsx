@@ -12,24 +12,54 @@ import './Btns.scss';
 
 export default function Btns() {
 	const [Index, setIndex] = useState(0);
-	const num = useRef(4);
+	const [Num, setNum] = useState(0);
 	const btns = useRef(null);
 	const secs = useRef(null);
 	const wrap = useRef(null);
 
+	const activation = () => {
+		const scroll = wrap.current.scrollTop;
+
+		// 일단 모든 버튼을 반복 돌면서 비활성화 시키고,
+		// 조건에 따라 해당하는 버튼만 활성화
+		// 참고 : NodeList가 아닌, children으로 가져오는 건 그냥 반복 못 돌리므로 Array.from을 사용해서 순수배열로 바꿔준 뒤 반복 돌릴 수 있음.
+		secs.current.forEach((sec, idx) => {
+			if (scroll >= secs.current[idx].offsetTop) {
+				Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
+				btns.current.children[idx].classList.add('on');
+			}
+		});
+
+		/*
+		if (scroll >= secs.current[0].offsetTop) {
+			Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
+			btns.current.children[0].classList.add('on');
+		}
+		if (scroll >= secs.current[1].offsetTop) {
+			Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
+			btns.current.children[1].classList.add('on');
+		}
+		if (scroll >= secs.current[2].offsetTop) {
+			Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
+			btns.current.children[2].classList.add('on');
+		}
+		if (scroll >= secs.current[3].offsetTop) {
+			Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
+			btns.current.children[3].classList.add('on');
+		}
+*/
+	};
+
 	useEffect(() => {
 		wrap.current = document.querySelector('.wrap');
 		secs.current = document.querySelectorAll('.myScroll');
-
-		wrap.current.addEventListener('scroll', e => {
-			console.log('scroll', e.target.scrollTop);
-			console.log('offset', secs.current[1].offsetTop);
-		});
+		setNum(secs.current.length);
+		wrap.current.addEventListener('scroll', activation);
 	}, []);
 
 	return (
-		<ul className='Btns'>
-			{Array(num.current)
+		<ul className='Btns' ref={btns}>
+			{Array(Num)
 				.fill()
 				.map((_, idx) => {
 					return <li key={idx} className={idx === Index ? 'on' : ''}></li>;
