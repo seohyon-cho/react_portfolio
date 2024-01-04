@@ -31,12 +31,16 @@ export default function Btns() {
 
 	const throttledActivation = useThrottle(activation);
 
+	const moveScroll = idx => {
+		new Anime(wrap.current, { scroll: secs.current[idx].offsetTop }, { duration: 1000 });
+	};
+
 	useEffect(() => {
 		wrap.current = document.querySelector('.wrap');
-		secs.current = document.querySelectorAll('.myScroll');
+		secs.current = wrap.current.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
-		wrap.current.addEventListener('scroll', throttledActivation);
 
+		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => wrap.current.removeEventListener('scroll', throttledActivation);
 	}, [throttledActivation]);
 
@@ -49,21 +53,9 @@ export default function Btns() {
 						<li
 							key={idx}
 							className={idx === 0 ? 'on' : ''}
-							onClick={() => {
-								// new Anime (선택자, {모션속성명1: 속성값1, 모션속셩명2: 속성값2}, {duration: 속도, easeType: 가속도, callback: 컴플리트함수})
-								// 마지막 인수는 필수값은 아니고 선택사항. 안 넣으면 그냥 기본값으로 들어감.
-								new Anime(
-									wrap.current,
-									{ scroll: secs.current[idx].offsetTop },
-									{
-										duration: 1000,
-										ease: [1, -0.01, 0, 1.49],
-										callback: () => {
-											console.log('complete');
-										}
-									}
-								);
-							}}></li>
+							// new Anime (선택자, {모션속성명1: 속성값1, 모션속셩명2: 속성값2}, {duration: 속도, easeType: 가속도, callback: 컴플리트함수})
+							// 마지막 인수는 필수값은 아니고 선택사항. 안 넣으면 그냥 기본값으로 들어감.
+							onClick={() => moveScroll(idx)}></li>
 					);
 				})}
 		</ul>
