@@ -18,6 +18,8 @@ export default function Btns() {
 	const secs = useRef(null);
 	const wrap = useRef(null);
 	const baseLine = useRef(-window.innerHeight / 2); // 현재 섹션의 컨텐츠가 절반 이상 보이게 되면 해당 섹션의 스크롤 버튼 활성화
+	// isMotion.current 값이 true면 모션 중이므로 재실행 방지, false면 모션 중이 아니므로 재실행 가능.
+	const isMotion = useRef(false);
 
 	const activation = () => {
 		const scroll = wrap.current.scrollTop;
@@ -32,7 +34,13 @@ export default function Btns() {
 	const throttledActivation = useThrottle(activation);
 
 	const moveScroll = idx => {
-		new Anime(wrap.current, { scroll: secs.current[idx].offsetTop }, { duration: 1000 });
+		// 초기값이 false이므로 처음 한 번은 해당 조건문이 무시되면서 하단의 코드 실행.
+		if (isMotion.current) return;
+		// 조건문을 통과하자마자 바로 값을 true로 변경해서 다음부터는 재호출이 안 되도록 막음.
+		isMotion.current = true;
+		// 모션 함수가 실행되고, 모션이 끝나는 순간 실행되는 callback 함수로 다시 isMotion.current 값을 false로 변경해서 재실행 가능케 설정.
+		// 결론 : isMotion.current 값을 이용해서 모션 중에는 중복 함수 호출 불가능하도록 모션 도중 재이벤트 방지 처리.
+		new Anime(wrap.current, { scroll: secs.current[idx].offsetTop }, { duration: 1000, callback: () => (isMotion.current = false) });
 	};
 
 	const autoScroll = e => {
