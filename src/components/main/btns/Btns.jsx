@@ -71,7 +71,7 @@ export default function Btns() {
 		secs.current = wrap.current.querySelectorAll('.myScroll');
 		setNum(secs.current.length);
 
-		isAutoScroll && wrap.current.addEventListener('mousewheel', autoScroll);
+		isAutoScroll.current && wrap.current.addEventListener('mousewheel', autoScroll);
 		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => {
 			wrap.current.removeEventListener('scroll', throttledActivation);
