@@ -9,9 +9,6 @@ export default function Visual() {
 	const num = useRef(5);
 	const swiperRef = useRef(null);
 	const { isSuccess, data } = useYoutubeQuery();
-	// loop 값이 true일 시 초기 Index값을 0, 1을 주면 안 됨.
-	// onSwipe 이벤트 발생 시 자동적으로 realIndex값이 기존 Index값에 1을 뺀값으로 적용되므로
-	// useEffect에 의해서 prevIndex값이 0혹은 마지막 순번으로 변경되므로 기존 realIndex값과 중첩되서 버그발생
 	const [Index, setIndex] = useState(1);
 	const [PrevIndex, setPrevIndex] = useState(2);
 	const [NextIndex, setNextIndex] = useState(3);
@@ -43,7 +40,7 @@ export default function Visual() {
 	};
 
 	return (
-		<figure className='Visual'>
+		<figure className='Visual myScroll'>
 			<div className='txtBox'>
 				<ul>
 					{isSuccess &&
