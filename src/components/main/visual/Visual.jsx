@@ -3,7 +3,7 @@ import { useYoutubeQuery } from '../../../hooks/useYoutubeQuery';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import 'swiper/css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Visual() {
 	const num = useRef(5);
@@ -22,7 +22,11 @@ export default function Visual() {
 		slidesPerView: 1,
 		centeredSlides: true,
 		spaceBetween: 50,
-		onSlideChange: swiper => setIndex(swiper.realIndex),
+		onSlideChange: swiper => {
+			setIndex(swiper.realIndex);
+			swiper.realIndex === 0 ? setPrevIndex(num.current - 1) : setPrevIndex(swiper.realIndex - 1);
+			swiper.realIndex === num.current - 1 ? setNextIndex(0) : setNextIndex(swiper.realIndex + 1);
+		},
 		onSwiper: swiper => (swiperRef.current = swiper),
 		breakpoints: {
 			1000: { slidesPerView: 2 },
@@ -37,11 +41,6 @@ export default function Visual() {
 		else resultTit = title;
 		return resultTit;
 	};
-
-	useEffect(() => {
-		Index === 0 ? setPrevIndex(num.current - 1) : setPrevIndex(Index - 1);
-		Index === num.current - 1 ? setNextIndex(0) : setNextIndex(Index + 1);
-	}, [Index]);
 
 	return (
 		<figure className='Visual'>
