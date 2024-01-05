@@ -16,6 +16,7 @@ export default function Btns(opt) {
 
 	const activation = () => {
 		const scroll = wrap.current.scrollTop;
+		if (!secs.current) return;
 		secs.current.forEach((sec, idx) => {
 			if (scroll >= secs.current[idx].offsetTop + baseLine.current) {
 				Array.from(btns.current?.children).forEach(btn => btn.classList.remove('on'));
