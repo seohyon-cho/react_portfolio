@@ -44,12 +44,6 @@ export default function Visual() {
 
 	return (
 		<figure className='Visual'>
-			<div className='barFrame'>
-				<p className='bar' style={{ width: (100 / num.current) * (Index + 1) + '%' }}></p>
-			</div>
-			<div className='counter'>
-				<strong>0{Index + 1}</strong>/<span>0{num.current}</span>
-			</div>
 			<div className='txtBox'>
 				<ul>
 					{isSuccess &&
@@ -94,6 +88,22 @@ export default function Visual() {
 					</>
 				)}
 			</nav>
+
+			<ul className='pagination'>
+				{Array(num.current)
+					.fill()
+					.map((_, idx) => {
+						return <li key={idx} className={idx === Index ? 'on' : ''} onClick={() => swiperRef.current.slideToLoop(idx, 400)}></li>;
+					})}
+			</ul>
+
+			<div className='barFrame'>
+				<p className='bar' style={{ width: (100 / num.current) * (Index + 1) + '%' }}></p>
+			</div>
+
+			<div className='counter'>
+				<strong>0{Index + 1}</strong>/<span>0{num.current}</span>
+			</div>
 		</figure>
 	);
 }

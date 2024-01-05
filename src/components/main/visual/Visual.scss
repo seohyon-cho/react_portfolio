@@ -3,35 +3,7 @@
 	height: calc(100vh - 90px);
 	position: relative;
 	overflow: hidden;
-	.barFrame {
-		width: 70%;
-		height: 2px;
-		position: absolute;
-		bottom: 50px;
-		left: 15%;
-		background: #888;
 
-		.bar {
-			width: 0%;
-			height: 100%;
-			background: var(--pointColor);
-			position: absolute;
-			top: 0;
-			left: 0;
-			transition: width 0.5s;
-		}
-	}
-	.counter {
-		position: absolute;
-		bottom: 80px;
-		right: 15vw;
-		color: var(--baseColor);
-		font-size: 1.5rem;
-
-		strong {
-			font-size: 2.5rem;
-		}
-	}
 	.txtBox {
 		width: 40%;
 		height: 100%;
@@ -131,6 +103,56 @@
 					opacity: 0.5;
 				}
 			}
+		}
+	}
+
+	.pagination {
+		position: absolute;
+		bottom: 100px;
+		left: 15%;
+		display: flex;
+		gap: 10px;
+		z-index: 6;
+
+		li {
+			width: 10px;
+			height: 10px;
+			background: #888;
+			cursor: pointer;
+
+			&.on {
+				background: var(--pointColor);
+			}
+		}
+	}
+
+	.barFrame {
+		width: 70%;
+		height: 2px;
+		position: absolute;
+		bottom: 50px;
+		left: 15%;
+		background: #888;
+
+		.bar {
+			width: 0%;
+			height: 100%;
+			background: var(--pointColor);
+			position: absolute;
+			top: 0;
+			left: 0;
+			transition: width 0.5s;
+		}
+	}
+	.counter {
+		position: absolute;
+		bottom: 80px;
+		right: 15vw;
+		color: var(--baseColor);
+		font-size: 1.5rem;
+
+		strong {
+			font-size: 2.5rem;
 		}
 	}
 	//preview thumbnails
