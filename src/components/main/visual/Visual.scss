@@ -29,14 +29,61 @@
 				opacity: 0;
 				transform: scale(1.5);
 				transition: opacity 1s, transform 1s;
+				z-index: 1;
 				h3 {
 					font-weight: normal;
 					color: var(--baseColor);
+					margin-bottom: 60px;
+				}
+				a {
+					display: inline-block;
+					padding: 8px 20px;
+					font-size: 0.8rem;
+					font-weight: bold;
+					color: transparent;
+					position: relative;
+					text-indent: -80px;
+					cursor: pointer;
+					transition-duration: 0.5s;
+					transition-delay: 0.5s;
+
+					&::before,
+					&::after {
+						content: '';
+						position: absolute;
+						width: 100%;
+						height: 1px;
+						background-color: rgba(var(--baseColor-code), 0.5);
+						opacity: 0;
+						left: -50px;
+						transition-property: opacity, left;
+						transition-duration: 0.5s;
+					}
+
+					&::before {
+						top: 0;
+						transition-delay: 0.3s;
+					}
+					&::after {
+						bottom: 0;
+						transition-delay: 0.9s;
+					}
 				}
 			}
 			li.on {
 				opacity: 1;
 				transform: scale(1);
+				z-index: 5;
+				a {
+					color: var(--baseColor);
+					text-indent: 0px;
+
+					&::before,
+					&::after {
+						left: 0;
+						opacity: 1;
+					}
+				}
 			}
 		}
 	}

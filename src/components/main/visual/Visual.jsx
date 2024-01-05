@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import 'swiper/css';
 import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Visual() {
 	const num = useRef(8);
@@ -20,17 +21,13 @@ export default function Visual() {
 		centeredSlides: true,
 		spaceBetween: 50,
 		loopedSlides: num.current, //loop모드일때 실제동작될 슬라이드 갯수 지정하면 초기순번 어그러지는 무제 해결 가능
-		onSwiper: swiper => {
-			swiperRef.current = swiper;
-		},
+		autoplay: { delay: 2000, disableOnInteraction: true },
+		breakpoints: { 1000: { slidesPerView: 2 }, 1400: { slidesPerView: 3 } },
+		onSwiper: swiper => (swiperRef.current = swiper),
 		onSlideChange: swiper => {
 			setIndex(swiper.realIndex);
 			swiper.realIndex === 0 ? setPrevIndex(num.current - 1) : setPrevIndex(swiper.realIndex - 1);
 			swiper.realIndex === num.current - 1 ? setNextIndex(0) : setNextIndex(swiper.realIndex + 1);
-		},
-		breakpoints: {
-			1000: { slidesPerView: 2 },
-			1400: { slidesPerView: 3 }
 		}
 	});
 
@@ -53,6 +50,7 @@ export default function Visual() {
 							return (
 								<li key={el.id} className={idx === Index ? 'on' : ''}>
 									<h3>{trimTitle(el.snippet.title)}</h3>
+									<Link to={`/detail/${el.id}`}>View Detail</Link>
 								</li>
 							);
 						})}
