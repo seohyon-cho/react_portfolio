@@ -65,6 +65,12 @@ export default function Btns(opt) {
 		[Num]
 	);
 
+	// 컴포넌트가 언마운트 시 한 번만 동작되어야 하기 때문에
+	// 의존성 배열이 비어있는 useEffect 훅 안 쪽에 클린업 함수에서 Mounted값을 변경해야 함.
+	useEffect(() => {
+		return () => setMounted(false);
+	}, []);
+
 	useEffect(() => {
 		wrap.current = document.querySelector(resultOpt.current.frame);
 		secs.current = wrap.current.querySelectorAll(resultOpt.current.items);
@@ -74,7 +80,6 @@ export default function Btns(opt) {
 		isAutoScroll.current && wrap.current.addEventListener('mousewheel', autoScroll);
 		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => {
-			setMounted(false);
 			window.removeEventListener('resize', throttledModifyPos);
 			wrap.current.removeEventListener('scroll', throttledActivation);
 			wrap.current.removeEventListener('mousewheel', autoScroll);
