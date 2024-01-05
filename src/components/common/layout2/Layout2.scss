@@ -8,6 +8,21 @@
 	transition-property: opacity, transform;
 	transition: opacity 0.5s, transform 1s;
 
+	.btnTop {
+		cursor: pointer;
+		width: 50px;
+		height: 50px;
+		background: var(--baseColor);
+		color: var(--bgColor);
+		border: none;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		bottom: 50px;
+		right: 50px;
+		z-index: 6;
+	}
 	&.on {
 		opacity: 1;
 		transform: translateY(0px);

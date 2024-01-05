@@ -13,8 +13,10 @@ export default function Btns(opt) {
 	const wrap = useRef(null);
 	const baseLine = useRef(resultOpt.current.base);
 	const isMotion = useRef(false);
+	const [Mounted, setMounted] = useState(true);
 
 	const activation = () => {
+		if (!Mounted) return;
 		const scroll = wrap.current.scrollTop;
 		if (!secs.current) return;
 		secs.current.forEach((sec, idx) => {
@@ -66,6 +68,7 @@ export default function Btns(opt) {
 		isAutoScroll.current && wrap.current.addEventListener('mousewheel', autoScroll);
 		wrap.current.addEventListener('scroll', throttledActivation);
 		return () => {
+			setMounted(false);
 			window.removeEventListener('resize', throttledModifyPos);
 			wrap.current.removeEventListener('scroll', throttledActivation);
 			wrap.current.removeEventListener('mousewheel', autoScroll);
