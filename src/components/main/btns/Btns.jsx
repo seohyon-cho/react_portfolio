@@ -18,8 +18,8 @@ export default function Btns(opt) {
 		const scroll = wrap.current.scrollTop;
 		secs.current.forEach((sec, idx) => {
 			if (scroll >= secs.current[idx].offsetTop + baseLine.current) {
-				Array.from(btns.current.children).forEach(btn => btn.classList.remove('on'));
-				btns.current.children[idx].classList.add('on');
+				Array.from(btns.current?.children).forEach(btn => btn.classList.remove('on'));
+				btns.current?.children[idx].classList.add('on');
 			}
 		});
 	};
