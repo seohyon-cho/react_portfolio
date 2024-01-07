@@ -12,26 +12,6 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-
-
-  <ul id="test">
-    <li>list1</li>
-    <li>list2</li>
-  </ul>
-
-  <script>
-    const ul = document.getElementById('test');
-    const liveDOM = ul.getElementsByTagName('li'); //HTMLCollection;
-    const staticDOM = ul.querySelectorAll('li'); //NodeList
-    const newLi = document.createElement('li');
-    newLi.innterText = 'list3';
-
-    console.log('first', liveDOM, staticDOM);
-    ul.append(newLi);
-    //HTMLCollection은 추후에 동적으로 속성값이 변경되도 변경값이 실시간으로 갱신됨 (LiveDOM)
-    //LodeList는 추후에 변경사항이 생겨도 초기 할당될때의 값만 고정적으로 가지고 있음 (StaticDOM)
-    console.log('second', liveDOM, staticDOM);
-  </script>
 </body>
 
 </html>
