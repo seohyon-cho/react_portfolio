@@ -22,5 +22,5 @@ export function useScroll(frame = '.wrap') {
 	}, [frame]);
 
 	// scrollTo 함수를 비구조화할당으로 뽑아내기 위해 객체로 묶어서 반환.
-	return { scrollTo, getCurrentScroll, scrollFrame };
+	return { scrollTo, getCurrentScroll, scrollFrame: scrollFrame.current };
 }
