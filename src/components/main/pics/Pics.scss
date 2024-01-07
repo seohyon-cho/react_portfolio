@@ -5,9 +5,14 @@
 	position: relative;
 	padding: 10vw;
 
-	.box {
-		width: 300px;
-		height: 300px;
-		background: #fff;
+	overflow: hidden;
+
+	.tit {
+		font-size: 8rem;
+		color: var(--baseColor);
+	}
+	.tit2 {
+		font-size: 6rem;
+		color: var(--bgColor);
 	}
 }
