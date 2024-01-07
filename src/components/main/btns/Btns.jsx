@@ -14,6 +14,13 @@ export default function Btns(opt) {
 	const baseLine = useRef(resultOpt.current.base);
 	const isMotion = useRef(false);
 
+	//VirturalDOM(스크립트를 통해서 가상으로 만든돔) vs RealDOM (HTML을 통해서 생성한 돔) (리액트에서 쓰는개념)
+
+	//LiveDOM vs StaticDOM (Real DOM)
+	//LiveDOM은 계속 속성값이 갱신되는 DOM, StaticDOM은 변수에 할당된 순간의 정보값으로 고정된 DOM
+
+	//VirtualDOM vs RealDOM (LiveDOM, StaticDOM : RealDOM의 하위개념)
+
 	// [[ activation에서 null요소의 값을 읽을 수 없다는 오류가 뜨는 이유 (throttle과는 무관) ]]
 	// 아래 함수는 scroll이 동작될 때마다 실행되는 함수
 	const activation = () => {
