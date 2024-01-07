@@ -7,7 +7,7 @@ export default function Layout2({ children, title }) {
 	const refFrame = useRef(null);
 	const refTitle = useRef(null);
 	const splitText = useSplitText();
-	const { scrollTo } = useScroll('.wrap');
+	const { scrollTo } = useScroll();
 
 	useEffect(() => {
 		scrollTo(0);
