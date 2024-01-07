@@ -3,7 +3,6 @@ import { useScroll } from '../../../hooks/useScroll';
 import './Pics.scss';
 
 export default function Pics() {
-	console.log('Pics');
 	const [Frame, setFrame] = useState(null);
 	const thisEl = useRef(null);
 	const boxEl = useRef(null);
@@ -13,7 +12,7 @@ export default function Pics() {
 	//해당 값을 참조객체의 style값으로 연동
 	//scroll값이 바뀔때마다 불필요하게 재랜더링하지 않으면서 스크롤값 스타일에 연동
 	const handleScroll = useCallback(() => {
-		const scroll = getCurrentScroll(thisEl.current);
+		const scroll = getCurrentScroll(thisEl.current, -window.innerHeight / 2);
 		scroll >= 0 && (boxEl.current.style.transform = `translateX(${scroll}px)`);
 	}, [getCurrentScroll]);
 

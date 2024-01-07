@@ -1,21 +1,29 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './Layout2.scss';
 import { useSplitText } from '../../../hooks/useText';
 import { useScroll } from '../../../hooks/useScroll';
 
 export default function Layout2({ children, title }) {
+	const [Frame, setFrame] = useState(null);
 	const refFrame = useRef(null);
 	const refTitle = useRef(null);
 	const refBtnTop = useRef(null);
 	const splitText = useSplitText();
-	const { scrollTo, getCurrentScroll, scrollFrame } = useScroll();
+	//useScroll처음 초기화시 state에 담겨있는 scrollFrame요소 전달
+	const { scrollTo, getCurrentScroll } = useScroll(Frame);
 
 	const handleScroll = useCallback(
 		num => {
-			getCurrentScroll() >= num ? refBtnTop.current?.classList.add('on') : refBtnTop.current?.classList.remove('on');
+			//첫번째 인수로 자기자신 프레임, 두번째 인수로 0 (상단부터 scroll값연동하기 위해 0전달)
+			getCurrentScroll(refFrame.current, 0) >= num ? refBtnTop.current?.classList.add('on') : refBtnTop.current?.classList.remove('on');
 		},
 		[getCurrentScroll]
 	);
+
+	//useScroll에 전달할 Frame state에 스크롤 프레임요소 담기
+	useEffect(() => {
+		setFrame(refFrame.current?.closest('.wrap'));
+	}, []);
 
 	useEffect(() => {
 		scrollTo(0);
@@ -26,8 +34,8 @@ export default function Layout2({ children, title }) {
 	}, [splitText, title, scrollTo]);
 
 	useEffect(() => {
-		scrollFrame?.addEventListener('scroll', () => handleScroll(300));
-	}, [getCurrentScroll, handleScroll, scrollFrame]);
+		Frame?.addEventListener('scroll', () => handleScroll(300));
+	}, [getCurrentScroll, handleScroll, Frame]);
 
 	return (
 		<main ref={refFrame} className={`Layout ${title}`}>

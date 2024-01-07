@@ -1,19 +1,16 @@
 import Anime from '../asset/anime';
 
+//useScroll훅을 처음 초기화할때 무조건 인수로 state에 담겨있는 ScrollFrame요소를 전달 (중요)
 export function useScroll(scrollFrame) {
-	//기존에 scrollTop값을 제어하는 wrap요소를 참조객체에 담아서 반환하는것이 문제
-	//이유: wrap.scrollTop의 변경되는 값을 계속 활용해되는데
-	//참조객체에 담으면 담는 순간의 참조객체값이 고정되는 문제 발생
-	//해결방법: wrap요소를 호출 부모컴포넌트에서 State에 담도록 처리
 	const scrollTo = targetPos => {
-		new Anime(scrollFrame.current, { scroll: targetPos });
+		scrollFrame && new Anime(scrollFrame, { scroll: targetPos });
 	};
 
-	const getCurrentScroll = selfEl => {
-		const scroll = scrollFrame.scrollTop;
+	//getCurrentScroll(호출하는 부모프레임요소, 기준점 보정값)
+	const getCurrentScroll = (selfEl, baseLine = 0) => {
+		const scroll = scrollFrame?.scrollTop - baseLine;
 		const modifiedScroll = scroll - selfEl?.offsetTop;
 		return modifiedScroll;
 	};
-
 	return { scrollTo, getCurrentScroll };
 }
