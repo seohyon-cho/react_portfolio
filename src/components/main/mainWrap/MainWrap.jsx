@@ -1,5 +1,6 @@
 import Banner from '../banner/Banner';
 import Btns from '../btns/Btns';
+import Illust from '../illust/Illust';
 import Info from '../info/Info';
 import Pics from '../pics/Pics';
 import Visual from '../visual/Visual';
@@ -11,6 +12,7 @@ export default function MainWrap() {
 			<Visual />
 			<Info />
 			<Pics />
+			<Illust />
 			<Banner />
 			{/* <Btns frame={스크롤 제어할 프레임요소의 클래스명} items={스크롤이 걸릴 영역의 공통 클래스} base={활성화기준점} isAuto={autoScrolling 기능 활성화 유무 (boolean, 기본값은 false)} */}
 			<Btns />
