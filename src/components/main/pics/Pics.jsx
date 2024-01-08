@@ -6,7 +6,6 @@ export default function Pics() {
 	const titEl2 = useRef(null);
 
 	const handleCustomScroll = scroll => {
-		console.log(scroll);
 		if (scroll >= 0) {
 			titEl.current.style.transform = `translateX(${scroll}px)`;
 			titEl.current.style.opacity = 1 - scroll / 800;
