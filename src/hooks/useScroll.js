@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Anime from '../asset/anime';
 
 //useScroll훅을 처음 초기화할때 무조건 인수로 state에 담겨있는 ScrollFrame요소를 전달 (중요)
-export function useScroll(scrollFrame) {
+export function useScroll() {
 	const [Frame, setFrame] = useState(null);
 	const scrollTo = targetPos => {
 		Frame && new Anime(Frame, { scroll: targetPos });

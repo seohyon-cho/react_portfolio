@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useScroll } from '../../../hooks/useScroll';
 import './Banner.scss';
 
