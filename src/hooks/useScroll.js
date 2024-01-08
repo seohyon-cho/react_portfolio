@@ -1,21 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Anime from '../asset/anime';
 
-export function useScroll(customHandler) {
+export function useScroll(customHandler, baseLine = -window.innerHeight / 2) {
 	const refEl = useRef(null);
 	const [Frame, setFrame] = useState(null);
 	const scrollTo = targetPos => {
 		Frame && new Anime(Frame, { scroll: targetPos });
 	};
 
-	const getCurrentScroll = useCallback(
-		(baseLine = -window.innerHeight / 2) => {
-			const scroll = Frame.scrollTop - baseLine;
-			const modifiedScroll = scroll - refEl.current?.offsetTop;
-			return modifiedScroll;
-		},
-		[Frame]
-	);
+	const getCurrentScroll = useCallback(() => {
+		const scroll = Frame.scrollTop - baseLine;
+		const modifiedScroll = scroll - refEl.current?.offsetTop;
+		return modifiedScroll;
+	}, [Frame, baseLine]);
 
 	const handleScroll = useCallback(() => {
 		const scroll = getCurrentScroll();

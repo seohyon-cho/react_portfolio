@@ -1,46 +1,31 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './Layout2.scss';
 import { useSplitText } from '../../../hooks/useText';
 import { useScroll } from '../../../hooks/useScroll';
 
 export default function Layout2({ children, title }) {
-	const [Frame, setFrame] = useState(null);
-	const refFrame = useRef(null);
 	const refTitle = useRef(null);
 	const refBtnTop = useRef(null);
 	const splitText = useSplitText();
-	//useScroll처음 초기화시 state에 담겨있는 scrollFrame요소 전달
-	const { scrollTo, getCurrentScroll } = useScroll(Frame);
 
-	const handleScroll = useCallback(
-		num => {
-			//첫번째 인수로 자기자신 프레임, 두번째 인수로 0 (상단부터 scroll값연동하기 위해 0전달)
-			getCurrentScroll(refFrame.current, 0) >= num ? refBtnTop.current?.classList.add('on') : refBtnTop.current?.classList.remove('on');
-		},
-		[getCurrentScroll]
-	);
-
-	//useScroll에 전달할 Frame state에 스크롤 프레임요소 담기
-	useEffect(() => {
-		setFrame(refFrame.current?.closest('.wrap'));
-	}, []);
+	// 순서 (1) 레이아웃 컴포넌트에서 공통적으로 적용될, 스크롤 위치가 100px을 넘어가면 btnTop 버튼을 보이게끔 하는 함수 정의
+	const handleCustomScroll = scroll => {
+		scroll >= 100 ? refBtnTop.current?.classList.add('on') : refBtnTop.current?.classList.remove('on');
+	};
+	const { scrollTo, refEl } = useScroll(handleCustomScroll, 0);
 
 	useEffect(() => {
 		scrollTo(0);
 		splitText(refTitle.current, title, 0.7, 0.1);
 		setTimeout(() => {
-			refFrame.current?.classList.add('on');
+			refEl.current?.classList.add('on');
 		}, 300);
-	}, [splitText, title, scrollTo]);
-
-	useEffect(() => {
-		Frame?.addEventListener('scroll', () => handleScroll(300));
-	}, [getCurrentScroll, handleScroll, Frame]);
+	}, [splitText, title, scrollTo, refEl]);
 
 	return (
-		<main ref={refFrame} className={`Layout ${title}`}>
+		<main ref={refEl} className={`Layout ${title}`}>
 			<h1 ref={refTitle}>{title}</h1>
-			<div ref={refFrame} className='bar'></div>
+			<div className='bar'></div>
 			{children}
 			<button onClick={() => scrollTo(0)} ref={refBtnTop} className='btnTop'>
 				Top
