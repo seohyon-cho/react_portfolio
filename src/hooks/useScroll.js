@@ -1,28 +1,39 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Anime from '../asset/anime';
 
-//useScroll훅을 처음 초기화할때 무조건 인수로 state에 담겨있는 ScrollFrame요소를 전달 (중요)
-export function useScroll() {
-	// 순서 (1) 커스텀 훅 안쪽에 자체적으로 빈 참조객체 생성.
+// 순서 (3) 부모 컴포넌트로부터 커스텀스크롤 함수를 파라미터를 통해 내부로 전달 받음.
+export function useScroll(customHandler) {
 	const refEl = useRef(null);
 	const [Frame, setFrame] = useState(null);
 	const scrollTo = targetPos => {
 		Frame && new Anime(Frame, { scroll: targetPos });
 	};
 
-	//getCurrentScroll(호출하는 부모프레임요소, 기준점 보정값)
-	const getCurrentScroll = (baseLine = 0) => {
-		const scroll = Frame.scrollTop - baseLine;
-		// 순서 (5) 부모 컴포넌트에서 참조 객체에 연결된 값을 커스텀 훅에서 내부적으로 활용함.
-		const modifiedScroll = scroll - refEl.current?.offsetTop;
-		return modifiedScroll;
-	};
+	const getCurrentScroll = useCallback(
+		(baseLine = -window.innerHeight / 2) => {
+			const scroll = Frame.scrollTop - baseLine;
+			const modifiedScroll = scroll - refEl.current?.offsetTop;
+			return modifiedScroll;
+		},
+		[Frame]
+	);
+
+	// 순서 (4) 전달받은 커스텀 스크롤 함수를, 내부에 있는 handleScroll 함수 안쪽에서 호출해서, 내부적으로 getCurrentScroll 값이 반환하고 있는 스크롤 값과 연동시켜줌.
+	const handleScroll = useCallback(() => {
+		const scroll = getCurrentScroll();
+
+		if (scroll >= 0) customHandler(scroll);
+	}, [getCurrentScroll, customHandler]);
 
 	useEffect(() => {
-		// .wrap은 리액트 기반의 최상위 루트 요소이므로, 사라지거나 나타나거나 등 변경될 요소가 아니므로 querySelector로 가져와도 됨.
 		setFrame(document.querySelector('.wrap'));
 	}, []);
 
-	// 순서 (2) 부모 컴포넌트에서 해당 참조객체를 활용할 수 있도록 return으로 반환처리하여 전달.
+	// 순서 (5) 해당 커스텀 훅을 호출하고 있는 부모 컴포넌트가 마운트 시, handleScroll 함수에 scroll 이벤트를 연결.
+	useEffect(() => {
+		Frame?.addEventListener('scroll', handleScroll);
+		return () => Frame?.removeEventListener('scroll', handleScroll);
+	}, [Frame, handleScroll]);
+
 	return { scrollTo, getCurrentScroll, Frame, refEl };
 }
