@@ -9,6 +9,9 @@ export default function Banner() {
 		if (scroll >= 0) {
 			boxEl.current.style.transform = `rotate(${scroll / 2}deg) scale(${1 + scroll / 400})`;
 			boxEl.current.style.opacity = 1 - scroll / 400;
+		} else {
+			boxEl.current.style.transform = `rotate(0deg) scale(1)`;
+			boxEl.current.style.opacity = 1;
 		}
 	};
 
