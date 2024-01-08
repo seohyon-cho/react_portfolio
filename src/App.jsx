@@ -19,14 +19,36 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useGlobalData } from './hooks/useGlobalData';
 import CookieModal from './components/common/cookieModal/CookieModal';
+import { useState } from 'react';
 
 export default function App() {
+	console.log('re-render');
 	const { Mode } = useGlobalData();
 	const queryClient = new QueryClient();
+	const [Count1, setCount1] = useState(1);
+	const [Count2, setCount2] = useState(2);
+	const [Count3, setCount3] = useState(3);
+
+	const returnPromise = () => {
+		return new Promise(res => setTimeout(res, 500));
+	};
+
+	const changeState = () => {
+		// Promise 가 반환되는 핸들러 함수 안에서 여러 개의 state가 변경된다면, batching 기능이 풀리게 되면서, state의 갯수만큼 재렌더링이 발생하게 됨.
+		// 이렇게 batching 기능이 풀려버리는 현상을 개선한 것이 바로 리액트 18에서의 automatic batching 기능.
+		returnPromise().then(() => {
+			setCount1(Count1 + 1);
+			setCount2(Count2 + 1);
+			setCount3(Count3 + 1);
+		});
+	};
 
 	return (
 		<QueryClientProvider client={queryClient}>
 			<div className={`wrap ${Mode === 'dark' ? 'dark' : 'light'} ${useMedia()}`}>
+				<button style={{ position: 'fixed', top: 0, left: 0, zIndex: 10 }} onClick={changeState}>
+					변경
+				</button>
 				<Header2 />
 				<Route exact path='/' component={MainWrap} />
 				<Route path='/department' component={Department} />
