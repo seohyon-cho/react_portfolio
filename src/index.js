@@ -15,6 +15,15 @@ ReactDOM.render(
 );
 
 /*
+	[ redux 의 작업 흐름 ]
+	1. redux 폴더 안에 << store를 생성하는 함수, reducer 함수, actionType 문자열을 저장하는 객체 >> 를 준비한다.
+	2. index.js 에서 redux 폴더 안에서 생성한 store 객체를 <Provider></Provider> 컴포넌트를 통해 App.jsx에 전달한다. (=> 모든 컴포넌트는 useSelector 훅을 사용해 store에 접근이 가능하게 됨.)
+	3. 루트 컴포넌트인 App이 마운트되자마자 비동기 데이터를 fetching 후, action 객체에 actionType과 함께 같이 담아주고, dispatch로 reducer 함수에 전달한다. 
+	4. reducer 함수가 컴포넌트로부터 전달 받은 action 객체의 타입을 확인해서, 타입에 따라 같이 전달된 payload 값으로 store에 있는 데이터를 변경 처리한다. 
+	5. 단, client side data (주로 정적인 형태. 문자열, boolean 등,,) 의 경우에는, 애초에 reducer 함수에서 초기값을 할당해서 저장한다.  
+*/
+
+/*
 	[ 해당 프로젝트에서 Redux를 사용한 이유 (왜 썼는지) 와 한계점 ]
 	- 서브 컴포넌트에서 활용하고 있는 회사정보, 연혁정보, youtube 영상, flickr 같은 정보값들을 메인 컴포넌트에 미리 보기 형식으로 출력할 수 있게 하고자. 
 	- 분명 같은 데이터를 활용하고 있는 것인데, 다시 또 메인 컴포넌트에서 fetching 하는 것은 비효율적이고, props로 전달하기에는 컴포넌트가 너무 지저분해짐. 
