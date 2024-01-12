@@ -54,6 +54,8 @@ export default function Department() {
 
 	- public/DB 폴더 안 쪽에 json 파일을 미리 준비해서, data fetching 처리 
 	- fetching한 데이터를 기반으로, 회사 연혁 및 멤버 소개 페이지 구현 
+	- text 데이터를 보다 편하게 가공하기 위해서, useText 라는 커스텀 훅을 제작해서, 다양한 방식으로 문자열 가공 처리. 
+		(*) (useText 커스텀 훅 관련 가이드 문서 - p.100) 식으로 참조 형태로만 곁들이기. (한 페이지안에 모든 걸 구구절절 X)
 
 
 	[ 해당 페이지에서 발생한 이슈 사항 ]
