@@ -4,30 +4,6 @@ import './Department.scss';
 import { useCustomText } from '../../../hooks/useText';
 import { useSelector } from 'react-redux';
 
-/*
-	비동기 데이터를 내부적으로 활용하는 컴포넌트에서 너무 빠르게 다른 컴포넌트로 이동을 하게 되면, 
-	특정 값이 없다고 뜨면서 memory leak 이라는 에러 문구가 뜨는 현상 
-
-	이유 : 특정 컴포넌트 마운트 시, 만약 해당 컴포넌트가 비동기 데이터를 패칭해야하는 내용을 담고 있다면, 
-	fetching 완료 후 해당 값을 state에 담기까지 약간의 물리적인 시간이 소요됨. 
-
-	아직 데이터가 fetching 요청이 들어가고, 데이터 반환이 되기 전에 해당 컴포넌트가 unmount 되면 
-	이미 담을 state값은 사라졌는데 fetching 요청은 계속해서 수행되고 있음. ("메모리 누수현상"이 발생했다고 함.)
-
-	해결 방법 : 해당 컴포넌트에 특정 state를 하나 생성해서, 초기 값을 false로 지정하고, 해당 컴포넌트가 unmount 시
-	해당 state값을 강제로 true 로 변경처리 하면 됨. 
-
-	해당 state값이 true일 때에는 state에 값이 담기는 것 자체가 실행되지 않도록 조건문 처리하면 됨. 
-
-
-	const [Mounted, setMounted] = useState(true);
-	useEffect(() => {
-		return () => setMounted(false);
-	}, [Mounted]);
-
-	{Mounted && 데이터패칭문}
-*/
-
 export default function Department() {
 	const HistoryData = useSelector(store => store.historyReducer.history);
 	const MemberData = useSelector(store => store.memberReducer.members);
@@ -72,3 +48,18 @@ export default function Department() {
 		</Layout2>
 	);
 }
+
+/*
+	[ 해당 페이지 (Department.jsx) 에서의 개발 흐름 ]
+
+	- public/DB 폴더 안 쪽에 json 파일을 미리 준비해서, data fetching 처리 
+	- fetching한 데이터를 기반으로, 회사 연혁 및 멤버 소개 페이지 구현 
+
+
+	[ 해당 페이지에서 발생한 이슈 사항 ]
+
+	- 상대적으로 react 지식이 없을 때 (react를 배우기 시작한 초반) 처음으로 제작한 컴포넌트 페이지라, static한 데이터들을 일일히 JSX에 컨텐츠를 담아서 렌더링 처리 했었음. 
+	- 그러나 추후 생각을 해보니 유지보수를 하거나 데이터 관리를 할 때 일일히 수정을 해야하므로 비효율적이라 판단되어 JSON파일 형태로 데이터만 분리한 뒤, 동적으로 렌더링 처리하는 구조로 변경했음. 
+	- 원래 의도는 DB에 연동을 하고 싶었지만, 아직 DB에 대해 공부하기 전이라 DB의 구조 및 DB 연동에 대해 무지해서, 아쉬운대로 JSON 형태로 처리해 놓았음. (그러나, 이후 Next.js를 배우면서 Mongo DB 연동하는 프로젝트를 진행해보게 됨. = 공부를 더 하게 되면서 DB도 건드릴 줄 알게 되었다는 의미. 성장 가능성을 보여주는 부분이라 꼭 넣는 게 좋음. 참조 링크 식으로 이후에 만든 Mongo DB 프로젝트를 연결해 바로 전후 성장 여부를 비교할 수 있게끔.. )
+
+	*/
