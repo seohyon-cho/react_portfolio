@@ -18,15 +18,10 @@ export default function Members() {
 	});
 
 	const [Val, setVal] = useState(initVal.current);
-	// useDebounced 훅의 인수로 특정 state (여기서는 Val이라는 state) 를 전달해서, debouncing이 적용된 새로운 state 값을 반환 받음.
 	const DebouncedVal = useDebounce(Val, 500);
 	const [Errs, setErrs] = useState({});
 
-	// 실시간으로 이루어짐.
 	const handleChange = e => {
-		// const key = e.target.name; // userid
-		// const value = e.target.value; // 현재 입력하고 있는 input 값
-		// 비구조화 할당으로 가져오기
 		const { name, value } = e.target;
 		setVal({ ...Val, [name]: value });
 	};
@@ -35,44 +30,26 @@ export default function Members() {
 		const { name } = e.target;
 		const inputs = e.target.parentElement.querySelectorAll('input');
 		const checkArr = [];
-		// input들을 반복 돌면서, input.checked가 true (=체크 되어 있는 것.) 일 때, checkArr 이라는 빈 배열에 input의 value를 push로 집어넣음.
 		inputs.forEach(input => input.checked && checkArr.push(input.value));
 		setVal({ ...Val, [name]: checkArr });
 	};
 
-	// 인증 절차 함수 로직
 	const check = value => {
 		const errs = {};
-		// 정규표현식 : 문자열 안에 패턴을 만들어서, 그 패턴을 ...
-		// [0-9] 모든 숫자
 		const num = /[0-9]/;
-		// [a-z] 모든 소문자 알파벳과 모든 대문자 알파벳
 		const txt = /[a-zA-Z]/;
-		// 특수문자 (예약어 기능이 있는 특수기호는 색상이 별도로 다르게 표시되므로, 예약어는 앞에 역슬래시(\) 붙여서 escape 처리해주면 됨.)
 		const spc = /[~!@#$%^&*()_.+]/;
 
-		// 입력한 pwd1의 내용에 num 값이 없거나, txt 값이 없거나, spc 값이 없거나, 5글자 미만인 경우
-		// test 는 정규표현식 전용 메소드 (num이 value.pwd1에 있으면 true 반환하는 로직.)
 		if (!num.test(value.pwd1) || !txt.test(value.pwd1) || !spc.test(value.pwd1) || value.pwd1.length < 5)
 			errs.pwd1 = '비밀번호는 특수문자, 문자, 숫자를 모두 포함해 5글자 이상 입력하세요.';
-		// pwd1 와 pwd2 가 일치하지 않는 경우
 		if (value.pwd1 !== value.pwd2 || !value.pwd2) errs.pwd2 = '입력한 비밀번호가 일치하지 않습니다.';
-		// 사용자가 입력한 아이디의 글자 수가 5글자 이상이도록
 		if (value.userid.length < 5) errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
-		// comments 최소 글자수 제한
 		if (value.comments.length < 10) errs.comments = '코멘트는 최소 10글자 이상 입력하세요.';
-		// 성별을 반드시 선택해서 gender가 빈 칸(false)이 되지 않도록 제한
 		if (!value.gender) errs.gender = '성별을 선택해주세요.';
-		// interest를 하나도 선택하지 않아서 0개 (length가 0개 = false) 인 경우가 없도록.
 		if (!value.interest.length) errs.interest = '관심사를 한 가지 이상 선택하세요.';
-		// edu를 선택하지 않아 빈 칸(false)인 경우가 없도록.
 		if (!value.edu) errs.edu = '최종학력을 선택하세요.';
 
-		// email 주소 관련 인증 로직 (인증 조건에 맞지 않을 때 에러 처리)
-		// 문자열에 @ 포함, @ 앞뒤로 모두 문자 필수 포함, @ 뒷부분에 . 필수 포함, . 앞뒤로 모두 문자 필수 포함.
-		// 이메일 인증 로직 간소화
 		const [m1, m2] = value.email.split('@');
-		// 여기서는 m2 && m2.split('.') 구문이 실행된다는 보장이 아직 없기 때문에 [m3, m4] 로 나눌 수 없음. 따라서 일단 m3으로 담고, 뒤에서 [0], [1]로 호출하기.
 		const m3 = m2 && m2.split('.');
 		if (!m1 || !m2 || !m3[0] || !m3[1]) errs.email = '올바른 이메일 형식을 입력하세요.';
 
@@ -87,12 +64,10 @@ export default function Members() {
 		e.preventDefault();
 		if (Object.keys(check(Val)).length === 0) {
 			alert('회원가입을 축하합니다!');
-			// 회원가입 창 띄운 뒤, 라우터로 경로를 강제로 / 로 전환해서 메인으로 이동하도록 처리
 			history.push('/');
 		}
 	};
 
-	// debouncing이 적용된 state를 의존성 배열에 등록해서, 해당 값으로 check함수 호출
 	useEffect(() => {
 		setErrs(check(DebouncedVal));
 	}, [DebouncedVal]);
@@ -108,7 +83,6 @@ export default function Members() {
 						<fieldset>
 							<legend className='h'>회원가입 폼</legend>
 							<table>
-								{/* 리액트에서는 thead는 생략해도 되지만, tbody는 꼭 써줘야 오류 안 생김. */}
 								<tbody>
 									{/* userid, email */}
 									<tr>
@@ -137,7 +111,6 @@ export default function Members() {
 									{/* edu */}
 									<tr>
 										<td colSpan='2'>
-											{/* select 와 option 은 한 세트로 써야 함. */}
 											<select name='edu' onChange={handleChange}>
 												<option value=''>Education</option>
 												<option value='elementary-school'>초등학교 졸업</option>
@@ -152,8 +125,6 @@ export default function Members() {
 									{/* gender */}
 									<tr>
 										<td colSpan='2'>
-											{/* 사용자로부터 직접 입력받아 사용하는 건 value, 사전에 지정해둔 값을 선택하게 해서 사용하는 건 defaultValue */}
-											{/* input 의 id 와 label 의 htmlFor 는 같게 매치시켜줘야 함. (스크린 리더기 때문에) */}
 											<input type='radio' defaultValue='female' id='female' name='gender' onChange={handleChange} />
 											<label htmlFor='female'>Female</label>
 
@@ -211,14 +182,26 @@ export default function Members() {
 }
 
 /*
-	throttle vs debounce
-	throttle : 물리적으로 핸들러함수 호출자체를 일정횟수로 줄임
-	debounce : 특정 이벤트가 단시간에 반복으로 계속 발생하고 있으면 핸들러함수 호출 자체를 계속 뒤로 밀면서 호출 막음
+	[ 해당 페이지 (Members.jsx) 에서의 개발 흐름 ]
+	
+	- Input 요소에 값 입력 시, 실시간으로 폼의 입력 값들을 state로 관리하면서 인증처리 로직 실행 
+	- 인증 성공 시 성공 메세지를 띄우고, 인증 실패 시 실시간으로 인증 에러 (충족하지 못 한 조건) Input 요소 하단에 텍스트로 출력 
+	- useDebounce 라는 커스텀 훅을 통해서 불필요하게 특정 핸들러함수가 반복 호출되는 것을 방지함. 
+		(*) useDebounce 관련 작업 가이드 내용을 별도로 페이지로 만든 뒤 참조 링크 식으로 곁들이기. (p.100 어쩌구저쩌구 참고)
 
-	리액트에서의 폼 인증 구현 로직 순서
-	1. 폼요소에 입력하는 값을 이벤트 핸들러 함수를 통해 실시간으로 state에 저장
-	2. state값이 변경될때마다 check 함수를 통해 항목별로 인증 실패시 에러 객체로 묶어서 반환
-	3. 폼에 submitHandler 함수를 연결
-	4. 전송이벤트가 발생시 submitHandler함수 안쪽에서 check함수를 호출해서 err객체가 있으면 인증 실패
-	5. check함수가 내보내는 err객체가 없으면 인증 성공처리
-*/
+
+	[ 해당 페이지에서 발생한 이슈 사항 ]
+
+	(1) 폼 요소가 많다보니 초반에는 Input 요소에 담길 value의 state를 생성했는데, state 관리가 어려웠음. 
+	(2) 전송 버튼 클릭이라는 이벤트에 의해서만 되는 것 말고, 실시간으로 특정 요소 값을 입력할 때마다 이 값을 인지하고 조건에 충족되었는지를 인식하여 에러메세지를 띄우는 식으로 사용성의 개선이 필요했음. 
+	(3) onChange 이벤트에 state 변경 함수를 연결하다보니, 컴포넌트가 너무 많이 재렌더링되고, 이에 수반된 특정 핸들러 함수가 너무 잦게 호출됨. 
+	
+
+	[ 해결 방안 ]
+
+	(1) handleChange 라는 함수를 직접 제작해서, 실제 입력하고 있는 name의 폼요소를 state 객체 안의 key값의 변수로 활용하여 입력하고, input의 name값에 따라 자동으로 state가 변동되도록 로직 구현. (ES6의 '대괄호를 이용한 객체의 동적 키 할당' 문법 활용)
+	(3) onChange를 통한 state 변경으로 빈번한 컴포넌트의 재렌더링으로 인해 성능면에서 걱정이 되어, 구글링을 해보니, 리액트는 가상 돔 요소가 실제 돔을 통째로 만드는 것이 아닌, 돔의 변경될 데이터만 담고 있는 객체이고, 동일한 JSX 구조일 때 이전 렌더링시의 동일 JSX의 노드 값을 내부적으로 재활용하기 때문에 재렌더링에 대한 소비 비용이 크지 않음을 확인했음. 
+	(3) 단지 컴포넌트가 재렌더링됨으로 인해서 check 함수가 불필요하게 자주 호출되는 것을 막아주기 위해서, 일정시간동안 연속적으로 이벤트가 발생하고 있다면 계속해서 핸들러함수의 호출을 지연시키는 debouncing 기능을 커스텀 훅으로 만들어서 재활용하도록 처리. 
+
+	
+	*/
