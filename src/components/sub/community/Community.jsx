@@ -39,7 +39,6 @@ export default function Community() {
 		setPost(Post.filter((_, idx) => delIndex !== idx));
 	};
 
-	// 글 수정하는 함수
 	const updatePost = updateIndex => {
 		if (!refEditTit.current.value.trim() || !refEditCon.current.value.trim()) {
 			return alert('수정할 글의 제목과 본문을 모두 입력하세요!');
@@ -58,11 +57,7 @@ export default function Community() {
 		);
 	};
 
-	// 수정모드 변경 함수
 	const enableUpdate = editIndex => {
-		// (1) 기존의 Post 배열을 반복 돌면서, 파라미터로 전달된 editIndex 순번의 포스트에만 enableUpdate = true; 라는 구분자를 추가해서 다시 state 변경 처리
-		// 다음 번 렌더링 때, 해당 구분자가 있는 포스트 객체만 수정모드로 분기처리하기 위함임.
-
 		if (editMode.current) return;
 		editMode.current = true;
 		setPost(
@@ -73,7 +68,6 @@ export default function Community() {
 		);
 	};
 
-	// 다시 출력모드로 변경해주는 함수
 	const disableUpdate = editIndex => {
 		editMode.current = false;
 		setPost(
@@ -85,7 +79,6 @@ export default function Community() {
 	};
 
 	useEffect(() => {
-		// Post 데이터가 변경되면 수정 모드를 강제로 false처리하면서 이를 로컬저장소에 저장하고, 컴포넌트 재실행.
 		Post.map(el => (el.enableUpdate = false));
 		localStorage.setItem('post', JSON.stringify(Post));
 	}, [Post]);
@@ -113,7 +106,6 @@ export default function Community() {
 							const strDate = changeText(date?.split('T')[0].slice(1), '.');
 
 							if (el.enableUpdate) {
-								// 수정모드
 								return (
 									<article key={el + idx}>
 										<div className='txt'>
@@ -122,20 +114,17 @@ export default function Community() {
 											<span>{strDate}</span>
 										</div>
 										<nav>
-											{/* 수정모드일 때 해당 버튼 클릭 시 다시 출력모드 변경 */}
 											<button onClick={() => disableUpdate(idx)}>Cancel</button>
 											<button onClick={() => updatePost(idx)}>Update</button>
 										</nav>
 									</article>
 								);
 							} else {
-								// 출력모드
 								return (
 									<article key={el + idx}>
 										<div className='txt'>
 											<h2>{el.title}</h2>
 											<p>{el.content}</p>
-											{/* 변환된 날짜값 최종 출력 */}
 											<span>{strDate}</span>
 										</div>
 										<nav>
@@ -154,11 +143,25 @@ export default function Community() {
 }
 
 /*
-	[[ 글 수정 로직 단계 ]]
+	[ 해당 페이지 (Community.jsx) 에서의 개발 흐름 ]
 
-	1. 각 포스트에서 수정 버튼 클릭 시, 해당 객체의 enableUpdate = true; 라는  property를 동적으로 추가 후, state에 저장. 
-	2. 다음 번 렌더링 사이클에서, 포스트를 반복 돌며 객체에 enableUpdate 값이 true이면 제목 본문을 input 요소에 담아서 출력되도록 분기처리. (출력 시 수정모드로 분기처리해서 출력하는 것.)
-	3. 수정 모드일 때에는, 수정취소 & 수정완료 버튼 생성
-	4. 수정 모드에서 수정취소 버튼 클릭 시, 해당 post 객체에만 enableUpdate 값을 false로 변경해서 다시 출력모드로 변경.
-	5. 수정 모드에서 수정완료 버튼 클릭 시, 해당 form 요소에 수정된 value값을 가져와서 저장한 뒤, 다시 출력모드로 변경. 
+	- localStorage 를 활용하여 간단한 메모장 CRUD 기능 구현 
+	- 해당 컴포넌트 안에서 글 작성, 글 출력, 글 수정, 글 삭제 기능을 구현
+	- pagination 기능 구현 
+
+
+	[ 해당 프로젝트 진행하면서 발생한 이슈 사항 ]
+
+	(1) 단지 특정 데이터의 동적 출력이 아닌, 입출력 작업이 모두 수행되어야 하다보니, 계속 초기화되는 state가 아닌 localStorage 활용해야 했음. 
+	(2) 처음 컴포넌트 마운트 시, localStorage에 초기값이 없는 상태라 오류 발생. 
+	(3) 다른 사용자의 브라우저에서는 초기값이 없어 초기에 빈화면이 출력되는 문제점 발생. 
+	(4) 메모 데이터가 많아지면서 한 화면 내에서 너무 많은 데이터(메모박스)가 생기게 되면서 UI가 지저분해짐. 
+	(5) 특정 포스트 수정 도중, 다른 포스트의 수정버튼을 클릭 시, 복수 개의 포스트가 수정모드로 변경되는 문제점 발생.
+
+
+	[ 해결 방안 ]
+
+	(1), (2), (3) 마운트되자마자 초기에 일단 무조건 localStorage에 더미데이터를 문자화하여 초기값으로 저장 후 활용 
+	(4) 전체 데이터 갯수 대비 한 페이지당 보일 데이터 갯수를 계산해서, pagination 기능 구현 
+	(5) 특정 포스트가 수정모드로 전환되면, 전환되어있는동안에는 다른 포스트들의 수정모드 버튼은 잠시 비활성화 처리. 
 */
