@@ -23,3 +23,10 @@ export const useDebounce = (value, gap = 500) => {
 	}, []);
 	return DebouncedVal;
 };
+
+/*
+	useDebounce 훅 제작 배경
+	- input요소의 입력값으로 State를 변경할때마다 너무 잦은 State변경을 줄여서 특정 핸들러함수의 과한 반복 호출을 막기위해 state값이 일정시간안에 연속적으로 변경될때 State의 변경을 계속 미룸
+	useDebounce 활용예시
+	- Members에서 onChnage발생시 특정 state값의 변경을 미루면서 불필요한 check함수의 호출 지연
+*/
